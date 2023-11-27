@@ -7,22 +7,41 @@ public class HeroCntrl : MonoBehaviour
     [SerializeField] private InputCntrl inputCntrl;
     [SerializeField] private float maximumSpeed;
     [SerializeField] private float rotationSpeed;
+    [SerializeField] private SpellSO spell;
+    [SerializeField] private Transform castPoint;
 
     private Vector3 moveDirection;
     private Vector2 playerMove;
+    private SpellCasterCntrl spellCaster = null;
 
     private CharacterController charCntrl;
+    private Animator animator;
 
     // Start is called before the first frame update
     void Start()
     {
         charCntrl = GetComponent<CharacterController>();
+        animator = GetComponent<Animator>();
+
+        spellCaster = new SpellCasterCntrl();
+        spellCaster.Set(spell);
     }
 
     // Update is called once per frame
     void Update()
     {
         PlayerMovement(Time.deltaTime);
+
+        if (inputCntrl.HasFired)
+        {
+            HasFired();
+        }
+    }
+
+    private void HasFired()
+    {
+        spellCaster.Cast(castPoint.position, transform.forward);
+        inputCntrl.HasFired = false;
     }
 
     private void PlayerMovement(float dt)
@@ -33,15 +52,15 @@ public class HeroCntrl : MonoBehaviour
         moveDirection.y = 0.0f;
         moveDirection.z = playerMove.y; // Vertical
 
-        float inputMagnitude = Mathf.Clamp01(moveDirection.magnitude);
+        float magnitude = Mathf.Clamp01(moveDirection.magnitude);
 
-        //animator.SetFloat("Speed", inputMagnitude, 0.05f, dt);
+        animator.SetFloat("Speed", magnitude, 0.05f, dt);
 
         if (moveDirection != Vector3.zero)
         {
             moveDirection.Normalize();
 
-            Vector3 velocity = inputMagnitude * maximumSpeed * moveDirection;
+            Vector3 velocity = magnitude * maximumSpeed * moveDirection;
 
             Debug.Log($"Velocity: {velocity}");
 
