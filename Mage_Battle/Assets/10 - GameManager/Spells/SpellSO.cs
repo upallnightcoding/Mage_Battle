@@ -20,6 +20,9 @@ public class SpellSO : ScriptableObject
     // The amount of force produced by the spell forward
     public float forwardForce;
 
+    // Spell Sprite
+    public Sprite spellSprite;
+
     public GameObject fx;
 
     public GameObject modelPreFab;
