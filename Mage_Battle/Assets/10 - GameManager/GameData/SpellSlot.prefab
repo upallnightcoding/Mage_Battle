@@ -755,6 +755,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dd6756ea00ab2b1469dfc23bab47dc67, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  spellImage: {fileID: 0}
+  label: {fileID: 0}
+  coolDown: {fileID: 0}
+  coolDownColor: {fileID: 0}
 --- !u!1 &6644854946515536956
 GameObject:
   m_ObjectHideFlags: 0
