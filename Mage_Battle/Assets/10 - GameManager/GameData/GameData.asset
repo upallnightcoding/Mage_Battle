@@ -12,7 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1438ffdc682fb42488581c764f4ccd18, type: 3}
   m_Name: GameData
   m_EditorClassIdentifier: 
-  spellSlots:
-  - {fileID: 6644854946342895642, guid: e0e8549f7fa5f10458b93f0179e91b72, type: 3}
-  - {fileID: 0}
-  - {fileID: 0}
+  nSpellSlots: 5

@@ -6,26 +6,56 @@ using UnityEngine.UI;
 public class UiCntrl : MonoBehaviour
 {
     [SerializeField] private SpellSlotCntrl[] spellSlots;
-    [SerializeField] private Sprite imageSprite;
-    [SerializeField] private SpellSO testSpell;
+    [SerializeField] private SpellSO defaultSpellDisplay;
+    [SerializeField] private GameData gameData;
+
+    [SerializeField] private SpellSO[] testSpells;
 
     // Start is called before the first frame update
     void Start()
     {
-        InitSpellSlot(0, testSpell);
-        InitSpellSlot(1, testSpell);
+        NewGame();
     }
 
-    // Update is called once per frame
-    void Update()
+    public void NewGame()
     {
-        
+        InitAllSpellSlots();
+
+        for (int slot = 0; slot < testSpells.Length; slot++)
+        {
+            spellSlots[slot].SetSprite(testSpells[slot].spellSprite);
+            spellSlots[slot].SetDisplayBar(1.0f);
+        }
     }
 
-    public void InitSpellSlot(int index, SpellSO spell)
+    public void InitAllSpellSlots()
     {
-        spellSlots[index].Set(spell.spellSprite);
-        spellSlots[index].Set(1.0f);
-        spellSlots[index].Set(Color.blue);
+        for (int slot = 0; slot < gameData.nSpellSlots; slot++)
+        {
+            spellSlots[slot].SetSprite(defaultSpellDisplay.spellSprite);
+            spellSlots[slot].SetDisplayBar(0.0f);
+        }
+    }
+
+    public void ToggleSpellFrame(int slot)
+    {
+        spellSlots[slot].ToggleSpellFrame();
+    }
+
+    public void DrainSpellBar(CastInfo castInfo)
+    {
+        spellSlots[castInfo.Slot].SetDisplayBar(castInfo.Drain);
+    }
+
+    public void SetFullSpellBar(int slot)
+    {
+        spellSlots[slot].SetDisplayColor(Color.red);
+        spellSlots[slot].SetDisplayBar(1.0f);
+    }
+
+    public void UpdateSpellBar(int slot, float percentage)
+    {
+        spellSlots[slot].SetDisplayColor(Color.yellow);
+        spellSlots[slot].SetDisplayBar(percentage);
     }
 }

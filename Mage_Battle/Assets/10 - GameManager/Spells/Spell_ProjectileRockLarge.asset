@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bcab71d75c92a2049a7b3e87afe8713d, type: 3}
+  m_Name: Spell_ProjectileRockLarge
+  m_EditorClassIdentifier: 
+  castType: 0
+  spellName: Projectile Test
+  castPerSec: 2
+  castPerRound: 2
+  forwardForce: 10
+  shieldCastTimeSec: 0
+  coolDownTimeSec: 5
+  spellSprite: {fileID: 21300000, guid: e7dae896993f7c144bdd4b51b3fddf24, type: 3}
+  fx: {fileID: 5770119758994083323, guid: 5e0cfff4e25d6a04a85abfac2a6ac22e, type: 3}
+  modelPreFab: {fileID: 6961114030720028857, guid: 3fbdc14801b5b2d4e89fb5299380a365,
+    type: 3}
+  trail: {fileID: 0}

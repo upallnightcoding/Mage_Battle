@@ -10,6 +10,9 @@ public class SpellSlotCntrl : MonoBehaviour
     [SerializeField] private TMP_Text label;
     [SerializeField] private Slider coolDown;
     [SerializeField] private Image coolDownColor;
+    [SerializeField] private GameObject spellFrameSelected;
+
+    private bool toggleFrame = false;
 
     // Start is called before the first frame update
     void Start()
@@ -23,9 +26,15 @@ public class SpellSlotCntrl : MonoBehaviour
         
     }
 
-    public void Set(Sprite spellSprite) => this.spellImage.sprite = spellSprite;
+    public void ToggleSpellFrame()
+    {
+        toggleFrame = !toggleFrame;
+        spellFrameSelected.SetActive(toggleFrame);
+    }
 
-    public void Set(float value) => this.coolDown.value = value;
+    public void SetSprite(Sprite sprite) => this.spellImage.sprite = sprite;
 
-    public void Set(Color color) => coolDownColor.color = color;
+    public void SetDisplayBar(float value) => this.coolDown.value = value;
+
+    public void SetDisplayColor(Color color) => coolDownColor.color = color;
 }

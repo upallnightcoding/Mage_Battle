@@ -12,7 +12,6 @@ public class HeroCntrl : MonoBehaviour
 
     private Vector3 moveDirection;
     private Vector2 playerMove;
-    private SpellCasterCntrl spellCaster = null;
 
     private CharacterController charCntrl;
     private Animator animator;
@@ -23,8 +22,7 @@ public class HeroCntrl : MonoBehaviour
         charCntrl = GetComponent<CharacterController>();
         animator = GetComponent<Animator>();
 
-        spellCaster = new SpellCasterCntrl();
-        spellCaster.Set(spell);
+        GameManager.Instance.Set(spell);
     }
 
     // Update is called once per frame
@@ -32,7 +30,7 @@ public class HeroCntrl : MonoBehaviour
     {
         PlayerMovement(Time.deltaTime);
 
-        if (inputCntrl.HasFired)
+        if (inputCntrl.HasCast)
         {
             HasFired();
         }
@@ -40,8 +38,9 @@ public class HeroCntrl : MonoBehaviour
 
     private void HasFired()
     {
-        spellCaster.Cast(castPoint.position, transform.forward);
-        inputCntrl.HasFired = false;
+        GameManager.Instance.Cast(castPoint.position, transform.forward);
+
+        inputCntrl.HasCast = false;
     }
 
     private void PlayerMovement(float dt)
@@ -62,7 +61,7 @@ public class HeroCntrl : MonoBehaviour
 
             Vector3 velocity = magnitude * maximumSpeed * moveDirection;
 
-            Debug.Log($"Velocity: {velocity}");
+            //Debug.Log($"Velocity: {velocity}");
 
             charCntrl.Move(velocity * dt);
 

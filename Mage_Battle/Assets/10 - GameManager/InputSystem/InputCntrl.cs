@@ -7,7 +7,7 @@ public class InputCntrl : MonoBehaviour
 {
     private Vector2 playerMovement;
 
-    public bool HasFired { set; get; } = false;
+    public bool HasCast { set; get; } = false;
 
     public Vector2 GetPlayerMovement() => playerMovement;
 
@@ -35,8 +35,7 @@ public class InputCntrl : MonoBehaviour
     {
         if (context.performed)
         {
-            Debug.Log("OnFire ...");
-            HasFired = true;
+            HasCast = true;
         }
     }
 
@@ -45,6 +44,22 @@ public class InputCntrl : MonoBehaviour
         if (context.performed)
         {
             Debug.Log("OnCast ...");
+        }
+    }
+
+    public void OnCast1(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+        {
+            Debug.Log("OnCast1 ...");
+        }
+    }
+
+    public void OnCast2(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+        {
+            Debug.Log("OnCast2 ...");
         }
     }
 }
