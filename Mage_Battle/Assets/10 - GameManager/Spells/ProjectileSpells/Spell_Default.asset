@@ -10,16 +10,14 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: bcab71d75c92a2049a7b3e87afe8713d, type: 3}
-  m_Name: Shield_Basic
+  m_Name: Spell_Default
   m_EditorClassIdentifier: 
-  castType: 1
-  spellName: Basic Shield
+  spellName: Default Spell
   castPerSec: 0
   castPerRound: 0
-  forwardForce: 0
-  shieldCastTimeSec: 5
-  coolDownTimeSec: 3
-  spellSprite: {fileID: 21300000, guid: eeff981be030e6649ac8ace06c5af73b, type: 3}
-  fx: {fileID: 2923979155057289455, guid: 168ccd533efe91348a3d992686468259, type: 3}
+  spellForce: 0
+  coolDownTimeSec: 0
+  spellSprite: {fileID: 21300000, guid: 88efbacfa4347654c94cb2dedff6fa43, type: 3}
+  fx: {fileID: 0}
   modelPreFab: {fileID: 0}
   trail: {fileID: 0}

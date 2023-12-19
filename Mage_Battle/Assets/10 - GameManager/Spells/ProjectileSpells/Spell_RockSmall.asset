@@ -10,14 +10,15 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: bcab71d75c92a2049a7b3e87afe8713d, type: 3}
-  m_Name: Default_Display
+  m_Name: Spell_RockSmall
   m_EditorClassIdentifier: 
-  spellName: No Spell
-  castPerSec: 0
-  castPerRound: 0
-  coolDownTime: 0
-  forwardForce: 0
-  spellSprite: {fileID: 21300000, guid: 0ba146e7a3a8d1b41b93222a735a538c, type: 3}
+  spellName: Small Rock
+  castPerSec: 5
+  castPerRound: 5
+  spellForce: 100
+  coolDownTimeSec: 5
+  spellSprite: {fileID: 21300000, guid: d30073d696436944aaa7aedb7fca0aff, type: 3}
   fx: {fileID: 0}
-  modelPreFab: {fileID: 0}
+  modelPreFab: {fileID: 5282470066545665838, guid: e4cdd35005f746444a60c3e60a48e0f1,
+    type: 3}
   trail: {fileID: 0}

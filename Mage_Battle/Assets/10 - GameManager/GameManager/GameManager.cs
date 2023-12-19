@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
+    [SerializeField] private GameData gameData;
     [SerializeField] private UiCntrl uiCntrl;
 
     public static GameManager Instance = null;
@@ -28,12 +29,17 @@ public class GameManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-
+        NewGame();
     }
 
     public void NewGame()
     {
+        uiCntrl.NewGame();
 
+        for (int i = 0; i < gameData.testSpells.Length; i++)
+        {
+            Set(gameData.testSpells[i]);
+        }
     }
 
     public void Cast(Vector3 position, Vector3 direction)
@@ -43,9 +49,19 @@ public class GameManager : MonoBehaviour
         uiCntrl.DrainSpellBar(castInfo);
     }
 
+    /**
+     * SelectSpell() - 
+     */
+    public void Select(int slot)
+    {
+        spellSystem.Select(slot);
+    }
+
     public void Set(SpellSO spell)
     {
-        spellSystem.Set(spell);
+        int slot = spellSystem.Add(spell);
+
+        uiCntrl.Set(slot, spell);
     }
 
     public void UpdateCoolDown(int slot, float percentage)

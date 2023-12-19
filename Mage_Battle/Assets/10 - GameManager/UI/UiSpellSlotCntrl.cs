@@ -4,15 +4,13 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
-public class SpellSlotCntrl : MonoBehaviour
+public class UiSpellSlotCntrl : MonoBehaviour
 {
     [SerializeField] private Image spellImage;
     [SerializeField] private TMP_Text label;
     [SerializeField] private Slider coolDown;
     [SerializeField] private Image coolDownColor;
     [SerializeField] private GameObject spellFrameSelected;
-
-    private bool toggleFrame = false;
 
     // Start is called before the first frame update
     void Start()
@@ -26,15 +24,13 @@ public class SpellSlotCntrl : MonoBehaviour
         
     }
 
-    public void ToggleSpellFrame()
-    {
-        toggleFrame = !toggleFrame;
-        spellFrameSelected.SetActive(toggleFrame);
-    }
+    public void SelectSpellSlot(bool toggle) => spellFrameSelected.SetActive(toggle);
 
     public void SetSprite(Sprite sprite) => this.spellImage.sprite = sprite;
 
     public void SetDisplayBar(float value) => this.coolDown.value = value;
 
-    public void SetDisplayColor(Color color) => coolDownColor.color = color;
+    public void SetDisplayColor(Color color) => this.coolDownColor.color = color;
+
+    public void SetLabel(int value) => this.label.text = value.ToString();
 }

@@ -8,6 +8,7 @@ public class InputCntrl : MonoBehaviour
     private Vector2 playerMovement;
 
     public bool HasCast { set; get; } = false;
+    public int SelectSpell { set; get; } = -1;
 
     public Vector2 GetPlayerMovement() => playerMovement;
 
@@ -21,6 +22,11 @@ public class InputCntrl : MonoBehaviour
     void Update()
     {
         
+    }
+
+    public bool HasSelectedSpell()
+    {
+        return (SelectSpell != -1);
     }
 
     public void OnMove(InputAction.CallbackContext context)
@@ -51,7 +57,7 @@ public class InputCntrl : MonoBehaviour
     {
         if (context.performed)
         {
-            Debug.Log("OnCast1 ...");
+            SelectSpell = 0;
         }
     }
 
@@ -59,7 +65,7 @@ public class InputCntrl : MonoBehaviour
     {
         if (context.performed)
         {
-            Debug.Log("OnCast2 ...");
+            SelectSpell = 1;
         }
     }
 }

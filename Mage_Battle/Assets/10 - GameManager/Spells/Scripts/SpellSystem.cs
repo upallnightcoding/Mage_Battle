@@ -6,7 +6,7 @@ public class SpellSystem : MonoBehaviour
 {
     private SpellCasterCntrl spellCaster = null;
     private SpellSO[] spells = null;
-    private int activeSpell = 0;
+    private int activeSpell = -1;
     private bool readyToCast = true;
     private CastInfo castInfo;
 
@@ -23,25 +23,37 @@ public class SpellSystem : MonoBehaviour
     {
         if (readyToCast)
         {
+            castInfo.ActiveSpell = activeSpell;
+
             spellCaster.Cast(castInfo, spawnPoint, forward);
 
             if (!castInfo.IsCastsLeft)
             {
-                StartCoroutine(CoolDownPeriod(spells[activeSpell].coolDownTimeSec));
+                StartCoroutine(CoolDownPeriod(activeSpell, spells[activeSpell].coolDownTimeSec));
             }
         }
 
         return (castInfo);
     }
 
-    public void Set(SpellSO spell)
+    /**
+     * Add() - 
+     */
+    public int Add(SpellSO spell)
     {
         spellCaster.Set(spell);
-        activeSpell = 0;
-        spells[activeSpell] = spell;
+        spells[++activeSpell] = spell;
+
+        return (activeSpell);
     }
 
-    private IEnumerator CoolDownPeriod(float coolDown)
+    public void Select(int slot)
+    {
+        activeSpell = slot;
+        spellCaster.Set(spells[activeSpell]);
+    }
+
+    private IEnumerator CoolDownPeriod(int slot, float coolDown)
     {
         readyToCast = false;
 
@@ -50,14 +62,13 @@ public class SpellSystem : MonoBehaviour
         while((Time.time - now) < coolDown)
         {
             yield return null;
-            Debug.Log($"CoolDown: {Time.time - now}");
-            GameManager.Instance.UpdateCoolDown(0, (Time.time - now) / coolDown);
+            GameManager.Instance.UpdateCoolDown(slot, (Time.time - now) / coolDown);
         }
-
-        readyToCast = true;
 
         spellCaster.ReLoad();
 
         GameManager.Instance.SetFullSpellBar(activeSpell);
+
+        readyToCast = true;
     }
 }

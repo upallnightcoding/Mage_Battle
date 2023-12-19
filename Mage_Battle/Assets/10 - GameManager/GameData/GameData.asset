@@ -13,3 +13,8 @@ MonoBehaviour:
   m_Name: GameData
   m_EditorClassIdentifier: 
   nSpellSlots: 5
+  testSpells:
+  - {fileID: 11400000, guid: ab28a8a96e7b287428a15714e40dc0d4, type: 2}
+  - {fileID: 11400000, guid: 7eaed64f656261c459c12a12a760d3a2, type: 2}
+  defaultSpellDisplay: {fileID: 11400000, guid: 68bf0d33924e92a46be5a7b2dd89cbef,
+    type: 2}

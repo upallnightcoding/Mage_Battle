@@ -5,57 +5,67 @@ using UnityEngine.UI;
 
 public class UiCntrl : MonoBehaviour
 {
-    [SerializeField] private SpellSlotCntrl[] spellSlots;
-    [SerializeField] private SpellSO defaultSpellDisplay;
+    [SerializeField] private UiSpellSlotCntrl[] uiSpellSlots;
     [SerializeField] private GameData gameData;
-
-    [SerializeField] private SpellSO[] testSpells;
 
     // Start is called before the first frame update
     void Start()
     {
-        NewGame();
+        
     }
 
+    /**
+     * NewGame() -
+     */
     public void NewGame()
     {
         InitAllSpellSlots();
-
-        for (int slot = 0; slot < testSpells.Length; slot++)
-        {
-            spellSlots[slot].SetSprite(testSpells[slot].spellSprite);
-            spellSlots[slot].SetDisplayBar(1.0f);
-        }
     }
 
+    /**
+     * InitAllSpellSlots() - 
+     */
     public void InitAllSpellSlots()
     {
         for (int slot = 0; slot < gameData.nSpellSlots; slot++)
         {
-            spellSlots[slot].SetSprite(defaultSpellDisplay.spellSprite);
-            spellSlots[slot].SetDisplayBar(0.0f);
+            uiSpellSlots[slot].SetSprite(gameData.defaultSpellDisplay.spellSprite);
+            uiSpellSlots[slot].SetDisplayBar(0.0f);
+            uiSpellSlots[slot].SetLabel(slot + 1);
         }
     }
 
-    public void ToggleSpellFrame(int slot)
+    /**
+     * SelectSpell() - 
+     */
+    public void Set(int slot, SpellSO spell)
     {
-        spellSlots[slot].ToggleSpellFrame();
+        for (int i = 0; i < gameData.nSpellSlots; i++)
+        {
+            uiSpellSlots[i].SelectSpellSlot(false);
+        }
+
+        uiSpellSlots[slot].SelectSpellSlot(true);
+
+        uiSpellSlots[slot].SetSprite(spell.spellSprite);
+
+        SetFullSpellBar(slot);
     }
 
     public void DrainSpellBar(CastInfo castInfo)
     {
-        spellSlots[castInfo.Slot].SetDisplayBar(castInfo.Drain);
+        uiSpellSlots[castInfo.ActiveSpell].SetDisplayBar(castInfo.Drain);
     }
 
     public void SetFullSpellBar(int slot)
     {
-        spellSlots[slot].SetDisplayColor(Color.red);
-        spellSlots[slot].SetDisplayBar(1.0f);
+        uiSpellSlots[slot].SetDisplayColor(Color.red);
+        uiSpellSlots[slot].SetDisplayBar(1.0f);
     }
 
     public void UpdateSpellBar(int slot, float percentage)
     {
-        spellSlots[slot].SetDisplayColor(Color.yellow);
-        spellSlots[slot].SetDisplayBar(percentage);
+        uiSpellSlots[slot].SetDisplayColor(Color.yellow);
+        uiSpellSlots[slot].SetDisplayBar(percentage);
     }
 }

@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SpellCasterCntrl //: MonoBehaviour
+public class SpellCasterCntrl 
 {
     private SpellSO spell;
     private int castPerRound;
@@ -24,7 +24,7 @@ public class SpellCasterCntrl //: MonoBehaviour
         castPerRound = spell.castPerRound;
         coolDownTimeSec = spell.coolDownTimeSec;
         modelPreFab = spell.modelPreFab;
-        spellForce = spell.forwardForce;
+        spellForce = spell.spellForce;
 
         totalCastPerRound = castPerRound;
 
@@ -63,13 +63,6 @@ public class SpellCasterCntrl //: MonoBehaviour
         }
     }
 
-    private IEnumerator CoolDownPeriod()
-    {
-        readyToCast = false;
-        yield return new WaitForSeconds(coolDownTimeSec);
-        readyToCast = true;
-    }
-
     private float InitCheckTime(float delta)
     {
         return (Time.time + delta);
@@ -88,7 +81,7 @@ public class SpellCasterCntrl //: MonoBehaviour
 
 public class CastInfo
 {
-    public int Slot { get; set; }
+    public int ActiveSpell { get; set; }
     public float Drain { get; set; }
     public bool IsCastsLeft { get; set; }
 }

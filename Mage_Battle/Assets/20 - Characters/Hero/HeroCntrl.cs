@@ -7,7 +7,6 @@ public class HeroCntrl : MonoBehaviour
     [SerializeField] private InputCntrl inputCntrl;
     [SerializeField] private float maximumSpeed;
     [SerializeField] private float rotationSpeed;
-    [SerializeField] private SpellSO spell;
     [SerializeField] private Transform castPoint;
 
     private Vector3 moveDirection;
@@ -21,8 +20,6 @@ public class HeroCntrl : MonoBehaviour
     {
         charCntrl = GetComponent<CharacterController>();
         animator = GetComponent<Animator>();
-
-        GameManager.Instance.Set(spell);
     }
 
     // Update is called once per frame
@@ -32,15 +29,15 @@ public class HeroCntrl : MonoBehaviour
 
         if (inputCntrl.HasCast)
         {
-            HasFired();
+            GameManager.Instance.Cast(castPoint.position, transform.forward);
+            inputCntrl.HasCast = false;
         }
-    }
 
-    private void HasFired()
-    {
-        GameManager.Instance.Cast(castPoint.position, transform.forward);
-
-        inputCntrl.HasCast = false;
+        if (inputCntrl.HasSelectedSpell())
+        {
+            GameManager.Instance.Select(inputCntrl.SelectSpell);
+            inputCntrl.SelectSpell = -1;
+        }
     }
 
     private void PlayerMovement(float dt)
