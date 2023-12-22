@@ -5,8 +5,9 @@ using UnityEngine.UI;
 
 public class UiCntrl : MonoBehaviour
 {
-    [SerializeField] private UiSpellSlotCntrl[] uiSpellSlots;
     [SerializeField] private GameData gameData;
+    [SerializeField] private UiSpellSlotCntrl[] uiSpellSlots;
+    [SerializeField] private UiSpellSlotCntrl shieldSlot;
 
     // Start is called before the first frame update
     void Start()
@@ -29,10 +30,13 @@ public class UiCntrl : MonoBehaviour
     {
         for (int slot = 0; slot < gameData.nSpellSlots; slot++)
         {
-            uiSpellSlots[slot].SetSprite(gameData.defaultSpellDisplay.spellSprite);
-            uiSpellSlots[slot].SetDisplayBar(0.0f);
-            uiSpellSlots[slot].SetLabel(slot + 1);
+            //uiSpellSlots[slot].SetSprite(gameData.defaultSpellDisplay.spellSprite);
+            //uiSpellSlots[slot].SetDisplayBar(0.0f);
+            //uiSpellSlots[slot].SetLabel(slot + 1);
+            uiSpellSlots[slot].SetSpellSlot(slot, gameData.defaultSpellDisplay);
         }
+
+        shieldSlot.SetSprite(gameData.shieldSprites[0]);
     }
 
     /**

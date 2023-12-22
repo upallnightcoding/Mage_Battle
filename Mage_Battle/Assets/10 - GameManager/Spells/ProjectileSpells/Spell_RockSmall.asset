@@ -15,10 +15,10 @@ MonoBehaviour:
   spellName: Small Rock
   castPerSec: 5
   castPerRound: 5
-  spellForce: 100
+  spellForce: 10
   coolDownTimeSec: 5
   spellSprite: {fileID: 21300000, guid: d30073d696436944aaa7aedb7fca0aff, type: 3}
   fx: {fileID: 0}
-  modelPreFab: {fileID: 5282470066545665838, guid: e4cdd35005f746444a60c3e60a48e0f1,
+  modelPreFab: {fileID: 44964901887336239, guid: e4cdd35005f746444a60c3e60a48e0f1,
     type: 3}
   trail: {fileID: 0}

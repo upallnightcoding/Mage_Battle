@@ -24,6 +24,13 @@ public class UiSpellSlotCntrl : MonoBehaviour
         
     }
 
+    public void SetSpellSlot(int slot, SpellSO spell)
+    {
+        SetSprite(spell.spellSprite);
+        SetDisplayBar(0.0f);
+        SetLabel(slot + 1);
+    }
+
     public void SelectSpellSlot(bool toggle) => spellFrameSelected.SetActive(toggle);
 
     public void SetSprite(Sprite sprite) => this.spellImage.sprite = sprite;
@@ -32,5 +39,5 @@ public class UiSpellSlotCntrl : MonoBehaviour
 
     public void SetDisplayColor(Color color) => this.coolDownColor.color = color;
 
-    public void SetLabel(int value) => this.label.text = value.ToString();
+    private void SetLabel(int value) => this.label.text = value.ToString();
 }

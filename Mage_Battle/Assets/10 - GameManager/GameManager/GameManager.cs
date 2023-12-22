@@ -32,6 +32,9 @@ public class GameManager : MonoBehaviour
         NewGame();
     }
 
+    /**
+     * NewGame() - 
+     */
     public void NewGame()
     {
         uiCntrl.NewGame();
@@ -42,6 +45,9 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    /**
+     * Cast() - 
+     */
     public void Cast(Vector3 position, Vector3 direction)
     {
         CastInfo castInfo = spellSystem.Cast(position, direction);

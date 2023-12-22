@@ -10,4 +10,7 @@ public class GameData : ScriptableObject
     public SpellSO[] testSpells;
 
     public SpellSO defaultSpellDisplay;
+
+    [Space]
+    public Sprite[] shieldSprites;
 }

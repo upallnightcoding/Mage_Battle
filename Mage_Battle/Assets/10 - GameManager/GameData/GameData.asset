@@ -18,3 +18,11 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 7eaed64f656261c459c12a12a760d3a2, type: 2}
   defaultSpellDisplay: {fileID: 11400000, guid: 68bf0d33924e92a46be5a7b2dd89cbef,
     type: 2}
+  shieldSprites:
+  - {fileID: 21300000, guid: 45939fca7dedc2f489e9749c10f5e4e6, type: 3}
+  - {fileID: 21300000, guid: b9cef93a2607d6a44aea27445c68980b, type: 3}
+  - {fileID: 21300000, guid: 5f179d616dad5be46927c701cea10635, type: 3}
+  - {fileID: 21300000, guid: 67f3d2143741ae9449863a781f8a2f63, type: 3}
+  - {fileID: 21300000, guid: 4fe94945c90ffcd4d85c26b7fb07e6ae, type: 3}
+  - {fileID: 21300000, guid: 34bfdc09e4c0b3a4ba9a25dd93581e03, type: 3}
+  - {fileID: 21300000, guid: 8c92283f3fef6a04ab0139bbe14adf18, type: 3}

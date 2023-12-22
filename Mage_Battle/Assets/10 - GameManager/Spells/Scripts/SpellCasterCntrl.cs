@@ -6,39 +6,58 @@ public class SpellCasterCntrl
 {
     private SpellSO spell;
     private int castPerRound;
-    private int totalCastPerRound;
-    private float lastCoolDownTime;
     private float lastCastingRateSec;
 
-    private float coolDownTimeSec;
     private float castPerSec;
-    private GameObject modelPreFab;
-    private float spellForce;
 
-    private bool readyToCast = true;
+    private int slot;
 
+    public bool ReadyToCast { get; set; } = true;
+
+    public SpellCasterCntrl(int slot)
+    {
+        this.slot = slot;
+    }
+
+    /**
+     * Set() - Sets the controller when a new spell is added to a slot. 
+     * Timing and count variable are set in order to keep track of 
+     * when the spell can be executed.  Definitions of the spell attribute
+     * are in the spell scriptable object.
+     */
     public void Set(SpellSO spell)
     {
         this.spell = spell;
 
         castPerRound = spell.castPerRound;
-        coolDownTimeSec = spell.coolDownTimeSec;
-        modelPreFab = spell.modelPreFab;
-        spellForce = spell.spellForce;
-
-        totalCastPerRound = castPerRound;
 
         castPerSec = CalcCastingRate();
 
-        lastCoolDownTime = InitCheckTime(coolDownTimeSec);
         lastCastingRateSec = InitCheckTime(castPerSec);
     }
 
+    /**
+     * CoolDownTime() - Returns the cool down time of the spell.
+     */
+    public float CoolDownTime()
+    {
+        return (spell.coolDownTimeSec);
+    }
+
+    /**
+     * ReLoad() - Reloads the spell for casting and resets the spell bar
+     * in the UI.
+     */
     public void ReLoad()
     {
         castPerRound = spell.castPerRound;
+
+        GameManager.Instance.SetFullSpellBar(slot);
     }
 
+    /**
+     * Cast() - 
+     */
     public void Cast(CastInfo castInfo, Vector3 spawnPoint, Vector3 forward)
     {
         if (castPerRound != 0)
@@ -47,13 +66,13 @@ public class SpellCasterCntrl
 
             if (CheckTime(lastCastingRateSec, castPerSec))
             {
-                GameObject cast = Object.Instantiate(modelPreFab, spawnPoint, Quaternion.identity);
+                GameObject cast = Object.Instantiate(spell.modelPreFab, spawnPoint, Quaternion.identity);
                 cast.transform.forward = forward;
-                cast.GetComponent<Rigidbody>().AddForce(forward * spellForce, ForceMode.Impulse);
+                cast.GetComponent<Rigidbody>().AddForce(forward * spell.spellForce, ForceMode.Impulse);
 
                 lastCastingRateSec = Time.time;
                 castPerRound--;
-                castInfo.Drain = castPerRound / (float)totalCastPerRound;
+                castInfo.Drain = castPerRound / (float) spell.castPerRound;
             }
         }
 
@@ -63,20 +82,55 @@ public class SpellCasterCntrl
         }
     }
 
+    /**
+    * CoolDownPeriod() - 
+    */
+    public IEnumerator CoolDownPeriod()
+    {
+        float percentage = 0.0f;
+
+        ReadyToCast = false;
+
+        float now = Time.time;
+
+        while ((Time.time - now) <= CoolDownTime())
+        {
+            yield return null;
+
+            percentage = (Time.time - now) / CoolDownTime();
+            GameManager.Instance.UpdateCoolDown(slot, percentage);
+        }
+
+        ReLoad();
+
+        ReadyToCast = true;
+    }
+
+    /**
+     * InitCheckTime() - 
+     */
     private float InitCheckTime(float delta)
     {
         return (Time.time + delta);
     }
 
+    /**
+     * CheckTime() - 
+     */
     private bool CheckTime(float lastTimeCheck, float delta)
     {
         return ((Time.time - lastTimeCheck) >= delta);
     }
 
+    /**
+     * CalcCastingRate() - 
+     */
     private float CalcCastingRate()
     {
         return (1.0f / spell.castPerSec);
     }
+
+   
 }
 
 public class CastInfo
