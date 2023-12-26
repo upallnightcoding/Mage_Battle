@@ -9,6 +9,7 @@ public class InputCntrl : MonoBehaviour
 
     public bool HasCast { set; get; } = false;
     public int SelectSpell { set; get; } = -1;
+    public bool GoOnAttack { set; get; } = false;
 
     public Vector2 GetPlayerMovement() => playerMovement;
 
@@ -66,6 +67,14 @@ public class InputCntrl : MonoBehaviour
         if (context.performed)
         {
             SelectSpell = 1;
+        }
+    }
+
+    public void GoOnAttck(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+        {
+            GoOnAttack = true;
         }
     }
 }

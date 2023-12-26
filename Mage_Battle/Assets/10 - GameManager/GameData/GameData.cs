@@ -13,4 +13,10 @@ public class GameData : ScriptableObject
 
     [Space]
     public Sprite[] shieldSprites;
+
+    [Header("Skeleton Attributes")]
+    public float moveSpeed;
+    public float rotationSpeed;
+    public float attackArea;
+    public float followArea;
 }

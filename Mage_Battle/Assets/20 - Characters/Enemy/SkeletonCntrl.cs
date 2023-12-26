@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class SkeletonCntrl : MonoBehaviour
 {
+    [SerializeField] private GameData gameData;
     [SerializeField] private Transform player;
 
     private FiniteStateMachine fsm = null;
@@ -12,18 +13,25 @@ public class SkeletonCntrl : MonoBehaviour
 
     private Animator animator = null;
 
-    private float attackArea = 2.0f;
-    private float followArea = 4.0f;
+    private float attackArea;
+    private float followArea;
 
-    private float moveSpeed = 2.0f;
-    private float rotationSpeed = 400.0f;
+    private float moveSpeed;
+    private float rotationSpeed;
 
     // Start is called before the first frame update
     void Awake()
     {
         fsm = new FiniteStateMachine();
         fsm.Add(new SkeletonIdleState(this));
-        fsm.Add(new SkeletonWalkState(this));
+        fsm.Add(new SkeletonChaseState(this));
+        fsm.Add(new SkeletonAttackState(this));
+
+        moveSpeed = gameData.moveSpeed;
+        rotationSpeed = gameData.rotationSpeed;
+
+        followArea = gameData.followArea;
+        attackArea = gameData.attackArea;
     }
 
     void Start()
@@ -43,6 +51,11 @@ public class SkeletonCntrl : MonoBehaviour
         return (DistanceFromPlayer() < followArea);
     }
 
+    public bool WithinAttackArea()
+    {
+        return (DistanceFromPlayer() < attackArea);
+    }
+
     public void MovesTowardPlayer(float dt)
     {
         Vector3 direction = DirectionToPlayer();
@@ -51,30 +64,53 @@ public class SkeletonCntrl : MonoBehaviour
 
         charCntrl.Move(velocity);
 
+        //animator.SetFloat("Speed", moveSpeed);
+        animator.SetFloat("Speed", 1.0f);
+
         Quaternion rotation = Quaternion.LookRotation(direction, Vector3.up);
 
         transform.rotation =
             Quaternion.RotateTowards(transform.rotation, rotation, rotationSpeed * dt);
     }
 
+    /**
+     * SetSpeed() - 
+     */
     public void SetSpeed(float speed)
     {
         animator.SetFloat("Speed", speed);
+    }
+
+    /**
+     * TriggerAttack() - 
+     */
+    public void TriggerAttack(bool value)
+    {
+        animator.SetBool("Attack", value);
+    }
+
+    /**
+     * DirectionToPlayer() - 
+     */
+    private Vector3 DirectionToPlayer()
+    {
+        return ((player.transform.position - transform.position).normalized);
+    }
+
+    /**
+     * DistanceFromPlayer() - 
+     */
+    private float DistanceFromPlayer()
+    {
+        return (Vector3.Distance(player.transform.position, transform.position));
     }
 
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(transform.position, followArea);
-    }
 
-    private Vector3 DirectionToPlayer()
-    {
-        return ((player.transform.position - transform.position).normalized);
-    }
-
-    private float DistanceFromPlayer()
-    {
-        return (Vector3.Distance(player.transform.position, transform.position));
+        //Gizmos.color = Color.green;
+        //Gizmos.DrawWireSphere(transform.position, attackArea);
     }
 }

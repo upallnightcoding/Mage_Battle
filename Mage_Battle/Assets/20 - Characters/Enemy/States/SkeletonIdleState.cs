@@ -29,7 +29,7 @@ public class SkeletonIdleState : FiniteState
 
         if (skeletonCntrl.WithinFollowArea())
         {
-            nextState = SkeletonWalkState.TITLE;
+            nextState = SkeletonChaseState.TITLE;
         }
 
         return (nextState);
