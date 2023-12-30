@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
+using UnityEngine.AI;
 
 public class HeroCntrl : MonoBehaviour
 {
@@ -17,12 +19,17 @@ public class HeroCntrl : MonoBehaviour
 
     private CharacterController charCntrl;
     private Animator animator;
+    private NavMeshAgent navMeshAgent;
 
     private Vector3 camForward;
     private Vector3 move;
     private Vector3 moveInput;
     private float forwardAmount;
     private float turnAmount;
+
+    private bool firstClickPosition = true;
+
+    Vector3 clickPosition = Vector3.zero;
 
     void Awake()
     {
@@ -34,8 +41,9 @@ public class HeroCntrl : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        charCntrl = GetComponent<CharacterController>();
+        //charCntrl = GetComponent<CharacterController>();
         animator = GetComponent<Animator>();
+        navMeshAgent = GetComponent<NavMeshAgent>();
     }
 
     // Update is called once per frame
@@ -43,9 +51,9 @@ public class HeroCntrl : MonoBehaviour
     {
         fsm.OnUpdate(Time.deltaTime);
 
-        /*PlayerMovement(Time.deltaTime);
+        PlayerMovement(Time.deltaTime);
 
-        if (inputCntrl.HasCast)
+        /*if (inputCntrl.HasCast)
         {
             GameManager.Instance.Cast(castPoint.position, transform.forward);
             inputCntrl.HasCast = false;
@@ -83,6 +91,47 @@ public class HeroCntrl : MonoBehaviour
     }
 
     public void PlayerMovement(float dt)
+    {
+        if (Mouse.current.leftButton.wasPressedThisFrame)
+        {
+            clickPosition = ClickToMove(Mouse.current.position.ReadValue());
+            //clickPosition.y = 0.0f;
+            navMeshAgent.destination = clickPosition;
+        }
+
+        Vector3 velocity = GetComponent<NavMeshAgent>().velocity;
+        Vector3 localVelocity = transform.InverseTransformDirection(velocity);
+        float speed = localVelocity.z;
+        animator.SetFloat("Speed", speed);
+    }
+
+    public void xxPlayerMovement(float dt)
+    {
+        if (Mouse.current.leftButton.wasPressedThisFrame)
+        {
+            clickPosition = ClickToMove(Mouse.current.position.ReadValue());
+            clickPosition.y = 0.0f;
+        }
+
+        Vector3 playerPosition = transform.position;
+        playerPosition.y = 0.0f;
+
+        if (Vector3.Distance(clickPosition, playerPosition) > 0.01f)
+        {
+            Vector3 moveDirection = (clickPosition - playerPosition);
+
+            animator.SetFloat("Speed", 2.913f /* magnitude */, 0.05f, dt);
+            navMeshAgent.destination = clickPosition;
+
+            Quaternion directionRotation = Quaternion.LookRotation(moveDirection);
+            Quaternion rotation =
+                Quaternion.RotateTowards(transform.rotation, directionRotation, rotationSpeed * Time.deltaTime);
+
+            transform.rotation = rotation;
+        }
+    }
+
+    public void xxxPlayerMovement(float dt)
     {
         playerMove = inputCntrl.GetPlayerMovement();
 
@@ -161,4 +210,18 @@ public class HeroCntrl : MonoBehaviour
             //transform.rotation = Quaternion.RotateTowards(transform.rotation, toRotation, rotationSpeed * dt);
         }
     }
+
+    private Vector3 ClickToMove(Vector2 targetMousePosition)
+    {
+        Vector3 hitPoint = Vector3.zero;
+        RaycastHit hit;
+
+        if (Physics.Raycast(Camera.main.ScreenPointToRay(targetMousePosition), out hit, 100))
+        {
+            hitPoint = hit.point;
+        }
+
+        return (hitPoint);
+    }
+
 }

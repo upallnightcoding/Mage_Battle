@@ -9,6 +9,7 @@ public class GameData : ScriptableObject
     public int nSpellSlots;
     public SpellSO[] testSpells;
 
+    [Space]
     public SpellSO defaultSpellDisplay;
 
     [Space]
