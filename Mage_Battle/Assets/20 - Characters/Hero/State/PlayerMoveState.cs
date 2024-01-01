@@ -27,12 +27,18 @@ public class PlayerMoveState : FiniteState
     {
         string nextState = null;
 
-        heroCntrl.PlayerMovement(dt);
+        if (heroCntrl.IsLeftMouseReleased())
+        {
+            Debug.Log("Goto Idle State");
+            nextState = PlayerIdleState.TITLE;
+        } 
+        
+        heroCntrl.PlayerMovement();
 
-        if (heroCntrl.GoOnAttack())
+        /*if (heroCntrl.GoOnAttack())
         {
             nextState = PlayerAttackState.TITLE;
-        }
+        }*/
 
         return (nextState);
     }

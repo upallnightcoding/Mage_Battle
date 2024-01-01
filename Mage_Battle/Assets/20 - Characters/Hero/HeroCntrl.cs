@@ -7,33 +7,21 @@ using UnityEngine.AI;
 public class HeroCntrl : MonoBehaviour
 {
     [SerializeField] private InputCntrl inputCntrl;
-    [SerializeField] private float maximumSpeed;
-    [SerializeField] private float rotationSpeed;
+    //[SerializeField] private float maximumSpeed;
+    //[SerializeField] private float rotationSpeed;
     [SerializeField] private Transform castPoint;
     [SerializeField] private Transform mainCamera;
 
     private FiniteStateMachine fsm = null;
 
-    private Vector3 moveDirection;
-    private Vector2 playerMove;
-
-    private CharacterController charCntrl;
     private Animator animator;
     private NavMeshAgent navMeshAgent;
-
-    private Vector3 camForward;
-    private Vector3 move;
-    private Vector3 moveInput;
-    private float forwardAmount;
-    private float turnAmount;
-
-    private bool firstClickPosition = true;
-
-    Vector3 clickPosition = Vector3.zero;
+    private bool leftMouseButtonPressed = false;
 
     void Awake()
     {
         fsm = new FiniteStateMachine();
+        fsm.Add(new PlayerIdleState(this));
         fsm.Add(new PlayerMoveState(this));
         fsm.Add(new PlayerAttackState(this));
     }
@@ -41,7 +29,6 @@ public class HeroCntrl : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        //charCntrl = GetComponent<CharacterController>();
         animator = GetComponent<Animator>();
         navMeshAgent = GetComponent<NavMeshAgent>();
     }
@@ -51,19 +38,27 @@ public class HeroCntrl : MonoBehaviour
     {
         fsm.OnUpdate(Time.deltaTime);
 
-        PlayerMovement(Time.deltaTime);
-
-        /*if (inputCntrl.HasCast)
+        if (inputCntrl.HasCast)
         {
             GameManager.Instance.Cast(castPoint.position, transform.forward);
             inputCntrl.HasCast = false;
         }
 
-        if (inputCntrl.HasSelectedSpell())
+        /*if (inputCntrl.HasSelectedSpell())
         {
             GameManager.Instance.Select(inputCntrl.SelectSpell);
             inputCntrl.SelectSpell = -1;
         }*/
+    }
+
+    public bool IsLeftMousePressed()
+    {
+        return (inputCntrl.IsLeftMousePressed());
+    }
+
+    public bool IsLeftMouseReleased()
+    {
+        return (inputCntrl.IsLeftMouseReleased());
     }
 
     /**
@@ -90,76 +85,34 @@ public class HeroCntrl : MonoBehaviour
         animator.SetBool("OnAttack", false);
     }
 
-    public void PlayerMovement(float dt)
+    /**
+     * PlayerMovement() - 
+     */
+    public void PlayerMovement()
     {
-        if (Mouse.current.leftButton.wasPressedThisFrame)
-        {
-            clickPosition = ClickToMove(Mouse.current.position.ReadValue());
-            //clickPosition.y = 0.0f;
-            navMeshAgent.destination = clickPosition;
-        }
+        Vector3 position = ClickAndFollow();
 
-        Vector3 velocity = GetComponent<NavMeshAgent>().velocity;
+        navMeshAgent.destination = position;
+
+        Vector3 velocity = navMeshAgent.velocity;
         Vector3 localVelocity = transform.InverseTransformDirection(velocity);
-        float speed = localVelocity.z;
-        animator.SetFloat("Speed", speed);
-    }
 
-    public void xxPlayerMovement(float dt)
-    {
-        if (Mouse.current.leftButton.wasPressedThisFrame)
+        Debug.Log($"Z Velocity: {localVelocity.z}");
+
+        if (localVelocity.z >= 0.0f)
         {
-            clickPosition = ClickToMove(Mouse.current.position.ReadValue());
-            clickPosition.y = 0.0f;
-        }
-
-        Vector3 playerPosition = transform.position;
-        playerPosition.y = 0.0f;
-
-        if (Vector3.Distance(clickPosition, playerPosition) > 0.01f)
-        {
-            Vector3 moveDirection = (clickPosition - playerPosition);
-
-            animator.SetFloat("Speed", 2.913f /* magnitude */, 0.05f, dt);
-            navMeshAgent.destination = clickPosition;
-
-            Quaternion directionRotation = Quaternion.LookRotation(moveDirection);
-            Quaternion rotation =
-                Quaternion.RotateTowards(transform.rotation, directionRotation, rotationSpeed * Time.deltaTime);
-
-            transform.rotation = rotation;
+            animator.SetFloat("Speed", localVelocity.z);
         }
     }
 
-    public void xxxPlayerMovement(float dt)
+    public void StopAnimation()
     {
-        playerMove = inputCntrl.GetPlayerMovement();
-
-        moveDirection.x = playerMove.x; // Horizontal
-        moveDirection.y = 0.0f;
-        moveDirection.z = playerMove.y; // Vertical
-
-        float magnitude = Mathf.Clamp01(moveDirection.magnitude);
-
-        animator.SetFloat("Speed", magnitude, 0.05f, dt);
-
-        if (moveDirection != Vector3.zero)
-        {
-            moveDirection.Normalize();
-
-            Vector3 velocity = magnitude * maximumSpeed * moveDirection;
-
-            charCntrl.Move(velocity * dt);
-
-            Quaternion toRotation = Quaternion.LookRotation(moveDirection, Vector3.up);
-
-            transform.rotation = Quaternion.RotateTowards(transform.rotation, toRotation, rotationSpeed * dt);
-        }
+        //animator.SetFloat("Speed", 0.0f);
     }
 
     public void PlayerAttack(float dt)
     {
-        playerMove = inputCntrl.GetPlayerMovement();
+        /*playerMove = inputCntrl.GetPlayerMovement();
 
         moveDirection.x = playerMove.x; // Horizontal
         moveDirection.y = 0.0f;
@@ -180,43 +133,19 @@ public class HeroCntrl : MonoBehaviour
 
             animator.SetFloat("Horizontal", turnAmount, 0.1f, dt);
             animator.SetFloat("Vertical", forwardAmount, 0.1f, dt);
-        }
+        }*/
 
     }
 
-    public void xPlayerAttack(float dt)
+    /**
+     * ClickToMove() - 
+     */
+    private Vector3 ClickAndFollow()
     {
-        playerMove = inputCntrl.GetPlayerMovement();
-
-        moveDirection.x = playerMove.x; // Horizontal
-        moveDirection.y = 0.0f;
-        moveDirection.z = playerMove.y; // Vertical
-
-        float magnitude = Mathf.Clamp01(moveDirection.magnitude);
-
-        animator.SetFloat("Horizontal", playerMove.x, 0.05f, dt);
-        animator.SetFloat("Vertical", playerMove.y, 0.05f, dt);
-
-        if (moveDirection != Vector3.zero)
-        {
-            moveDirection.Normalize();
-
-            Vector3 velocity = magnitude * maximumSpeed * moveDirection;
-
-            charCntrl.Move(velocity * dt);
-
-            //Quaternion toRotation = Quaternion.LookRotation(moveDirection, Vector3.up);
-
-            //transform.rotation = Quaternion.RotateTowards(transform.rotation, toRotation, rotationSpeed * dt);
-        }
-    }
-
-    private Vector3 ClickToMove(Vector2 targetMousePosition)
-    {
+        Vector3 position = inputCntrl.GetMousePosition();
         Vector3 hitPoint = Vector3.zero;
-        RaycastHit hit;
 
-        if (Physics.Raycast(Camera.main.ScreenPointToRay(targetMousePosition), out hit, 100))
+        if (Physics.Raycast(Camera.main.ScreenPointToRay(position), out RaycastHit hit, 100))
         {
             hitPoint = hit.point;
         }

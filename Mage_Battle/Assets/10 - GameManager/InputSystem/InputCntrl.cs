@@ -12,8 +12,17 @@ public class InputCntrl : MonoBehaviour
     public int SelectSpell { set; get; } = -1;
     public bool GoOnAttack { set; get; } = false;
 
+    // Player Movement & Aim Functions
+    //--------------------------------
     public Vector2 GetPlayerMovement() => playerMovement;
     public Vector2 GetPlayerAim() => playerAim;
+
+    // Mouse Device Functions
+    //-----------------------
+    public Vector2 GetMousePosition() => Mouse.current.position.ReadValue();
+    public bool IsLeftMousePressed() => Mouse.current.leftButton.wasPressedThisFrame;
+    public bool IsLeftMouseReleased() => Mouse.current.leftButton.wasReleasedThisFrame;
+    public bool IsRightMousePressed() => Mouse.current.rightButton.wasPressedThisFrame;
 
     // Start is called before the first frame update
     void Start()
@@ -52,8 +61,6 @@ public class InputCntrl : MonoBehaviour
 
     public void OnFire(InputAction.CallbackContext context)
     {
-        //Debug.Log("OnFire ... Square");
-
         if (context.performed)
         {
             HasCast = true;

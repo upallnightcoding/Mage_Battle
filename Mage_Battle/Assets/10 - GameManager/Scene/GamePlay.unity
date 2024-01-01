@@ -20518,7 +20518,7 @@ PrefabInstance:
     - target: {fileID: 5387622918622871220, guid: 409a93d21b2aea64e9623539275d5e01,
         type: 3}
       propertyPath: m_Speed
-      value: 2.918
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 5387622918622871220, guid: 409a93d21b2aea64e9623539275d5e01,
         type: 3}
@@ -20528,7 +20528,7 @@ PrefabInstance:
     - target: {fileID: 5387622918622871220, guid: 409a93d21b2aea64e9623539275d5e01,
         type: 3}
       propertyPath: m_AngularSpeed
-      value: 500
+      value: 800
       objectReference: {fileID: 0}
     - target: {fileID: 5387622918622871220, guid: 409a93d21b2aea64e9623539275d5e01,
         type: 3}
