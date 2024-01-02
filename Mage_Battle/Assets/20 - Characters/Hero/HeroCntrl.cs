@@ -88,26 +88,25 @@ public class HeroCntrl : MonoBehaviour
     /**
      * PlayerMovement() - 
      */
-    public void PlayerMovement()
+    public void PlayerMovement(Vector3 position)
     {
-        Vector3 position = ClickAndFollow();
+        //Vector3 position = GetMousePosition();
 
         navMeshAgent.destination = position;
 
         Vector3 velocity = navMeshAgent.velocity;
         Vector3 localVelocity = transform.InverseTransformDirection(velocity);
 
-        Debug.Log($"Z Velocity: {localVelocity.z}");
-
-        if (localVelocity.z >= 0.0f)
-        {
-            animator.SetFloat("Speed", localVelocity.z);
-        }
+        animator.SetFloat("Speed", Mathf.Abs(localVelocity.z));
     }
 
-    public void StopAnimation()
+    /**
+     * StopPlayer() - 
+     */
+    public void StopPlayer()
     {
-        //animator.SetFloat("Speed", 0.0f);
+        navMeshAgent.destination = gameObject.transform.position;
+        animator.SetFloat("Speed", 0.0f);
     }
 
     public void PlayerAttack(float dt)
@@ -135,12 +134,12 @@ public class HeroCntrl : MonoBehaviour
             animator.SetFloat("Vertical", forwardAmount, 0.1f, dt);
         }*/
 
-    }
+}
 
-    /**
-     * ClickToMove() - 
-     */
-    private Vector3 ClickAndFollow()
+/**
+ * ClickToMove() - 
+ */
+public Vector3 GetMousePosition()
     {
         Vector3 position = inputCntrl.GetMousePosition();
         Vector3 hitPoint = Vector3.zero;
@@ -151,6 +150,24 @@ public class HeroCntrl : MonoBehaviour
         }
 
         return (hitPoint);
+    }
+
+    public bool HasReachedTarget()
+    {
+        bool reached = false;
+
+        if (!navMeshAgent.pathPending)
+        {
+            if (navMeshAgent.remainingDistance <= navMeshAgent.stoppingDistance)
+            {
+                if (navMeshAgent.hasPath || navMeshAgent.velocity.sqrMagnitude == 0f)
+                {
+                    reached = true;
+                }
+            }
+        }
+
+        return (reached);
     }
 
 }

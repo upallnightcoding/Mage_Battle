@@ -7,6 +7,8 @@ public class PlayerMoveState : FiniteState
     public static string TITLE = "Move";
 
     private HeroCntrl heroCntrl = null;
+    private Vector3 position = Vector3.zero;
+    private bool playerMoving = true;
 
     public PlayerMoveState(HeroCntrl heroCntrl) : base(TITLE)
     {
@@ -15,7 +17,8 @@ public class PlayerMoveState : FiniteState
 
     public override void OnEnter()
     {
-        
+        //position = heroCntrl.GetMousePosition();
+        playerMoving = true;
     }
 
     public override void OnExit()
@@ -27,13 +30,25 @@ public class PlayerMoveState : FiniteState
     {
         string nextState = null;
 
+        if (playerMoving)
+        {
+            Debug.Log("Left Mouse Pressed ...");
+            position = heroCntrl.GetMousePosition();
+            heroCntrl.PlayerMovement(position);
+        }
+
         if (heroCntrl.IsLeftMouseReleased())
         {
-            Debug.Log("Goto Idle State");
-            nextState = PlayerIdleState.TITLE;
+            Debug.Log("Left Mouse Released ...");
+            playerMoving = false;
         } 
-        
-        heroCntrl.PlayerMovement();
+
+        if (!playerMoving && heroCntrl.HasReachedTarget())
+        {
+            Debug.Log("Has reached target ...");
+            heroCntrl.StopPlayer();
+            nextState = PlayerIdleState.TITLE;
+        }
 
         /*if (heroCntrl.GoOnAttack())
         {

@@ -15,7 +15,7 @@ public class PlayerIdleState : FiniteState
 
     public override void OnEnter()
     {
-        heroCntrl.StopAnimation();
+        //heroCntrl.StopPlayer();
     }
 
     public override void OnExit()
@@ -29,12 +29,8 @@ public class PlayerIdleState : FiniteState
 
         if (heroCntrl.IsLeftMousePressed())
         {
-            Debug.Log("Goto Move State");
             nextState = PlayerMoveState.TITLE;
-        } else
-        {
-            //heroCntrl.PlayerMovement();
-        }
+        } 
 
         return (nextState);
     }
