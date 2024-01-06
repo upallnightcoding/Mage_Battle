@@ -58,7 +58,7 @@ public class GameManager : MonoBehaviour
     /**
      * SelectSpell() - 
      */
-    public void Select(int slot)
+    public void SelectSpell(int slot)
     {
         spellSystem.Select(slot);
     }

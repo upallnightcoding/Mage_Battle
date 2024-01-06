@@ -44,11 +44,11 @@ public class HeroCntrl : MonoBehaviour
             inputCntrl.HasCast = false;
         }
 
-        /*if (inputCntrl.HasSelectedSpell())
+        if (inputCntrl.HasSelectedSpell())
         {
-            GameManager.Instance.Select(inputCntrl.SelectSpell);
-            inputCntrl.SelectSpell = -1;
-        }*/
+            GameManager.Instance.SelectSpell(inputCntrl.SelectSpell);
+            inputCntrl.SetReadyForNextSpell();
+        }
     }
 
     public bool IsLeftMousePressed()
@@ -88,16 +88,17 @@ public class HeroCntrl : MonoBehaviour
     /**
      * PlayerMovement() - 
      */
-    public void PlayerMovement(Vector3 position)
+    public void PlayerMovement()
     {
-        //Vector3 position = GetMousePosition();
+        navMeshAgent.destination = GetMousePosition();
+    }
 
-        navMeshAgent.destination = position;
-
+    public void UpdateAnimation()
+    {
         Vector3 velocity = navMeshAgent.velocity;
         Vector3 localVelocity = transform.InverseTransformDirection(velocity);
 
-        animator.SetFloat("Speed", Mathf.Abs(localVelocity.z));
+        animator.SetFloat("Speed", localVelocity.z);
     }
 
     /**
@@ -139,7 +140,7 @@ public class HeroCntrl : MonoBehaviour
 /**
  * ClickToMove() - 
  */
-public Vector3 GetMousePosition()
+    public Vector3 GetMousePosition()
     {
         Vector3 position = inputCntrl.GetMousePosition();
         Vector3 hitPoint = Vector3.zero;

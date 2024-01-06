@@ -8,7 +8,7 @@ public class SpellSystem : MonoBehaviour
     private int activeSpell = -1;
     private CastInfo castInfo;
 
-    public SpellSystem()
+    void Awake()
     {
         spellCaster = new SpellCasterCntrl[5];
         castInfo = new CastInfo();

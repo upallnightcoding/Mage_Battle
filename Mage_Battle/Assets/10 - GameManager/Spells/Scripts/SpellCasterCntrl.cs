@@ -69,6 +69,7 @@ public class SpellCasterCntrl
                 GameObject cast = Object.Instantiate(spell.modelPreFab, spawnPoint, Quaternion.identity);
                 cast.transform.forward = forward;
                 cast.GetComponent<Rigidbody>().AddForce(forward * spell.spellForce, ForceMode.Impulse);
+                GameObject.Destroy(cast, 1.0f);
 
                 lastCastingRateSec = Time.time;
                 castPerRound--;
@@ -87,11 +88,14 @@ public class SpellCasterCntrl
     */
     public IEnumerator CoolDownPeriod()
     {
+        // Calculated percentage of cooldown
         float percentage = 0.0f;
 
-        ReadyToCast = false;
-
+        // Time at start of cooldown
         float now = Time.time;
+
+        // Flag set if cooldown has completed 
+        ReadyToCast = false;
 
         while ((Time.time - now) <= CoolDownTime())
         {
@@ -129,8 +133,6 @@ public class SpellCasterCntrl
     {
         return (1.0f / spell.castPerSec);
     }
-
-   
 }
 
 public class CastInfo

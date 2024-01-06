@@ -20,9 +20,10 @@ public class InputCntrl : MonoBehaviour
     // Mouse Device Functions
     //-----------------------
     public Vector2 GetMousePosition() => Mouse.current.position.ReadValue();
-    public bool IsLeftMousePressed() => Mouse.current.leftButton.wasPressedThisFrame;
+    public bool IsLeftMousePressed() => Mouse.current.leftButton.isPressed;
     public bool IsLeftMouseReleased() => Mouse.current.leftButton.wasReleasedThisFrame;
-    public bool IsRightMousePressed() => Mouse.current.rightButton.wasPressedThisFrame;
+    public bool IsRightMousePressed() => Mouse.current.rightButton.isPressed;
+    public bool IsRightMouseReleased() => Mouse.current.rightButton.wasReleasedThisFrame;
 
     // Start is called before the first frame update
     void Start()
@@ -36,14 +37,25 @@ public class InputCntrl : MonoBehaviour
         
     }
 
+    /**
+     * HasSelectedSpell() - 
+     */
     public bool HasSelectedSpell()
     {
         return (SelectSpell != -1);
     }
 
+    /**
+     * SetReadyForNextSpell() - Sets the input system ready to receive the
+     * next spell cast.
+     */
+    public void SetReadyForNextSpell()
+    {
+        SelectSpell = -1;
+    }
+
     public void OnMove(InputAction.CallbackContext context)
     {
-        //Debug.Log("OnMove ...");
         if (context.performed)
         {
             playerMovement = context.ReadValue<Vector2>();
@@ -52,7 +64,6 @@ public class InputCntrl : MonoBehaviour
 
     public void OnLook(InputAction.CallbackContext context)
     {
-        //Debug.Log("OnAim ...");
         if (context.performed)
         {
             playerAim = context.ReadValue<Vector2>();
