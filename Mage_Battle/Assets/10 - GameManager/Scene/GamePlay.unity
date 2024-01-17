@@ -11129,8 +11129,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 961739749}
-  m_LocalRotation: {x: -0.33141977, y: -0.0022681067, z: 0.00079615536, w: -0.9434804}
-  m_LocalPosition: {x: -0.023239275, y: 5.2732067, z: -8.178949}
+  m_LocalRotation: {x: -0.3929147, y: 0.0063558007, z: -0.0027123836, w: -0.919549}
+  m_LocalPosition: {x: 0.10305109, y: 9.4925585, z: -9.281378}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -11633,10 +11633,25 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4417609742551525641, guid: 0026ab5be794d034cbac20baed4000d4,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4417880689233079339, guid: 0026ab5be794d034cbac20baed4000d4,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4417917630377004267, guid: 0026ab5be794d034cbac20baed4000d4,
         type: 3}
       propertyPath: m_Name
       value: FX_Ritual_Circle_01
+      objectReference: {fileID: 0}
+    - target: {fileID: 4578865676346549901, guid: 0026ab5be794d034cbac20baed4000d4,
+        type: 3}
+      propertyPath: looping
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0026ab5be794d034cbac20baed4000d4, type: 3}
@@ -20599,31 +20614,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 5387622918622871220, guid: 409a93d21b2aea64e9623539275d5e01,
-        type: 3}
-      propertyPath: m_Speed
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 5387622918622871220, guid: 409a93d21b2aea64e9623539275d5e01,
-        type: 3}
-      propertyPath: m_AutoBraking
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5387622918622871220, guid: 409a93d21b2aea64e9623539275d5e01,
-        type: 3}
-      propertyPath: m_Acceleration
-      value: 50
-      objectReference: {fileID: 0}
-    - target: {fileID: 5387622918622871220, guid: 409a93d21b2aea64e9623539275d5e01,
-        type: 3}
-      propertyPath: m_AngularSpeed
-      value: 800
-      objectReference: {fileID: 0}
-    - target: {fileID: 5387622918622871220, guid: 409a93d21b2aea64e9623539275d5e01,
-        type: 3}
-      propertyPath: m_StoppingDistance
-      value: 0.5
-      objectReference: {fileID: 0}
     - target: {fileID: 6926638292731519240, guid: 409a93d21b2aea64e9623539275d5e01,
         type: 3}
       propertyPath: mainCamera
