@@ -1,23 +1,27 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class SkeletonCntrl : MonoBehaviour
 {
     [SerializeField] private GameData gameData;
     [SerializeField] private Transform player;
+    [SerializeField] private GameObject selectionPreFab;
 
     private FiniteStateMachine fsm = null;
 
-    private CharacterController charCntrl = null;
-
+    // Components
     private Animator animator = null;
+    private NavMeshAgent navMeshAgent;
 
     private float attackArea;
     private float followArea;
 
     private float moveSpeed;
     private float rotationSpeed;
+
+    private GameObject selectionModel;
 
     // Start is called before the first frame update
     void Awake()
@@ -37,7 +41,10 @@ public class SkeletonCntrl : MonoBehaviour
     void Start()
     {
         animator = GetComponent<Animator>();
-        charCntrl = GetComponent<CharacterController>();
+        navMeshAgent = GetComponent<NavMeshAgent>();
+
+        selectionModel = Instantiate(selectionPreFab, transform.position + gameData.yOffSet, Quaternion.identity);
+        selectionModel.SetActive(false);
     }
 
     // Update is called once per frame
@@ -56,7 +63,13 @@ public class SkeletonCntrl : MonoBehaviour
         return (DistanceFromPlayer() < attackArea);
     }
 
-    public void MovesTowardPlayer(float dt)
+    public void SetAttackMode(Vector3 position)
+    {
+        selectionModel.SetActive(true);
+        navMeshAgent.SetDestination(position);
+    }
+
+    /*public void MovesTowardPlayer(float dt)
     {
         Vector3 direction = DirectionToPlayer();
 
@@ -71,7 +84,7 @@ public class SkeletonCntrl : MonoBehaviour
 
         transform.rotation =
             Quaternion.RotateTowards(transform.rotation, rotation, rotationSpeed * dt);
-    }
+    }*/
 
     /**
      * SetSpeed() - 

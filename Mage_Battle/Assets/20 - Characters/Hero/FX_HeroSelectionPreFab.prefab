@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 7279257915011912044}
   - component: {fileID: 7278864602015940686}
   m_Layer: 0
-  m_Name: FX_HeroSelection
+  m_Name: FX_HeroSelectionPreFab
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

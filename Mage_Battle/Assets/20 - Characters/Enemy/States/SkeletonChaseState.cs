@@ -33,7 +33,7 @@ public class SkeletonChaseState : FiniteState
         } 
         else if (skeletonCntrl.WithinFollowArea())
         {
-            skeletonCntrl.MovesTowardPlayer(dt);
+            //skeletonCntrl.MovesTowardPlayer(dt);
         } 
         else
         {

@@ -30,12 +30,12 @@ public class SkeletonAttackState : FiniteState
         if (skeletonCntrl.WithinAttackArea())
         {
             skeletonCntrl.TriggerAttack(true);
-            skeletonCntrl.MovesTowardPlayer(dt);
+            //skeletonCntrl.MovesTowardPlayer(dt);
         }
         else if (skeletonCntrl.WithinFollowArea())
         {
             skeletonCntrl.TriggerAttack(false);
-            skeletonCntrl.MovesTowardPlayer(dt);
+            //skeletonCntrl.MovesTowardPlayer(dt);
             nextState = SkeletonChaseState.TITLE;
         }
         else

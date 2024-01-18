@@ -20,4 +20,7 @@ public class GameData : ScriptableObject
     public float rotationSpeed;
     public float attackArea;
     public float followArea;
+
+    [Header("Game Constants")]
+    public Vector3 yOffSet;
 }

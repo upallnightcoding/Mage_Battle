@@ -30,3 +30,4 @@ MonoBehaviour:
   rotationSpeed: 400
   attackArea: 2
   followArea: 5
+  yOffSet: {x: 0, y: 0.1, z: 0}

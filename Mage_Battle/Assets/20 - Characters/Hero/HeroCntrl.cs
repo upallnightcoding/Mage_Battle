@@ -6,17 +6,19 @@ using UnityEngine.AI;
 
 public class HeroCntrl : MonoBehaviour
 {
+    [SerializeField] private GameData gameData;
     [SerializeField] private InputCntrl inputCntrl;
-    //[SerializeField] private float maximumSpeed;
-    //[SerializeField] private float rotationSpeed;
     [SerializeField] private Transform castPoint;
-    [SerializeField] private Transform mainCamera;
+    [SerializeField] private GameObject selectionPreFab;
+    [SerializeField] private LayerMask enemyLayerMask;
 
     private FiniteStateMachine fsm = null;
 
     private Animator animator;
     private NavMeshAgent navMeshAgent;
     private bool leftMouseButtonPressed = false;
+
+    private GameObject selectionModel;
 
     void Awake()
     {
@@ -31,6 +33,8 @@ public class HeroCntrl : MonoBehaviour
     {
         animator = GetComponent<Animator>();
         navMeshAgent = GetComponent<NavMeshAgent>();
+
+        selectionModel = Instantiate(selectionPreFab, transform.position + gameData.yOffSet, Quaternion.identity);
     }
 
     // Update is called once per frame
@@ -90,7 +94,19 @@ public class HeroCntrl : MonoBehaviour
      */
     public void PlayerMovement()
     {
-        navMeshAgent.destination = GetMousePosition();
+        Vector3 mousePostion = GetMousePosition();
+
+        RaycastHit[] hits = Physics.SphereCastAll(mousePostion, 1.0f, transform.forward, 0.0f, enemyLayerMask);
+
+        if (hits.Length > 0)
+        {
+            hits[0].transform.GetComponent<SkeletonCntrl>().SetAttackMode(transform.position);
+        } else
+        {
+            navMeshAgent.destination = mousePostion;
+            selectionModel.transform.position = mousePostion;
+        }
+
     }
 
     public void UpdateAnimation()
