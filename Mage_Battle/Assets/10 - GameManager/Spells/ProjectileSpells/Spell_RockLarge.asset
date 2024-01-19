@@ -18,7 +18,7 @@ MonoBehaviour:
   spellForce: 10
   coolDownTimeSec: 5
   spellSprite: {fileID: 21300000, guid: aa2b1dbc81fe5264889f03900102792e, type: 3}
-  fx: {fileID: 0}
-  modelPreFab: {fileID: 6961114030720028857, guid: 3fbdc14801b5b2d4e89fb5299380a365,
+  fx: {fileID: 5849200292380958733, guid: b8cdc0c69e4caf745be881ad050dde56, type: 3}
+  modelPreFab: {fileID: 5849200292380958733, guid: b8cdc0c69e4caf745be881ad050dde56,
     type: 3}
   trail: {fileID: 0}

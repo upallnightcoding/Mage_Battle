@@ -12,6 +12,8 @@ public class InputCntrl : MonoBehaviour
     public int SelectSpell { set; get; } = -1;
     public bool GoOnAttack { set; get; } = false;
 
+    private float clickTimeStamp;
+
     // Player Movement & Aim Functions
     //--------------------------------
     public Vector2 GetPlayerMovement() => playerMovement;
@@ -25,16 +27,11 @@ public class InputCntrl : MonoBehaviour
     public bool IsRightMousePressed() => Mouse.current.rightButton.isPressed;
     public bool IsRightMouseReleased() => Mouse.current.rightButton.wasReleasedThisFrame;
 
-    // Start is called before the first frame update
-    void Start()
+    public bool IsLeftMouseClick()
     {
-        
-    }
+        bool click = true;
 
-    // Update is called once per frame
-    void Update()
-    {
-        
+        return (click);
     }
 
     /**

@@ -21,8 +21,6 @@ public class SkeletonCntrl : MonoBehaviour
     private float moveSpeed;
     private float rotationSpeed;
 
-    private GameObject selectionModel;
-
     // Start is called before the first frame update
     void Awake()
     {
@@ -43,8 +41,8 @@ public class SkeletonCntrl : MonoBehaviour
         animator = GetComponent<Animator>();
         navMeshAgent = GetComponent<NavMeshAgent>();
 
-        selectionModel = Instantiate(selectionPreFab, transform.position + gameData.yOffSet, Quaternion.identity);
-        selectionModel.SetActive(false);
+        //selectionModel = Instantiate(selectionPreFab, transform.position + gameData.yOffSet, Quaternion.identity);
+        selectionPreFab.SetActive(false);
     }
 
     // Update is called once per frame
@@ -65,26 +63,9 @@ public class SkeletonCntrl : MonoBehaviour
 
     public void SetAttackMode(Vector3 position)
     {
-        selectionModel.SetActive(true);
+        selectionPreFab.SetActive(true);
         navMeshAgent.SetDestination(position);
     }
-
-    /*public void MovesTowardPlayer(float dt)
-    {
-        Vector3 direction = DirectionToPlayer();
-
-        Vector3 velocity = direction * moveSpeed * dt;
-
-        charCntrl.Move(velocity);
-
-        //animator.SetFloat("Speed", moveSpeed);
-        animator.SetFloat("Speed", 1.0f);
-
-        Quaternion rotation = Quaternion.LookRotation(direction, Vector3.up);
-
-        transform.rotation =
-            Quaternion.RotateTowards(transform.rotation, rotation, rotationSpeed * dt);
-    }*/
 
     /**
      * SetSpeed() - 
@@ -116,6 +97,11 @@ public class SkeletonCntrl : MonoBehaviour
     private float DistanceFromPlayer()
     {
         return (Vector3.Distance(player.transform.position, transform.position));
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        Debug.Log("I got hit ...");
     }
 
     private void OnDrawGizmos()

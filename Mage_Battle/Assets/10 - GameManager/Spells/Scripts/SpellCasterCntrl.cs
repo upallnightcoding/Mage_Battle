@@ -68,7 +68,7 @@ public class SpellCasterCntrl
             {
                 GameObject cast = Object.Instantiate(spell.modelPreFab, spawnPoint, Quaternion.identity);
                 cast.transform.forward = forward;
-                cast.GetComponent<Rigidbody>().AddForce(forward * spell.spellForce, ForceMode.Impulse);
+                //cast.GetComponent<Rigidbody>().AddForce(forward * spell.spellForce, ForceMode.Impulse);
                 GameObject.Destroy(cast, 1.0f);
 
                 lastCastingRateSec = Time.time;

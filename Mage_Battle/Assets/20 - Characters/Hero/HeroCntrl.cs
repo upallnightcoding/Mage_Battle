@@ -20,6 +20,8 @@ public class HeroCntrl : MonoBehaviour
 
     private GameObject selectionModel;
 
+    private bool blockPlayerMovementSw = false;
+
     void Awake()
     {
         fsm = new FiniteStateMachine();
@@ -94,27 +96,41 @@ public class HeroCntrl : MonoBehaviour
      */
     public void PlayerMovement()
     {
-        Vector3 mousePostion = GetMousePosition();
-
-        RaycastHit[] hits = Physics.SphereCastAll(mousePostion, 1.0f, transform.forward, 0.0f, enemyLayerMask);
-
-        if (hits.Length > 0)
+        if (!blockPlayerMovementSw)
         {
-            hits[0].transform.GetComponent<SkeletonCntrl>().SetAttackMode(transform.position);
-        } else
-        {
-            navMeshAgent.destination = mousePostion;
-            selectionModel.transform.position = mousePostion;
+            Vector3 mousePostion = GetMousePosition();
+
+            RaycastHit[] hits = Physics.SphereCastAll(mousePostion, 1.0f, transform.forward, 0.0f, enemyLayerMask);
+
+            if (hits.Length > 0)
+            {
+                hits[0].transform.GetComponent<SkeletonCntrl>().SetAttackMode(transform.position);
+            }
+            else
+            {
+                navMeshAgent.destination = mousePostion;
+                selectionModel.transform.position = mousePostion;
+            }
+
+            blockPlayerMovementSw = true;
+
+            StartCoroutine(BlockPlayerMovement());
         }
+    }
 
+    private IEnumerator BlockPlayerMovement()
+    {
+        yield return new WaitForSeconds(0.2f);
+
+        blockPlayerMovementSw = false;
     }
 
     public void UpdateAnimation()
     {
-        Vector3 velocity = navMeshAgent.velocity;
+        Vector3 velocity = navMeshAgent.velocity; 
         Vector3 localVelocity = transform.InverseTransformDirection(velocity);
 
-        animator.SetFloat("Speed", localVelocity.z);
+        animator.SetFloat("Speed", -localVelocity.z);
     }
 
     /**

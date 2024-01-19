@@ -2451,7 +2451,7 @@ MonoBehaviour:
   castPoint: {fileID: 1852987666}
   selectionPreFab: {fileID: 7476503415215864586, guid: 1433481e01f893342acf87b75e79faae,
     type: 3}
-  clickLayerMask:
+  enemyLayerMask:
     serializedVersion: 2
     m_Bits: 64
 --- !u!195 &5387622918622871220
