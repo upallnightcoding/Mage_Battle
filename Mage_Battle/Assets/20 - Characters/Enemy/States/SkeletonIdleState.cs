@@ -27,7 +27,7 @@ public class SkeletonIdleState : FiniteState
     {
         string nextState = null;
 
-        if (skeletonCntrl.WithinFollowArea())
+        if (skeletonCntrl.WithinChaseArea())
         {
             nextState = SkeletonChaseState.TITLE;
         }

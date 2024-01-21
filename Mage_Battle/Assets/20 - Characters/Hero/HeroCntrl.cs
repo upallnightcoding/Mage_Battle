@@ -20,6 +20,9 @@ public class HeroCntrl : MonoBehaviour
 
     private GameObject selectionModel;
 
+    private bool lockedOn = false;
+    private Transform enemy;
+
     private bool blockPlayerMovementSw = false;
 
     void Awake()
@@ -44,9 +47,9 @@ public class HeroCntrl : MonoBehaviour
     {
         fsm.OnUpdate(Time.deltaTime);
 
-        if (inputCntrl.HasCast)
+        if (inputCntrl.HasCast && lockedOn)
         {
-            GameManager.Instance.Cast(castPoint.position, transform.forward);
+            GameManager.Instance.Cast(castPoint.position, (enemy.position - transform.position).normalized);
             inputCntrl.HasCast = false;
         }
 
@@ -105,6 +108,8 @@ public class HeroCntrl : MonoBehaviour
             if (hits.Length > 0)
             {
                 hits[0].transform.GetComponent<SkeletonCntrl>().SetAttackMode(transform.position);
+                lockedOn = true;
+                enemy = hits[0].transform;
             }
             else
             {
@@ -130,7 +135,7 @@ public class HeroCntrl : MonoBehaviour
         Vector3 velocity = navMeshAgent.velocity; 
         Vector3 localVelocity = transform.InverseTransformDirection(velocity);
 
-        animator.SetFloat("Speed", -localVelocity.z);
+        animator.SetFloat("Speed", localVelocity.z);
     }
 
     /**
@@ -201,6 +206,14 @@ public class HeroCntrl : MonoBehaviour
         }
 
         return (reached);
+    }
+
+    /**
+     * OnTriggerEnter() - 
+     */
+    public void OnTriggerEnter(Collider other)
+    {
+        Debug.Log("Hero Trigger Enter ...");
     }
 
 }

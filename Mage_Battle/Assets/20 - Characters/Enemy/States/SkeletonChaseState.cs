@@ -31,9 +31,9 @@ public class SkeletonChaseState : FiniteState
         {
             nextState = SkeletonAttackState.TITLE;
         } 
-        else if (skeletonCntrl.WithinFollowArea())
+        else if (skeletonCntrl.WithinChaseArea())
         {
-            //skeletonCntrl.MovesTowardPlayer(dt);
+            skeletonCntrl.MovesTowardPlayer();
         } 
         else
         {

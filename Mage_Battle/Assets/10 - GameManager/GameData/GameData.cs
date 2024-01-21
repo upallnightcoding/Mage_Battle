@@ -12,8 +12,15 @@ public class GameData : ScriptableObject
     [Space]
     public SpellSO defaultSpellDisplay;
 
+    public Vector3 instanceOffset;
+
     [Space]
     public Sprite[] shieldSprites;
+
+    [Header("Emenies")]
+    public GameObject seleton1Bejar;
+    public GameObject seleton2Dhar;
+    public GameObject seleton3Fito;
 
     [Header("Skeleton Attributes")]
     public float moveSpeed;

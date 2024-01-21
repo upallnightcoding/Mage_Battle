@@ -15,7 +15,7 @@ public class PlayerIdleState : FiniteState
 
     public override void OnEnter()
     {
-        //heroCntrl.StopPlayer();
+        
     }
 
     public override void OnExit()

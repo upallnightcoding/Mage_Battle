@@ -5,11 +5,12 @@ using UnityEngine;
 public class GameManager : MonoBehaviour
 {
     [SerializeField] private GameData gameData;
-    [SerializeField] private UiCntrl uiCntrl;
+    [SerializeField] private UiSystem uiCntrl;
 
     public static GameManager Instance = null;
 
     private SpellSystem spellSystem;
+    private EnemySystem enemySystem;
 
     private void Awake()
     {
@@ -17,13 +18,15 @@ public class GameManager : MonoBehaviour
         {
             Instance = this;
             DontDestroyOnLoad(gameObject);
+
+            spellSystem = GetComponent<SpellSystem>();
+            enemySystem = GetComponent<EnemySystem>();
         }
         else
         {
             Destroy(gameObject);
         }
 
-        spellSystem = GetComponent<SpellSystem>();
     }
 
     // Start is called before the first frame update
