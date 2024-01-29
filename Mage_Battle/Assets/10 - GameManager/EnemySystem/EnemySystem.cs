@@ -1,27 +1,54 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+//using XLib;
 
 public class EnemySystem : MonoBehaviour
 {
     [SerializeField] private GameData gameData;
     [SerializeField] private Transform player;
 
-    private GameObject enemyPreFab;
+    [SerializeField] private EnemySO skeleton;
 
-    // Start is called before the first frame update
+    private Dictionary<int, GameObject> enemyMap = null;
+
+    private int enemyId = 1;
+
+    private SkeletonCntrl targetEnemy = null;
+
     void Start()
     {
-        enemyPreFab = gameData.seleton1Bejar;
+        this.enemyMap = new Dictionary<int, GameObject>();
 
         CreateEnemy();
     }
 
+    /**
+     * SelectTarget() - 
+     */
+    public void SelectTarget(Vector3 player, SkeletonCntrl target)
+    {
+        if (targetEnemy != target)
+        {
+            if (targetEnemy != null)
+            {
+                targetEnemy.UnSetAttackMode();
+            } 
+        
+            targetEnemy = target;
+            targetEnemy.SetAttackMode(player);
+        }
+    }
+
     private void CreateEnemy()
     {
-        Vector3 position = new Vector3(6.0f, 0.0f, 0.0f);
+        for (int i = 0; i < 2; i++)
+        {
+            Vector3 position = XLib.System.RandomPoint(player.position, 5.0f);
+            GameObject go = skeleton.Spawn(player, position);
 
-        GameObject seleton = Instantiate(enemyPreFab, position, Quaternion.identity);
-        seleton.GetComponent<SkeletonCntrl>().Player = player;
+            go.GetComponent<SkeletonCntrl>().SetEnemyId(++enemyId);
+            enemyMap.Add(enemyId, go);
+        }
     }
 }

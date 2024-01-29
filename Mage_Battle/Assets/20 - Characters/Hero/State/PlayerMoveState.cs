@@ -30,7 +30,7 @@ public class PlayerMoveState : FiniteState
 
         if (heroCntrl.IsLeftMousePressed())
         {
-            heroCntrl.PlayerMovement();
+            //nextState = heroCntrl.PlayerClickAndMove();
         }
 
         heroCntrl.UpdateAnimation();
@@ -38,13 +38,13 @@ public class PlayerMoveState : FiniteState
         return (nextState);
     }
 
-    public string xxxOnUpdate(float dt)
+    /*public string xxxOnUpdate(float dt)
     {
         string nextState = null;
 
         if (playerMoving)
         {
-            heroCntrl.PlayerMovement();
+            heroCntrl.PlayerClickAndMove();
         }
 
         if (heroCntrl.IsLeftMouseReleased())
@@ -58,11 +58,11 @@ public class PlayerMoveState : FiniteState
             nextState = PlayerIdleState.TITLE;
         }
 
-        /*if (heroCntrl.GoOnAttack())
+        if (heroCntrl.GoOnAttack())
         {
             nextState = PlayerAttackState.TITLE;
-        }*/
+        }
 
         return (nextState);
-    }
+    }*/
 }

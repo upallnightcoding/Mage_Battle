@@ -13,15 +13,9 @@ public class PlayerIdleState : FiniteState
         this.heroCntrl = heroCntrl;
     }
 
-    public override void OnEnter()
-    {
-        
-    }
+    public override void OnEnter() { }
 
-    public override void OnExit()
-    {
-        
-    }
+    public override void OnExit() { }
 
     public override string OnUpdate(float dt)
     {

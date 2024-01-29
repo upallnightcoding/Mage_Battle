@@ -66,6 +66,9 @@ public class GameManager : MonoBehaviour
         spellSystem.Select(slot);
     }
 
+    /**
+     * Set() - 
+     */
     public void Set(SpellSO spell)
     {
         int slot = spellSystem.Add(spell);
@@ -73,11 +76,17 @@ public class GameManager : MonoBehaviour
         uiCntrl.Set(slot, spell);
     }
 
+    /**
+     * UpdateCoolDown() - 
+     */
     public void UpdateCoolDown(int slot, float percentage)
     {
         uiCntrl.UpdateSpellBar(slot, percentage);
     }
 
+    /**
+     * SetFullSpellBar() - 
+     */
     public void SetFullSpellBar(int slot)
     {
         uiCntrl.SetFullSpellBar(slot);

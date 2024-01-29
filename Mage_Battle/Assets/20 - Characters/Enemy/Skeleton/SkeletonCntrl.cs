@@ -13,6 +13,8 @@ public class SkeletonCntrl : MonoBehaviour
 
     private FiniteStateMachine fsm = null;
 
+    public int EnemyId { get; set; } = 0;
+
     public Transform Player { get; set; } = null;
 
     // Components
@@ -22,7 +24,6 @@ public class SkeletonCntrl : MonoBehaviour
     private float attackArea;
     private float followArea;
 
-    
     public bool WithinAttackArea() => DistanceFromPlayer() < attackArea;
 
     private float DistanceFromPlayer() => Vector3.Distance(Player.transform.position, transform.position);
@@ -54,6 +55,17 @@ public class SkeletonCntrl : MonoBehaviour
         fsm.OnUpdate(Time.deltaTime);
     }
 
+    /**
+     * SetEnemyCB() - 
+     */
+    public void SetEnemyId(int enemyId)
+    {
+        this.EnemyId = enemyId;
+    }
+
+    /**
+     * MovesTowardPlayer() -
+     */
     public void MovesTowardPlayer()
     {
         navMeshAgent.SetDestination(Player.position);
@@ -67,10 +79,19 @@ public class SkeletonCntrl : MonoBehaviour
         return(Player == null ? false : DistanceFromPlayer() < followArea);
     }
 
+    /**
+     * SetAttackMode() - 
+     */
     public void SetAttackMode(Vector3 position)
     {
         selectionPreFab.SetActive(true);
         navMeshAgent.SetDestination(position);
+    }
+
+    public void UnSetAttackMode()
+    {
+        selectionPreFab.SetActive(false);
+        navMeshAgent.SetDestination(transform.position);
     }
 
     public void ThrowOrb()

@@ -27,7 +27,15 @@ public class PlayerAttackState : FiniteState
     {
         string nextState = null;
 
-        heroCntrl.PlayerAttack(dt);
+        heroCntrl.PlayerMoveToTarget();
+
+        heroCntrl.UpdateAnimation();
+
+        if (heroCntrl.HasReachedTarget())
+        {
+            heroCntrl.DetachTarget();
+            nextState = PlayerMoveState.TITLE;
+        }
 
         return (nextState);
     }
