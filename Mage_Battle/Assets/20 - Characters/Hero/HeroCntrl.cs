@@ -14,14 +14,14 @@ public class HeroCntrl : MonoBehaviour
     [SerializeField] private LayerMask selectableMaskLayer;
     [SerializeField] private EnemySystem enemySystem;
 
-    private FiniteStateMachine fsm = null;
-
     private Animator animator;
     private NavMeshAgent navMeshAgent;
     private bool leftMouseButtonPressed = false;
     private SkeletonCntrl enemyTarget = null;
 
     private GameObject selectionModel;
+
+    private Vector3 mousePostion;
 
     private HeroCntrlState currentState = HeroCntrlState.IDLE;
 
@@ -30,10 +30,7 @@ public class HeroCntrl : MonoBehaviour
 
     void Awake()
     {
-        fsm = new FiniteStateMachine();
-        fsm.Add(new PlayerIdleState(this));
-        fsm.Add(new PlayerMoveState(this));
-        fsm.Add(new PlayerAttackState(this));
+     
     }
 
     // Start is called before the first frame update
@@ -80,13 +77,14 @@ public class HeroCntrl : MonoBehaviour
     {
         HeroCntrlState nextState = HeroCntrlState.NO_STATE;
 
-        PlayerMoveToTarget();
+        PlayerClickAndMove();
 
         UpdateAnimation();
 
         if (HasReachedTarget())
         {
             DetachTarget();
+            
             nextState = HeroCntrlState.MOVE;
         }
 
@@ -95,12 +93,7 @@ public class HeroCntrl : MonoBehaviour
 
     private void HeroMoveState()
     {
-        HeroCntrlState nextState = HeroCntrlState.NO_STATE;
-
-        if (IsLeftMousePressed())
-        {
-            nextState = PlayerClickAndMove();
-        }
+        HeroCntrlState nextState = PlayerClickAndMove();
 
         UpdateAnimation();
 
@@ -150,7 +143,40 @@ public class HeroCntrl : MonoBehaviour
     /**
      * PlayerMovement() - 
      */
-    public HeroCntrlState PlayerClickAndMove()
+    private HeroCntrlState PlayerClickAndMove()
+    {
+        HeroCntrlState nextState = currentState;
+
+        if (IsLeftMousePressed())
+        {
+            mousePostion = GetMousePosition();
+
+            RaycastHit[] hits = Physics.SphereCastAll(mousePostion, 1.0f, transform.forward, 0.0f, selectableMaskLayer);
+
+            if (hits.Length > 0)
+            {
+                Transform selected = hits[0].transform;
+                switch (selected.GetComponent<SelectableCntrl>().GetSelectable())
+                {
+                    case SelectableType.Enemy:
+                        enemyTarget = selected.GetComponent<SkeletonCntrl>();
+                        enemySystem.SelectTarget(transform.position, enemyTarget);
+                        nextState = HeroCntrlState.ATTACK;
+                        break;
+                }
+            }
+            else
+            {
+                nextState = HeroCntrlState.MOVE;
+            }
+        } 
+            
+        SetDestination((enemyTarget != null) ? enemyTarget.transform.position : mousePostion);
+
+        return (nextState);
+    }
+
+    private HeroCntrlState xxxPlayerClickAndMove()
     {
         HeroCntrlState nextState = HeroCntrlState.NO_STATE;
         Vector3 mousePostion = GetMousePosition();
@@ -159,7 +185,6 @@ public class HeroCntrl : MonoBehaviour
 
         if (hits.Length > 0)
         {
-            Debug.Log("Length > 0");
             Transform selected = hits[0].transform;
             switch (selected.GetComponent<SelectableCntrl>().GetSelectable())
             {
@@ -172,20 +197,13 @@ public class HeroCntrl : MonoBehaviour
         }
         else
         {
-            if (enemyTarget != null)
-            {
-                SetDestination(enemyTarget.transform.position);
-            } 
-            else
-            {
-                SetDestination(mousePostion);
-            }
+            SetDestination((enemyTarget != null) ? enemyTarget.transform.position : mousePostion);
         }
 
         return (nextState);
     }
 
-    public void PlayerMoveToTarget()
+    private void PlayerMoveToTarget()
     {
         if (enemyTarget != null)
         {
@@ -210,19 +228,18 @@ public class HeroCntrl : MonoBehaviour
     /**
      * UpdateAnimation() - 
      */
-    public void UpdateAnimation()
+    private void UpdateAnimation()
     {
         Vector3 velocity = navMeshAgent.velocity; 
         Vector3 localVelocity = transform.InverseTransformDirection(velocity);
 
-        Debug.Log($"localVelocity.z {localVelocity.z}");
         animator.SetFloat("Speed", localVelocity.z);
     }
 
     /**
      * StopPlayer() - 
      */
-    public void StopPlayer()
+    private void StopPlayer()
     {
         navMeshAgent.destination = gameObject.transform.position;
         animator.SetFloat("Speed", 0.0f);
@@ -231,7 +248,7 @@ public class HeroCntrl : MonoBehaviour
     /**
      * ClickToMove() - 
      */
-    public Vector3 GetMousePosition()
+    private Vector3 GetMousePosition()
     {
         Vector3 position = inputCntrl.GetMousePosition();
         Vector3 hitPoint = Vector3.zero;
@@ -244,19 +261,20 @@ public class HeroCntrl : MonoBehaviour
         return (hitPoint);
     }
 
-    public bool HasReachedTarget()
+    private bool HasReachedTarget()
     {
         bool reached = false;
 
         if (!navMeshAgent.pathPending)
-        { 
-            Debug.Log($" Remaining: {navMeshAgent.remainingDistance}/Distance {navMeshAgent.stoppingDistance}");
+        {
+            Debug.Log($"Remaining: {navMeshAgent.remainingDistance} / {Vector3.Distance(transform.position, navMeshAgent.destination)}");
 
-            if (navMeshAgent.remainingDistance <= 2.0f)
+            if (navMeshAgent.remainingDistance <= 1.0f)
             //if (navMeshAgent.remainingDistance <= navMeshAgent.stoppingDistance)
             {
                 if (navMeshAgent.hasPath /*|| navMeshAgent.velocity.sqrMagnitude == 0f */)
                 {
+                    navMeshAgent.SetDestination(transform.position);
                     reached = true;
                 }
             }
@@ -271,6 +289,24 @@ public class HeroCntrl : MonoBehaviour
     public void OnTriggerEnter(Collider other)
     {
         //Debug.Log("Hero Trigger Enter ...");
+    }
+
+    public void OnDrawGizmos()
+    {
+        if (navMeshAgent != null)
+        {
+            Gizmos.color = Color.red;
+            Gizmos.DrawSphere(navMeshAgent.destination, 0.15f);
+
+            Gizmos.color = Color.green;
+            Gizmos.DrawSphere(transform.position, 0.15f);
+
+            if (enemyTarget != null)
+            {
+                Gizmos.color = Color.cyan;
+                Gizmos.DrawWireSphere(enemyTarget.transform.position, 2.0f);
+            }
+        }
     }
 
 }
