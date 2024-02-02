@@ -26,6 +26,7 @@ public class HeroCntrl : MonoBehaviour
     private HeroCntrlState currentState = HeroCntrlState.IDLE;
 
     public bool IsLeftMousePressed() => inputCntrl.IsLeftMousePressed();
+    //public bool IsLeftMousePressed() => inputCntrl.IsLeftMouseReleased();
     public bool IsLeftMouseReleased() => inputCntrl.IsLeftMouseReleased();
 
     void Awake()
@@ -45,15 +46,15 @@ public class HeroCntrl : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //fsm.OnUpdate(Time.deltaTime);
+        InputCntrlClickType click = inputCntrl.GetClick();
 
-        switch(currentState)
+        switch (currentState)
         {
             case HeroCntrlState.IDLE:
-                HeroIdleState();
+                HeroIdleState(click);
                 break;
             case HeroCntrlState.MOVE:
-                HeroMoveState();
+                HeroMoveState(click);
                 break;
             case HeroCntrlState.ATTACK:
                 HeroAttackState();
@@ -73,40 +74,56 @@ public class HeroCntrl : MonoBehaviour
         }*/
     }
 
+    /**
+    * HeroIdleState() - 
+    */
+    private void HeroIdleState(InputCntrlClickType click)
+    {
+        if (click == InputCntrlClickType.SINGLE_CLICK)
+        {
+            ChangeState(HeroCntrlState.MOVE);
+        }
+    }
+
+    /**
+     * HeroMoveState() - 
+     */
+    private void HeroMoveState(InputCntrlClickType click)
+    {
+        HeroCntrlState nextState = PlayerClickAndMove(click);
+
+        UpdateAnimation();
+
+        ChangeState(nextState);
+    }
+
     private void HeroAttackState()
     {
         HeroCntrlState nextState = HeroCntrlState.NO_STATE;
 
-        PlayerClickAndMove();
+        //PlayerClickAndMove();
 
         UpdateAnimation();
 
-        if (HasReachedTarget())
+        Debug.Log($"Remaining Distance: {navMeshAgent.remainingDistance}");
+        navMeshAgent.stoppingDistance = 3.0f;
+
+        if (navMeshAgent.remainingDistance <= navMeshAgent.stoppingDistance)
         {
             DetachTarget();
-            
+
+            navMeshAgent.stoppingDistance = 0.0f;
+            navMeshAgent.destination = transform.position;
+
+            animator.SetBool("CastSpell", true);
+
             nextState = HeroCntrlState.MOVE;
         }
 
         ChangeState(nextState);
     }
 
-    private void HeroMoveState()
-    {
-        HeroCntrlState nextState = PlayerClickAndMove();
-
-        UpdateAnimation();
-
-        ChangeState(nextState);
-    }
-
-    private void HeroIdleState()
-    {
-        if (IsLeftMousePressed())
-        {
-            ChangeState(HeroCntrlState.MOVE);
-        }
-    }
+   
 
     private void ChangeState(HeroCntrlState newState)
     {
@@ -117,35 +134,66 @@ public class HeroCntrl : MonoBehaviour
     }
 
     /**
-     * GoOnAttack() - 
-     */
-    public bool GoOnAttack()
-    {
-        return (inputCntrl.GoOnAttack);
-    }
-
-    /**
-     * StartAttack() - 
-     */
-    public void StartAttack()
-    {
-        animator.SetBool("OnAttack", true);
-    }
-
-    /**
-     * EndAttack() - 
-     */
-    public void EndAttack()
-    {
-        animator.SetBool("OnAttack", false);
-    }
-
-    /**
      * PlayerMovement() - 
      */
-    private HeroCntrlState PlayerClickAndMove()
+    private HeroCntrlState PlayerClickAndMove(InputCntrlClickType click)
     {
         HeroCntrlState nextState = currentState;
+
+        Vector3 mousePostion = GetMousePosition();
+
+        switch (click)
+        {
+            case InputCntrlClickType.NO_CLICK:
+                break;
+            case InputCntrlClickType.SINGLE_CLICK:
+                RaycastHit[] hits = Physics.SphereCastAll(mousePostion, 1.0f, transform.forward, 0.0f, selectableMaskLayer);
+                if (hits.Length > 0)
+                {
+                    Transform selected = hits[0].transform;
+                    switch (selected.GetComponent<SelectableCntrl>().GetSelectable())
+                    {
+                        case SelectableType.Enemy:
+                            enemyTarget = selected.GetComponent<SkeletonCntrl>();
+                            enemySystem.SelectTarget(transform.position, enemyTarget);
+                            nextState = HeroCntrlState.ATTACK;
+                            break;
+                    }
+                }
+                else
+                {
+                    nextState = HeroCntrlState.MOVE;
+                }
+                SetDestination((enemyTarget != null) ? enemyTarget.transform.position : mousePostion);
+                break;
+            case InputCntrlClickType.START_DRAG_CLICK:
+            case InputCntrlClickType.DRAGGING_CLICK:
+                SetDestination(mousePostion);
+                break;
+            case InputCntrlClickType.END_DRAG_CLICK:
+                break;
+        }
+
+        return (nextState);
+    }
+
+    private HeroCntrlState xxxPlayerClickAndMove()
+    {
+        HeroCntrlState nextState = currentState;
+
+        InputCntrlClickType click = inputCntrl.GetClick();
+
+        switch (click)
+        {
+            case InputCntrlClickType.NO_CLICK:
+                break;
+            case InputCntrlClickType.SINGLE_CLICK:
+                break;
+            case InputCntrlClickType.START_DRAG_CLICK:
+                break;
+            case InputCntrlClickType.END_DRAG_CLICK:
+                break;
+        }
 
         if (IsLeftMousePressed())
         {
@@ -169,38 +217,35 @@ public class HeroCntrl : MonoBehaviour
             {
                 nextState = HeroCntrlState.MOVE;
             }
-        } 
-            
+        }
+
         SetDestination((enemyTarget != null) ? enemyTarget.transform.position : mousePostion);
 
         return (nextState);
     }
 
-    private HeroCntrlState xxxPlayerClickAndMove()
+    /**
+    * GoOnAttack() - 
+    */
+    public bool GoOnAttack()
     {
-        HeroCntrlState nextState = HeroCntrlState.NO_STATE;
-        Vector3 mousePostion = GetMousePosition();
+        return (inputCntrl.GoOnAttack);
+    }
 
-        RaycastHit[] hits = Physics.SphereCastAll(mousePostion, 1.0f, transform.forward, 0.0f, selectableMaskLayer);
+    /**
+     * StartAttack() - 
+     */
+    public void StartAttack()
+    {
+        animator.SetBool("OnAttack", true);
+    }
 
-        if (hits.Length > 0)
-        {
-            Transform selected = hits[0].transform;
-            switch (selected.GetComponent<SelectableCntrl>().GetSelectable())
-            {
-                case SelectableType.Enemy:
-                    enemyTarget = selected.GetComponent<SkeletonCntrl>();
-                    enemySystem.SelectTarget(transform.position, enemyTarget);
-                    nextState = HeroCntrlState.ATTACK;
-                    break;
-            }
-        }
-        else
-        {
-            SetDestination((enemyTarget != null) ? enemyTarget.transform.position : mousePostion);
-        }
-
-        return (nextState);
+    /**
+     * EndAttack() - 
+     */
+    public void EndAttack()
+    {
+        animator.SetBool("OnAttack", false);
     }
 
     private void PlayerMoveToTarget()
@@ -261,7 +306,26 @@ public class HeroCntrl : MonoBehaviour
         return (hitPoint);
     }
 
-    private bool HasReachedTarget()
+    private bool HasReachedAttackTarget()
+    {
+        bool reached = false;
+
+        if (!navMeshAgent.pathPending)
+        {
+            if (navMeshAgent.remainingDistance <= navMeshAgent.stoppingDistance)
+            {
+                if (navMeshAgent.hasPath /*|| navMeshAgent.velocity.sqrMagnitude == 0f */)
+                {
+                    //navMeshAgent.SetDestination(transform.position);
+                    reached = true;
+                }
+            }
+        }
+
+        return (reached);
+    }
+
+    private bool xxxHasReachedTarget()
     {
         bool reached = false;
 

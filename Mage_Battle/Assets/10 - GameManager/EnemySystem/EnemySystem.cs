@@ -42,7 +42,7 @@ public class EnemySystem : MonoBehaviour
 
     private void CreateEnemy()
     {
-        for (int i = 0; i < 2; i++)
+        for (int i = 0; i < 1; i++)
         {
             Vector3 position = XLib.System.RandomPoint(player.position, 5.0f);
             GameObject go = skeleton.Spawn(player, position);
