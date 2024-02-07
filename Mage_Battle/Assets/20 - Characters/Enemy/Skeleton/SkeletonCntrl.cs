@@ -63,6 +63,11 @@ public class SkeletonCntrl : MonoBehaviour
         this.EnemyId = enemyId;
     }
 
+    public Vector3 Position()
+    {
+        return (transform.position);
+    }
+
     /**
      * MovesTowardPlayer() -
      */

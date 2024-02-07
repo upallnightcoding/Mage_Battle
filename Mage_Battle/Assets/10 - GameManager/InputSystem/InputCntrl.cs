@@ -2,17 +2,29 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using System;
 
 public class InputCntrl : MonoBehaviour
 {
+    public static event Action OnDesengageEvent;
+
+    [SerializeField] private float singleClickTimer = 0.2f;
+    [SerializeField] private float doubleClickTimer = 0.2f;
+
+    private SingleClickState currentSingleClickState = SingleClickState.IDLE_STATE;
+    private DoubleClickState currentDoubleClickState = DoubleClickState.IDLE_STATE;
+
     private Vector2 playerMovement;
     private Vector2 playerAim;
+
+    private InputCntrlClickType doubleClick = InputCntrlClickType.NO_CLICK;
 
     public bool HasCast { set; get; } = false;
     public int SelectSpell { set; get; } = -1;
     public bool GoOnAttack { set; get; } = false;
 
     private float clickTimeStamp;
+    private bool firstDoubleClick = true;
 
     // Player Movement & Aim Functions
     //--------------------------------
@@ -56,18 +68,18 @@ public class InputCntrl : MonoBehaviour
 
     public void OnMove(InputAction.CallbackContext context)
     {
-        if (context.performed)
+        /*if (context.performed)
         {
             playerMovement = context.ReadValue<Vector2>();
-        }
+        }*/
     }
 
     public void OnLook(InputAction.CallbackContext context)
     {
-        if (context.performed)
+        /*if (context.performed)
         {
             playerAim = context.ReadValue<Vector2>();
-        }
+        }*/
     }
 
     public void OnFire(InputAction.CallbackContext context)
@@ -82,7 +94,7 @@ public class InputCntrl : MonoBehaviour
     {
         if (context.performed)
         {
-            Debug.Log("OnCast ...");
+            HasCast = true;
         }
     }
 
@@ -110,34 +122,40 @@ public class InputCntrl : MonoBehaviour
         }
     }
 
-    private InputCntrlClickState currentClickState = InputCntrlClickState.IDLE_CLICK;
+    public void OnDesengage(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+        {
+            OnDesengageEvent.Invoke();
+        }
+    }
 
     public InputCntrlClickType GetClick()
     {
         InputCntrlClickType click = InputCntrlClickType.NO_CLICK;
 
-        switch(currentClickState)
+        switch (currentSingleClickState)
         {
-            case InputCntrlClickState.IDLE_CLICK:
-                currentClickState = IdleClickState();
+            case SingleClickState.IDLE_STATE:
+                currentSingleClickState = IdleSingleClickState();
                 click = InputCntrlClickType.NO_CLICK;
                 break;
-            case InputCntrlClickState.TIMER_RUNNING:
+            case SingleClickState.TIME_RUNNING_STATE:
                 break;
-            case InputCntrlClickState.SINGLE_CLICK:
+            case SingleClickState.SINGLE_CLICK_STATE:
                 click = InputCntrlClickType.SINGLE_CLICK;
-                currentClickState = InputCntrlClickState.IDLE_CLICK;
+                currentSingleClickState = SingleClickState.IDLE_STATE;
                 break;
-            case InputCntrlClickState.START_DRAG:
+            case SingleClickState.START_DRAG_STATE:
                 click = InputCntrlClickType.START_DRAG_CLICK;
-                currentClickState = InputCntrlClickState.DRAGING;
+                currentSingleClickState = SingleClickState.DRAGGING_STATE;
                 break;
-            case InputCntrlClickState.DRAGING:
-                currentClickState = DraggingClick();
+            case SingleClickState.DRAGGING_STATE:
+                currentSingleClickState = DraggingClick();
                 click = InputCntrlClickType.DRAGGING_CLICK;
                 break;
-            case InputCntrlClickState.END_DRAG:
-                currentClickState = InputCntrlClickState.IDLE_CLICK;
+            case SingleClickState.END_DRAG_STATE:
+                currentSingleClickState = SingleClickState.IDLE_STATE;
                 click = InputCntrlClickType.END_DRAG_CLICK;
                 break;
         }
@@ -145,51 +163,123 @@ public class InputCntrl : MonoBehaviour
         return (click);
     }
 
-    private InputCntrlClickState DraggingClick()
+    private SingleClickState DraggingClick()
     {
-        InputCntrlClickState nextState = InputCntrlClickState.DRAGING;
+        SingleClickState nextState = SingleClickState.DRAGGING_STATE;
 
         if (IsLeftMouseReleased())
         {
-            nextState = InputCntrlClickState.END_DRAG;
+            nextState = SingleClickState.END_DRAG_STATE;
         }
 
         return (nextState);
     }
 
-    private InputCntrlClickState IdleClickState()
+    private SingleClickState IdleSingleClickState()
     {
-        InputCntrlClickState nextState = InputCntrlClickState.IDLE_CLICK;
+        SingleClickState nextState = SingleClickState.IDLE_STATE;
 
         if (IsLeftMousePressed())
         {
-            StartCoroutine(StartClickTimer());
-            nextState = InputCntrlClickState.TIMER_RUNNING;
+            StartCoroutine(StartSingleClickTimer());
+            nextState = SingleClickState.TIME_RUNNING_STATE;
         } 
 
         return (nextState);
     }
 
-    private IEnumerator StartClickTimer()
+    /**
+     * StartSingleClickTimer() -
+     */
+    private IEnumerator StartSingleClickTimer()
     {
         float startTime = Time.time;
         bool mouseReleased = false;
 
-        while (((Time.time - startTime) < 0.2f) && (!mouseReleased))
+        while (((Time.time - startTime) < singleClickTimer) && (!mouseReleased))
         {
             mouseReleased = IsLeftMouseReleased();
 
             yield return null;
         }
 
-        if (mouseReleased)
+        currentSingleClickState = 
+            (mouseReleased) ? SingleClickState.SINGLE_CLICK_STATE : SingleClickState.START_DRAG_STATE;
+    }
+
+    /**
+     * GetAllClicks() - 
+     */
+    public InputCntrlClickType GetAllClicks()
+    {
+        InputCntrlClickType click = GetClick();
+
+        switch (currentDoubleClickState)
         {
-            currentClickState = InputCntrlClickState.SINGLE_CLICK;
-        } 
-        else
-        {
-            currentClickState = InputCntrlClickState.START_DRAG;
+            case DoubleClickState.IDLE_STATE:
+                currentDoubleClickState = IdleDoubleClickState(click);
+                if (currentDoubleClickState == DoubleClickState.DOUBLE_CLICK_STATE) 
+                    click = InputCntrlClickType.NO_CLICK;
+                break;
+            case DoubleClickState.DOUBLE_CLICK_STATE:
+                break;
         }
+
+        return (click);
+    }
+
+    /**
+     * DoubleClickTimer() - 
+     */
+    private DoubleClickState DoubleClickTimer()
+    {
+        DoubleClickState nextState = DoubleClickState.IDLE_STATE;
+
+        return (nextState);
+    }
+
+    /**
+     * StartDoubleClickTimer() - 
+     */
+    private IEnumerator StartDoubleClickTimer()
+    {
+        float startTime = Time.time;
+        bool timerIsRunning = true;
+
+        doubleClick = InputCntrlClickType.NO_CLICK;
+
+        while (timerIsRunning && (doubleClick == InputCntrlClickType.NO_CLICK))
+        {
+            timerIsRunning = ((Time.time - startTime) < doubleClickTimer);
+
+            doubleClick = GetClick();
+
+            yield return null;
+        }
+
+        if (timerIsRunning)
+        {
+            if (doubleClick == InputCntrlClickType.SINGLE_CLICK)
+            {
+                doubleClick = InputCntrlClickType.DOUBLE_CLICK;
+            }
+        }
+    }
+
+    /**
+     * IdleDoubleClickState() - 
+     */
+    private DoubleClickState IdleDoubleClickState(InputCntrlClickType click)
+    {
+        DoubleClickState nextState = DoubleClickState.IDLE_STATE;
+
+        if (click == InputCntrlClickType.SINGLE_CLICK)
+        {
+            StartCoroutine(StartDoubleClickTimer());
+            nextState = DoubleClickState.DOUBLE_CLICK_STATE;
+        } 
+
+        return (nextState);
     }
 
 }
@@ -198,17 +288,24 @@ public enum InputCntrlClickType
 {
     NO_CLICK,
     SINGLE_CLICK,
+    DOUBLE_CLICK,
     START_DRAG_CLICK,
     DRAGGING_CLICK,
     END_DRAG_CLICK
 }
 
-public enum InputCntrlClickState
+public enum DoubleClickState
 {
-    IDLE_CLICK,
-    TIMER_RUNNING,
-    SINGLE_CLICK,
-    START_DRAG,
-    DRAGING,
-    END_DRAG
+    IDLE_STATE,
+    DOUBLE_CLICK_STATE
+}
+
+public enum SingleClickState
+{
+    IDLE_STATE,
+    TIME_RUNNING_STATE,
+    SINGLE_CLICK_STATE,
+    START_DRAG_STATE,
+    DRAGGING_STATE,
+    END_DRAG_STATE
 }
