@@ -112,10 +112,11 @@ public class HeroCntrl : MonoBehaviour
             inputCntrl.HasCast = false;
         }
 
+        UpdateAnimation();
 
         /* HeroCntrlState nextState = PlayerClickAndMove(click);
 
-        //UpdateAnimation();
+        UpdateAnimation();
 
         //DetachTarget();
 
@@ -198,6 +199,7 @@ public class HeroCntrl : MonoBehaviour
         {
             desengageSw = false;
             nextState = HeroCntrlState.MOVE;
+            animator.SetBool("Combat", false);
         }
 
         return (nextState);
@@ -218,6 +220,7 @@ public class HeroCntrl : MonoBehaviour
                     enemyTarget = selected.GetComponent<SkeletonCntrl>();
                     enemySystem.SelectTarget(transform.position, enemyTarget);
                     nextState = HeroCntrlState.ATTACK;
+                    animator.SetBool("Combat", true);
                     navMeshAgent.angularSpeed = 0;
                     break;
             }
@@ -276,17 +279,27 @@ public class HeroCntrl : MonoBehaviour
         Vector3 velocity = navMeshAgent.velocity; 
         Vector3 localVelocity = transform.InverseTransformDirection(velocity);
 
-        animator.SetFloat("Speed", localVelocity.z);
+        if (currentState == HeroCntrlState.MOVE)
+        {
+            animator.SetFloat("Speed", localVelocity.z);
+        }
+
+        if (currentState == HeroCntrlState.ATTACK)
+        {
+            Debug.Log($"H/V {localVelocity.x}/{localVelocity.z}");
+            animator.SetFloat("Horizontal", localVelocity.x);
+            animator.SetFloat("Vertical", localVelocity.z);
+        }
     }
 
     /**
      * StopPlayer() - 
      */
-    private void StopPlayer()
+    /*private void StopPlayer()
     {
         navMeshAgent.destination = gameObject.transform.position;
         animator.SetFloat("Speed", 0.0f);
-    }
+    }*/
 
     /**
      * ClickToMove() - 
