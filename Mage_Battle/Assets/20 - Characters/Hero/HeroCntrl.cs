@@ -10,8 +10,9 @@ public class HeroCntrl : MonoBehaviour
     [SerializeField] private GameData gameData;
     [SerializeField] private InputCntrl inputCntrl;
     [SerializeField] private Transform castPoint;
-    [SerializeField] private LayerMask selectableMaskLayer;
+    [SerializeField] private LayerMask enemyLayerMask;
     [SerializeField] private EnemySystem enemySystem;
+    [SerializeField] private float rotationSpeed;
 
     private Animator animator;
     private NavMeshAgent navMeshAgent;
@@ -90,6 +91,8 @@ public class HeroCntrl : MonoBehaviour
     {
         HeroCntrlState nextState = PlayerClickAndMove(click);
 
+        
+
         UpdateAnimation();
 
         ChangeState(nextState);
@@ -99,10 +102,12 @@ public class HeroCntrl : MonoBehaviour
     {
         HeroCntrlState nextState = PlayerClickAndAttack(click);
 
-        Vector3 lookDirection = enemyTarget.Position() - transform.position;
-        lookDirection.y = 0.0f;
-        Quaternion rot = Quaternion.LookRotation(lookDirection);
-        transform.rotation = Quaternion.Lerp(transform.rotation, rot, 10.0f * Time.deltaTime);
+        //Vector3 lookDirection = enemyTarget.Position() - transform.position;
+        //lookDirection.y = 0.0f;
+        //Quaternion rot = Quaternion.LookRotation(lookDirection);
+        //transform.rotation = Quaternion.Lerp(transform.rotation, rot, 10.0f * Time.deltaTime);
+
+        
 
         //navMeshAgent.destination = enemyTarget.Position();
 
@@ -140,14 +145,15 @@ public class HeroCntrl : MonoBehaviour
      */
     private void ChangeState(HeroCntrlState newState)
     {
-        if ((newState != HeroCntrlState.NO_STATE) && (newState != currentState))
+        //if ((newState != HeroCntrlState.NO_STATE) && (newState != currentState))
+        if (newState != currentState)
         {
             currentState = newState;
         }
     }
 
     /**
-     * PlayerMovement() - 
+     * PlayerClickAndMove() - 
      */
     private HeroCntrlState PlayerClickAndMove(InputCntrlClickType click)
     {
@@ -173,11 +179,17 @@ public class HeroCntrl : MonoBehaviour
         return (nextState);
     }
 
+    /**
+     * PlayerClickAndAttack() - 
+     */
     private HeroCntrlState PlayerClickAndAttack(InputCntrlClickType click)
     {
         HeroCntrlState nextState = currentState;
 
         Vector3 mousePostion = GetMousePosition();
+
+        transform.rotation =
+            XLib.System.TurnToTarget(enemyTarget.Position(), transform, rotationSpeed, Time.deltaTime);
 
         switch (click)
         {
@@ -185,11 +197,12 @@ public class HeroCntrl : MonoBehaviour
                 break;
             case InputCntrlClickType.SINGLE_CLICK:
                 nextState = AttackOrMoveState(mousePostion);
-
                 break;
             case InputCntrlClickType.START_DRAG_CLICK:
             case InputCntrlClickType.DRAGGING_CLICK:
                 navMeshAgent.destination = mousePostion;
+                //transform.rotation =
+                  //  XLib.System.TurnToTarget(enemyTarget.Position(), transform, rotationSpeed, Time.deltaTime);
                 break;
             case InputCntrlClickType.END_DRAG_CLICK:
                 break;
@@ -200,16 +213,21 @@ public class HeroCntrl : MonoBehaviour
             desengageSw = false;
             nextState = HeroCntrlState.MOVE;
             animator.SetBool("Combat", false);
+            navMeshAgent.angularSpeed = 1000;
+            enemySystem.UnSelectTarget();
         }
 
         return (nextState);
     }
 
+    /**
+     * AttackOrMoveState() - 
+     */
     private HeroCntrlState AttackOrMoveState(Vector3 mousePostion)
     {
         HeroCntrlState nextState = currentState;
 
-        RaycastHit[] hits = Physics.SphereCastAll(mousePostion, 1.0f, transform.forward, 0.0f, selectableMaskLayer);
+        RaycastHit[] hits = Physics.SphereCastAll(mousePostion, 1.0f, transform.forward, 0.0f, enemyLayerMask);
 
         if (hits.Length > 0)
         {
@@ -243,35 +261,6 @@ public class HeroCntrl : MonoBehaviour
     }
 
     /**
-    * GoOnAttack() - 
-    */
-    public bool GoOnAttack()
-    {
-        return (inputCntrl.GoOnAttack);
-    }
-
-    /**
-     * StartAttack() - 
-     */
-    public void StartAttack()
-    {
-        animator.SetBool("OnAttack", true);
-    }
-
-    /**
-     * EndAttack() - 
-     */
-    public void EndAttack()
-    {
-        animator.SetBool("OnAttack", false);
-    }
-
-    public void DetachTarget()
-    {
-        enemyTarget = null;
-    }
-
-    /**
      * UpdateAnimation() - 
      */
     private void UpdateAnimation()
@@ -286,20 +275,10 @@ public class HeroCntrl : MonoBehaviour
 
         if (currentState == HeroCntrlState.ATTACK)
         {
-            Debug.Log($"H/V {localVelocity.x}/{localVelocity.z}");
             animator.SetFloat("Horizontal", localVelocity.x);
             animator.SetFloat("Vertical", localVelocity.z);
         }
     }
-
-    /**
-     * StopPlayer() - 
-     */
-    /*private void StopPlayer()
-    {
-        navMeshAgent.destination = gameObject.transform.position;
-        animator.SetFloat("Speed", 0.0f);
-    }*/
 
     /**
      * ClickToMove() - 
@@ -315,47 +294,6 @@ public class HeroCntrl : MonoBehaviour
         }
 
         return (hitPoint);
-    }
-
-    private bool HasReachedAttackTarget()
-    {
-        bool reached = false;
-
-        if (!navMeshAgent.pathPending)
-        {
-            if (navMeshAgent.remainingDistance <= navMeshAgent.stoppingDistance)
-            {
-                if (navMeshAgent.hasPath /*|| navMeshAgent.velocity.sqrMagnitude == 0f */)
-                {
-                    //navMeshAgent.SetDestination(transform.position);
-                    reached = true;
-                }
-            }
-        }
-
-        return (reached);
-    }
-
-    private bool xxxHasReachedTarget()
-    {
-        bool reached = false;
-
-        if (!navMeshAgent.pathPending)
-        {
-            Debug.Log($"Remaining: {navMeshAgent.remainingDistance} / {Vector3.Distance(transform.position, navMeshAgent.destination)}");
-
-            if (navMeshAgent.remainingDistance <= 1.0f)
-            //if (navMeshAgent.remainingDistance <= navMeshAgent.stoppingDistance)
-            {
-                if (navMeshAgent.hasPath /*|| navMeshAgent.velocity.sqrMagnitude == 0f */)
-                {
-                    navMeshAgent.SetDestination(transform.position);
-                    reached = true;
-                }
-            }
-        }
-
-        return (reached);
     }
 
     /**

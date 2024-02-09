@@ -40,11 +40,17 @@ public class EnemySystem : MonoBehaviour
         }
     }
 
+    public void UnSelectTarget()
+    {
+        targetEnemy.UnSetAttackMode();
+        targetEnemy = null;
+    }
+
     private void CreateEnemy()
     {
         for (int i = 0; i < 2; i++)
         {
-            Vector3 position = XLib.System.RandomPoint(player.position, 5.0f);
+            Vector3 position = XLib.System.RandomPoint(5.0f);
             GameObject go = skeleton.Spawn(player, position);
 
             go.GetComponent<SkeletonCntrl>().SetEnemyId(++enemyId);

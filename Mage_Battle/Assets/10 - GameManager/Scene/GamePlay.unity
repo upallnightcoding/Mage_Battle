@@ -815,6 +815,11 @@ PrefabInstance:
       objectReference: {fileID: 1003328799}
     - target: {fileID: 6926638292731519240, guid: 409a93d21b2aea64e9623539275d5e01,
         type: 3}
+      propertyPath: rotationSpeed
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 6926638292731519240, guid: 409a93d21b2aea64e9623539275d5e01,
+        type: 3}
       propertyPath: selectableMaskLayer.m_Bits
       value: 64
       objectReference: {fileID: 0}
