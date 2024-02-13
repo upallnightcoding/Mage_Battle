@@ -2108,7 +2108,7 @@ GameObject:
   - component: {fileID: 7083248748950524335}
   - component: {fileID: 4040448546174471729}
   - component: {fileID: 7706777174799180950}
-  - component: {fileID: -3968703480851360241}
+  - component: {fileID: 3579054771482594634}
   m_Layer: 6
   m_Name: Skeleton_1_Bejar
   m_TagString: Untagged
@@ -2216,7 +2216,7 @@ NavMeshAgent:
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
---- !u!114 &-3968703480851360241
+--- !u!114 &3579054771482594634
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -2225,10 +2225,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 8842534174307672126}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3d92d40e30b25fa41ae96ca57fccb85c, type: 3}
+  m_Script: {fileID: 11500000, guid: e16d3ac9737024f4ea2ccdc9da3d399f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  selectable: 0
+  health: 100
 --- !u!1 &8842559649208511560
 GameObject:
   m_ObjectHideFlags: 0

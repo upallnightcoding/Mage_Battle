@@ -115,7 +115,12 @@ public class EnemyCntrl : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        Debug.Log("I got hit ...");
+        Debug.Log("On CollisionEnter ...");
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        Debug.Log("On Trigger ...");
     }
 
     private void OnDrawGizmos()
