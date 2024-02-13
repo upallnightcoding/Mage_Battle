@@ -10,14 +10,12 @@ public class HeroCntrl : MonoBehaviour
     [SerializeField] private GameData gameData;
     [SerializeField] private InputCntrl inputCntrl;
     [SerializeField] private Transform castPoint;
-    [SerializeField] private LayerMask enemyLayerMask;
     [SerializeField] private EnemySystem enemySystem;
     [SerializeField] private float rotationSpeed;
 
     private Animator animator;
     private NavMeshAgent navMeshAgent;
     private bool leftMouseButtonPressed = false;
-    private SkeletonCntrl enemyTarget = null;
 
     private bool desengageSw = false;
 
@@ -111,9 +109,9 @@ public class HeroCntrl : MonoBehaviour
 
         //navMeshAgent.destination = enemyTarget.Position();
 
-        if (inputCntrl.HasCast && LockedOn())
+        if (inputCntrl.HasCast && enemySystem.IsLockedOn())
         {
-            GameManager.Instance.Cast(castPoint.position, (enemyTarget.Position() - transform.position).normalized);
+            GameManager.Instance.Cast(castPoint.position, enemySystem.GetEnemyDirection());
             inputCntrl.HasCast = false;
         }
 
@@ -189,7 +187,7 @@ public class HeroCntrl : MonoBehaviour
         Vector3 mousePostion = GetMousePosition();
 
         transform.rotation =
-            XLib.System.TurnToTarget(enemyTarget.Position(), transform, rotationSpeed, Time.deltaTime);
+            XLib.System.TurnToTarget(enemySystem.GetEnemyPosition(), transform, rotationSpeed, Time.deltaTime);
 
         switch (click)
         {
@@ -201,8 +199,6 @@ public class HeroCntrl : MonoBehaviour
             case InputCntrlClickType.START_DRAG_CLICK:
             case InputCntrlClickType.DRAGGING_CLICK:
                 navMeshAgent.destination = mousePostion;
-                //transform.rotation =
-                  //  XLib.System.TurnToTarget(enemyTarget.Position(), transform, rotationSpeed, Time.deltaTime);
                 break;
             case InputCntrlClickType.END_DRAG_CLICK:
                 break;
@@ -227,21 +223,11 @@ public class HeroCntrl : MonoBehaviour
     {
         HeroCntrlState nextState = currentState;
 
-        RaycastHit[] hits = Physics.SphereCastAll(mousePostion, 1.0f, transform.forward, 0.0f, enemyLayerMask);
-
-        if (hits.Length > 0)
+        if (enemySystem.SelectEnemyTarget(mousePostion))
         {
-            Transform selected = hits[0].transform;
-            switch (selected.GetComponent<SelectableCntrl>().GetSelectable())
-            {
-                case SelectableType.Enemy:
-                    enemyTarget = selected.GetComponent<SkeletonCntrl>();
-                    enemySystem.SelectTarget(transform.position, enemyTarget);
-                    nextState = HeroCntrlState.ATTACK;
-                    animator.SetBool("Combat", true);
-                    navMeshAgent.angularSpeed = 0;
-                    break;
-            }
+            nextState = HeroCntrlState.ATTACK;
+            animator.SetBool("Combat", true);
+            navMeshAgent.angularSpeed = 0;
         } else
         {
             navMeshAgent.destination = mousePostion;
@@ -253,11 +239,6 @@ public class HeroCntrl : MonoBehaviour
     public void OnDesengage()
     {
         desengageSw = true;
-    }
-
-    private bool LockedOn()
-    {
-        return (enemyTarget != null);
     }
 
     /**
@@ -314,10 +295,10 @@ public class HeroCntrl : MonoBehaviour
             Gizmos.color = Color.green;
             Gizmos.DrawSphere(transform.position, 0.15f);
 
-            if (enemyTarget != null)
+            if (enemySystem.IsLockedOn())
             {
                 Gizmos.color = Color.cyan;
-                Gizmos.DrawWireSphere(enemyTarget.transform.position, 2.0f);
+                Gizmos.DrawWireSphere(enemySystem.GetEnemyPosition(), 2.0f);
             }
         }
     }

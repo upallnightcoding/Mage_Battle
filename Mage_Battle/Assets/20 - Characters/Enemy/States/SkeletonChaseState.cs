@@ -6,11 +6,11 @@ public class SkeletonChaseState : FiniteState
 {
     public static string TITLE = "Chase";
 
-    private SkeletonCntrl skeletonCntrl = null;
+    private EnemyCntrl enemyCntrl = null;
 
-    public SkeletonChaseState(SkeletonCntrl skeletonCntrl) : base(TITLE)
+    public SkeletonChaseState(EnemyCntrl enemyCntrl) : base(TITLE)
     {
-        this.skeletonCntrl = skeletonCntrl;
+        this.enemyCntrl = enemyCntrl;
     }
 
     public override void OnEnter()
@@ -27,13 +27,13 @@ public class SkeletonChaseState : FiniteState
     {
         string nextState = null;
 
-        if (skeletonCntrl.WithinAttackArea())
+        if (enemyCntrl.WithinAttackArea())
         {
             nextState = SkeletonAttackState.TITLE;
         } 
-        else if (skeletonCntrl.WithinChaseArea())
+        else if (enemyCntrl.WithinChaseArea())
         {
-            skeletonCntrl.MovesTowardPlayer();
+            enemyCntrl.MovesTowardPlayer();
         } 
         else
         {

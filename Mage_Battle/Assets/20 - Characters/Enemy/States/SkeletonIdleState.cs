@@ -6,9 +6,9 @@ public class SkeletonIdleState : FiniteState
 {
     public static string TITLE = "Idle";
 
-    private SkeletonCntrl skeletonCntrl = null;
+    private EnemyCntrl skeletonCntrl = null;
 
-    public SkeletonIdleState(SkeletonCntrl skeletonCntrl) : base(TITLE)
+    public SkeletonIdleState(EnemyCntrl skeletonCntrl) : base(TITLE)
     {
         this.skeletonCntrl = skeletonCntrl;
     }

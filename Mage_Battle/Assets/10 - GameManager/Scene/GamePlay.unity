@@ -11039,6 +11039,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gameData: {fileID: 11400000, guid: 52739c430695e374faf96c8123a6be3b, type: 2}
   player: {fileID: 470280845}
+  enemyLayerMask:
+    serializedVersion: 2
+    m_Bits: 64
   skeleton: {fileID: 11400000, guid: 156fbfa3e89a3154c939630e1f482ced, type: 2}
 --- !u!1 &1004866251
 GameObject:

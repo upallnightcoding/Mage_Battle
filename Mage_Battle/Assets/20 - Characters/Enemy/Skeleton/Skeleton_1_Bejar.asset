@@ -22,3 +22,5 @@ MonoBehaviour:
     type: 3}
   spawnFXPreFab: {fileID: 7075316522860678964, guid: 47dfeb4d23750874ba4c3925c3b6e629,
     type: 3}
+  spellFXPreFab: {fileID: 4175442557221119530, guid: be6de3eab5c616a4ba12f0773bf304d7,
+    type: 3}

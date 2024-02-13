@@ -4,6 +4,19 @@ using UnityEngine;
 
 public abstract class EnemySO : ScriptableObject
 {
+    /*************************************/
+    /*** Abstract Function Definitions ***/
+    /*************************************/
+
+    // Spawn Enemy
+    public abstract GameObject Spawn(Transform player, Vector3 position);
+    public abstract FiniteStateMachine CreateFsm(EnemyCntrl enemyCntrl);
+    public abstract void CastSpell(EnemyCntrl enemyCntrl, Vector3 release);
+
+    /***********************************/
+    /*** Public Property Definitions ***/
+    /***********************************/
+
     // Enemy Name
     public string enemyName;
 
@@ -26,6 +39,15 @@ public abstract class EnemySO : ScriptableObject
     // PreFab PS - Played when enemy is spawned
     public GameObject spawnFXPreFab;
 
-    // Spawn Enemy
-    public abstract GameObject Spawn(Transform player, Vector3 position);
+    // PreFab PS - Played when a spell is casted
+    public GameObject spellFXPreFab;
+
+    /************************/
+    /*** Public Functions ***/
+    /************************/
+
+    public FiniteStateMachine Behavior(EnemyCntrl enemyCntrl)
+    {
+        return(CreateFsm(enemyCntrl));
+    }
 }
