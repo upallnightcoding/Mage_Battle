@@ -7,7 +7,15 @@ public class PointsCntrl : MonoBehaviour
     [SerializeField] private float health = 100.0f;
     [SerializeField] private float xp = 0.0f;
 
-    public void AdjustHealth(float health) => this.health += health;
+    public void TakeDamage(float damage)
+    {
+        health -= damage;
+        Debug.Log($"PointsCntrl: {health}");
+        if (health <= 0.0f)
+        {
+            Destroy(gameObject);
+        }
+    }
 
     public bool Dead() => health <= 0.0f;
 

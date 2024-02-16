@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   spellName: Large Rock
   castPerSec: 2
-  castPerRound: 2
+  castPerRound: 5
   spellForce: 10
   coolDownTimeSec: 5
   spellSprite: {fileID: 21300000, guid: aa2b1dbc81fe5264889f03900102792e, type: 3}

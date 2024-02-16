@@ -11,13 +11,18 @@ public class EnemySystem : MonoBehaviour
     [SerializeField] private EnemySO skeleton;
 
     private EnemyCntrl selectedEnemyTarget = null;
+    private Dictionary<int, GameObject> enemyMap;
 
-    public Vector3 GetEnemyDirection() => (selectedEnemyTarget.Position() - player.position).normalized ;
+    private int enemyId = 0;
+
+    //public Vector3 GetEnemyDirection() => (selectedEnemyTarget.Position() - player.position).normalized ;
     public Vector3 GetEnemyPosition() => selectedEnemyTarget.Position();
-    public bool IsLockedOn() => (selectedEnemyTarget != null);
+    public bool IsSelectedEnemy() => (selectedEnemyTarget != null);
 
     void Start()
     {
+        enemyMap = new Dictionary<int, GameObject>();
+
         SpawnEnemy();
     }
 
@@ -58,6 +63,21 @@ public class EnemySystem : MonoBehaviour
         return (selected);
     }
 
+    private void KillSelectedEnemy(int enemyId)
+    {
+        Debug.Log("EnemyId: " + enemyId);
+
+        if(enemyMap.TryGetValue(enemyId, out GameObject target))
+        {
+            if (target.GetComponent<EnemyCntrl>().IsSelected)
+            {
+                selectedEnemyTarget = null;
+            }
+
+            Destroy(target);
+        }
+    }
+
     /**
     * SelectTarget() - 
     */
@@ -80,10 +100,13 @@ public class EnemySystem : MonoBehaviour
      */
     private void SpawnEnemy()
     {
-        for (int i = 0; i < 3; i++)
+        for (int i = 0; i < 5; i++)
         {
             Vector3 position = XLib.System.RandomPoint(5.0f);
-            skeleton.Spawn(player, position);
+            GameObject newEnemy = skeleton.Spawn(player, position);
+            newEnemy.GetComponent<EnemyCntrl>().EnemyId = ++enemyId;
+            newEnemy.GetComponent<EnemyCntrl>().OnKillEnemy += KillSelectedEnemy;
+            enemyMap.Add(enemyId, newEnemy);
         }
     }
 }

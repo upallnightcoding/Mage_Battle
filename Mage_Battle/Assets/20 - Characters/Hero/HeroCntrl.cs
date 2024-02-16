@@ -23,8 +23,8 @@ public class HeroCntrl : MonoBehaviour
 
     private HeroCntrlState currentState = HeroCntrlState.IDLE;
 
-    public bool IsLeftMousePressed() => inputCntrl.IsLeftMousePressed();
-    public bool IsLeftMouseReleased() => inputCntrl.IsLeftMouseReleased();
+    //public bool IsLeftMousePressed() => inputCntrl.IsLeftMousePressed();
+    //public bool IsLeftMouseReleased() => inputCntrl.IsLeftMouseReleased();
 
     void Awake()
     {
@@ -109,9 +109,10 @@ public class HeroCntrl : MonoBehaviour
 
         //navMeshAgent.destination = enemyTarget.Position();
 
-        if (inputCntrl.HasCast && enemySystem.IsLockedOn())
+        if (inputCntrl.HasCast && enemySystem.IsSelectedEnemy())
         {
-            GameManager.Instance.Cast(castPoint.position, enemySystem.GetEnemyDirection());
+            Vector3 direction = (enemySystem.GetEnemyPosition() - transform.position).normalized;
+            GameManager.Instance.Cast(castPoint.position, direction);
             inputCntrl.HasCast = false;
         }
 
@@ -182,6 +183,8 @@ public class HeroCntrl : MonoBehaviour
      */
     private HeroCntrlState PlayerClickAndAttack(InputCntrlClickType click)
     {
+        if (!enemySystem.IsSelectedEnemy()) return (HeroCntrlState.MOVE);
+
         HeroCntrlState nextState = currentState;
 
         Vector3 mousePostion = GetMousePosition();
@@ -295,7 +298,7 @@ public class HeroCntrl : MonoBehaviour
             Gizmos.color = Color.green;
             Gizmos.DrawSphere(transform.position, 0.15f);
 
-            if (enemySystem.IsLockedOn())
+            if (enemySystem.IsSelectedEnemy())
             {
                 Gizmos.color = Color.cyan;
                 Gizmos.DrawWireSphere(enemySystem.GetEnemyPosition(), 2.0f);

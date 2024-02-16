@@ -27,7 +27,11 @@ public class SkeletonChaseState : FiniteState
     {
         string nextState = null;
 
-        if (enemyCntrl.WithinAttackArea())
+        if (enemyCntrl.IsDead())
+        {
+            nextState = SkeletonDieState.TITLE;
+        }
+        else if (enemyCntrl.WithinAttackArea())
         {
             nextState = SkeletonAttackState.TITLE;
         } 

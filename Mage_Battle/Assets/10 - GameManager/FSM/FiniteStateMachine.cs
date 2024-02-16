@@ -13,6 +13,9 @@ public class FiniteStateMachine
         this.machine = new Dictionary<string, FiniteState>();
     }
 
+    /**
+     * Add() - 
+     */
     public void Add(FiniteState state)
     {
         machine.Add(state.Title, state);

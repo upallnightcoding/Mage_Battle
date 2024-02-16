@@ -12,6 +12,7 @@ public class Skeleton_1_BejarSO : EnemySO
         fsm.Add(new SkeletonIdleState(enemyCntrl));
         fsm.Add(new SkeletonChaseState(enemyCntrl));
         fsm.Add(new SkeletonAttackState(enemyCntrl));
+        fsm.Add(new SkeletonDieState(enemyCntrl));
 
         return (fsm);
     }

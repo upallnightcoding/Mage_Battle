@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using System;
 
 public class EnemyCntrl : MonoBehaviour
 {
@@ -12,6 +13,10 @@ public class EnemyCntrl : MonoBehaviour
     [SerializeField] private GameObject orbPreFab;
 
     public Transform Player { get; set; } = null;
+    public int EnemyId { get; set; } = -1;
+    public bool IsSelected { get; set; } = false;
+
+    public event Action<int> OnKillEnemy = delegate { };
 
     // Components
     private Animator animator = null;
@@ -20,13 +25,13 @@ public class EnemyCntrl : MonoBehaviour
     private float attackArea;
     private float followArea;
 
-    private FiniteStateMachine fsm = null;
+    private float health = 100.0f;
+    private float xp = 0.0f;
 
-    public bool WithinAttackArea() 
-        => DistanceFromPlayer() < attackArea;
-    
-    private float DistanceFromPlayer() 
-        => Vector3.Distance(Player.transform.position, transform.position);
+    private bool isDeadSw = false;
+    private bool stopFSM = false;
+
+    private FiniteStateMachine fsm = null;
 
     // Start is called before the first frame update
     void Awake()
@@ -48,12 +53,28 @@ public class EnemyCntrl : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        fsm.OnUpdate(Time.deltaTime);
+        if (!stopFSM)
+        {
+            fsm.OnUpdate(Time.deltaTime);
+        }
     }
+
+    #region PositionAndMovementFunctions
+
+    public bool WithinAttackArea()
+       => DistanceFromPlayer() < attackArea;
+
+    private float DistanceFromPlayer()
+        => Vector3.Distance(Player.transform.position, transform.position);
 
     public Vector3 Position()
     {
         return (transform.position);
+    }
+
+    public Vector3 DirectionToPlayer()
+    {
+        return ((Player.transform.position - transform.position).normalized);
     }
 
     /**
@@ -72,6 +93,8 @@ public class EnemyCntrl : MonoBehaviour
         return(Player == null ? false : DistanceFromPlayer() < followArea);
     }
 
+    #endregion
+
     /**
      * SetAttackMode() - 
      */
@@ -79,18 +102,48 @@ public class EnemyCntrl : MonoBehaviour
     {
         selectionPreFab.SetActive(true);
         navMeshAgent.SetDestination(position);
+        IsSelected = true;
     }
 
     public void UnSetAttackMode()
     {
         selectionPreFab.SetActive(false);
         navMeshAgent.SetDestination(transform.position);
+        IsSelected = false;
     }
 
-    public Vector3 DirectionToPlayer()
+    #region DamageAndDeathFunctions
+
+    public bool IsDead()
     {
-        return ((Player.transform.position - transform.position).normalized);
+        return (isDeadSw);
     }
+
+    /**
+     * TakeDamage() - 
+     */
+    public void TakeDamage(float damage)
+    {
+        health -= damage;
+
+        if (health <= 0.0f)
+        {
+            isDeadSw = true;
+        }
+    }
+
+    /**
+     * KillEnemy() - 
+     */
+    public void KillEnemy()
+    {
+        stopFSM = true;
+        OnKillEnemy.Invoke(EnemyId);
+    }
+
+    #endregion
+
+    
 
     public void CastSpell()
     {
@@ -113,15 +166,17 @@ public class EnemyCntrl : MonoBehaviour
         animator.SetBool("Attack", value);
     }
 
-    private void OnCollisionEnter(Collision collision)
+    #region CallBackFunctions
+
+    /*private void OnCollisionEnter(Collision collision)
     {
         Debug.Log("On CollisionEnter ...");
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        Debug.Log("On Trigger ...");
-    }
+        Debug.Log($"On Trigger: {other.gameObject.name}");
+    }*/
 
     private void OnDrawGizmos()
     {
@@ -131,4 +186,6 @@ public class EnemyCntrl : MonoBehaviour
         Gizmos.color = Color.green;
         Gizmos.DrawWireSphere(transform.position, attackArea);
     }
+
+    #endregion
 }
