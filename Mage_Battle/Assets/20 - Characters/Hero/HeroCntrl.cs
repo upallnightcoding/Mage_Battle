@@ -56,17 +56,11 @@ public class HeroCntrl : MonoBehaviour
                 break;
         }
          
-        /*if (inputCntrl.HasCast && lockedOn)
-        {
-            GameManager.Instance.Cast(castPoint.position, (enemy.position - transform.position).normalized);
-            inputCntrl.HasCast = false;
-        }
-
         if (inputCntrl.HasSelectedSpell())
         {
             GameManager.Instance.SelectSpell(inputCntrl.SelectSpell);
             inputCntrl.SetReadyForNextSpell();
-        }*/
+        }
     }
 
    
@@ -104,16 +98,13 @@ public class HeroCntrl : MonoBehaviour
         //lookDirection.y = 0.0f;
         //Quaternion rot = Quaternion.LookRotation(lookDirection);
         //transform.rotation = Quaternion.Lerp(transform.rotation, rot, 10.0f * Time.deltaTime);
-
-        
-
         //navMeshAgent.destination = enemyTarget.Position();
 
-        if (inputCntrl.HasCast && enemySystem.IsSelectedEnemy())
+        if (inputCntrl.HasRequestToCast && enemySystem.IsSelectedEnemy())
         {
             Vector3 direction = (enemySystem.GetEnemyPosition() - transform.position).normalized;
             GameManager.Instance.Cast(castPoint.position, direction);
-            inputCntrl.HasCast = false;
+            inputCntrl.HasRequestToCast = false;
         }
 
         UpdateAnimation();
@@ -130,12 +121,7 @@ public class HeroCntrl : MonoBehaviour
 
         nextState = HeroCntrlState.MOVE;*/
 
-        /*if (desengageSw)
-        {
-            nextState = HeroCntrlState.MOVE;
-            desengageSw = false;
-        }*/
-
+       
         ChangeState(nextState);
     }
 

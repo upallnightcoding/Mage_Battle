@@ -18,9 +18,11 @@ public class SpellSO : ScriptableObject
     // The amount of force produced by the spell forward
     public float spellForce;
 
-    [Header("General Attributes")]
     // Wait time for the next round to begin
     public float coolDownTimeSec;
+
+    // Total damage after hitting enemy
+    public float damage;
 
     [Header("Render Attributes")]
     // Spell Sprite

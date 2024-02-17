@@ -19,7 +19,7 @@ public class InputCntrl : MonoBehaviour
 
     private InputCntrlClickType doubleClick = InputCntrlClickType.NO_CLICK;
 
-    public bool HasCast { set; get; } = false;
+    public bool HasRequestToCast { set; get; } = false;
     public int SelectSpell { set; get; } = -1;
     public bool GoOnAttack { set; get; } = false;
 
@@ -41,20 +41,13 @@ public class InputCntrl : MonoBehaviour
     public bool IsRightMouseReleased() => Mouse.current.rightButton.wasReleasedThisFrame;
     public int GetClickCount() => Mouse.current.clickCount.ReadValue();
 
-    /*public bool IsLeftMouseClick()
-    {
-        bool click = true;
-
-        return (click);
-    }*/
-
     /**
      * HasSelectedSpell() - 
      */
-    /*public bool HasSelectedSpell()
+    public bool HasSelectedSpell()
     {
         return (SelectSpell != -1);
-    }*/
+    }
 
    
     /**
@@ -86,7 +79,7 @@ public class InputCntrl : MonoBehaviour
     {
         if (context.performed)
         {
-            HasCast = true;
+            HasRequestToCast = true;
         }
     }
 
@@ -94,7 +87,7 @@ public class InputCntrl : MonoBehaviour
     {
         if (context.performed)
         {
-            HasCast = true;
+            HasRequestToCast = true;
         }
     }
 
