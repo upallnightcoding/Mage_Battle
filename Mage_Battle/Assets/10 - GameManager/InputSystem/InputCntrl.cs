@@ -107,6 +107,22 @@ public class InputCntrl : MonoBehaviour
         }
     }
 
+    public void OnCast3(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+        {
+            SelectSpell = 2;
+        }
+    }
+
+    public void OnCast4(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+        {
+            SelectSpell = 3;
+        }
+    }
+
     public void GoOnAttck(InputAction.CallbackContext context)
     {
         if (context.performed)

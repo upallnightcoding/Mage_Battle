@@ -60,6 +60,24 @@
                     "initialStateCheck": false
                 },
                 {
+                    "name": "Cast3",
+                    "type": "Button",
+                    "id": "4696939e-488b-4f3a-92d4-ed4626862a0f",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Cast4",
+                    "type": "Button",
+                    "id": "84dfff87-ca0c-40a5-aa41-55ac26783272",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
                     "name": "Attack",
                     "type": "Button",
                     "id": "df3c09da-5fbc-41a2-878d-f5b67e445a1e",
@@ -316,7 +334,7 @@
                     "path": "<Keyboard>/1",
                     "interactions": "",
                     "processors": "",
-                    "groups": "",
+                    "groups": "Keyboard&Mouse",
                     "action": "Cast1",
                     "isComposite": false,
                     "isPartOfComposite": false
@@ -327,7 +345,7 @@
                     "path": "<Keyboard>/2",
                     "interactions": "",
                     "processors": "",
-                    "groups": "",
+                    "groups": "Keyboard&Mouse",
                     "action": "Cast2",
                     "isComposite": false,
                     "isPartOfComposite": false
@@ -351,6 +369,28 @@
                     "processors": "",
                     "groups": "",
                     "action": "Disengage",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "50258ddc-eb9c-4d58-a2b7-6e8757e9d067",
+                    "path": "<Keyboard>/3",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard&Mouse",
+                    "action": "Cast3",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "24aa0944-560b-4f18-9170-727608099fb7",
+                    "path": "<Keyboard>/4",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard&Mouse",
+                    "action": "Cast4",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
