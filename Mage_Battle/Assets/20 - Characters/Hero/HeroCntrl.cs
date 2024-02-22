@@ -63,8 +63,6 @@ public class HeroCntrl : MonoBehaviour
         }
     }
 
-   
-
     /**
     * HeroIdleState() - 
     */
@@ -82,8 +80,6 @@ public class HeroCntrl : MonoBehaviour
     private void HeroMoveState(InputCntrlClickType click)
     {
         HeroCntrlState nextState = PlayerClickAndMove(click);
-
-        
 
         UpdateAnimation();
 

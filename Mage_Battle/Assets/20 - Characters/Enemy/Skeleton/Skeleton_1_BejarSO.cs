@@ -18,8 +18,7 @@ public class Skeleton_1_BejarSO : EnemySO
     }
 
     public override GameObject Spawn(Transform player, Vector3 position)
-    {
-        //Debug.Log($"Player: {player}/{position}");
+    { 
         GameObject fx = Instantiate(spawnFXPreFab, position, Quaternion.identity);
         Destroy(fx, 3.0f);
 

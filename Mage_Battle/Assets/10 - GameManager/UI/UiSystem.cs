@@ -9,10 +9,27 @@ public class UiSystem : MonoBehaviour
     [SerializeField] private UiSpellSlotCntrl[] uiSpellSlots;
     [SerializeField] private UiSpellSlotCntrl shieldSlot;
 
+    [SerializeField] private Slider healthBar;
+
+    private float health = 100;
+    private float maxHealth = 100;
+
     // Start is called before the first frame update
     void Start()
     {
         
+    }
+
+    public void OnEnable()
+    {
+        EventManager.Instance.OnSpellCoolDown += UpdateSpellBar;
+        EventManager.Instance.OnSetFullSpellBar += SetFullSpellBar;
+    }
+
+    public void OnDisable()
+    {
+        EventManager.Instance.OnSpellCoolDown -= UpdateSpellBar;
+        EventManager.Instance.OnSetFullSpellBar -= SetFullSpellBar;
     }
 
     /**
@@ -21,6 +38,14 @@ public class UiSystem : MonoBehaviour
     public void NewGame()
     {
         InitAllSpellSlots();
+
+        healthBar.value = 1.0f;
+    }
+
+    public void updateHealth(float value)
+    {
+        health += value;
+        healthBar.value = health / maxHealth;
     }
 
     /**
@@ -61,15 +86,16 @@ public class UiSystem : MonoBehaviour
         uiSpellSlots[castInfo.ActiveSpell].SetDisplayBar(castInfo.Drain);
     }
 
-    public void SetFullSpellBar(int slot)
+    private void SetFullSpellBar(int slot)
     {
         uiSpellSlots[slot].SetDisplayColor(Color.red);
         uiSpellSlots[slot].SetDisplayBar(1.0f);
     }
 
-    public void UpdateSpellBar(int slot, float percentage)
+    private void UpdateSpellBar(int slot, float percentage)
     {
         uiSpellSlots[slot].SetDisplayColor(Color.yellow);
         uiSpellSlots[slot].SetDisplayBar(percentage);
     }
 }
+

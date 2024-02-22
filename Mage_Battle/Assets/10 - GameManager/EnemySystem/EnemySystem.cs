@@ -15,13 +15,14 @@ public class EnemySystem : MonoBehaviour
 
     private int enemyId = 0;
 
-    //public Vector3 GetEnemyDirection() => (selectedEnemyTarget.Position() - player.position).normalized ;
     public Vector3 GetEnemyPosition() => selectedEnemyTarget.Position();
     public bool IsSelectedEnemy() => (selectedEnemyTarget != null);
 
     void Start()
     {
         enemyMap = new Dictionary<int, GameObject>();
+
+        EventManager.Instance.OnKillEnemy += KillSelectedEnemy;
 
         SpawnEnemy();
     }
@@ -50,7 +51,7 @@ public class EnemySystem : MonoBehaviour
         bool selected = false;
 
         RaycastHit[] hits = Physics.SphereCastAll(position, 1.0f, transform.forward, 0.0f, enemyLayerMask);
-
+        
         // If a target is in range, select the target
         if (hits.Length > 0)
         {
@@ -63,26 +64,12 @@ public class EnemySystem : MonoBehaviour
         return (selected);
     }
 
-    private void KillSelectedEnemy(int enemyId)
-    {
-        Debug.Log("EnemyId: " + enemyId);
-
-        if(enemyMap.TryGetValue(enemyId, out GameObject target))
-        {
-            if (target.GetComponent<EnemyCntrl>().IsSelected)
-            {
-                selectedEnemyTarget = null;
-            }
-
-            Destroy(target);
-        }
-    }
-
     /**
     * SelectTarget() - 
     */
     private void SelectTarget(EnemyCntrl target)
     {
+        Debug.Log("Select Target Routine: " + selectedEnemyTarget);
         if (selectedEnemyTarget != target)
         {
             if (selectedEnemyTarget != null)
@@ -90,10 +77,37 @@ public class EnemySystem : MonoBehaviour
                 selectedEnemyTarget.UnSetAttackMode();
             }
 
+            Debug.Log($"Setup New Selection : {target.EnemyId}");
             selectedEnemyTarget = target;
             selectedEnemyTarget.SetAttackMode(player.position);
         }
     }
+
+    private void KillSelectedEnemy(int enemyId)
+    {
+        Debug.Log("EnemyId: " + enemyId);
+
+        if(enemyMap.TryGetValue(enemyId, out GameObject target))
+        {
+            enemyMap.Remove(enemyId);
+
+            if (target.GetComponent<EnemyCntrl>().IsSelected)
+            {
+                Vector3 position = target.transform.position;
+                target.gameObject.layer = LayerMask.NameToLayer("Default");
+                Destroy(target);
+                selectedEnemyTarget = null;
+                Debug.Log("Selection New Target");
+                SelectEnemyTarget(position);
+            } else
+            {
+                Destroy(target);
+            }
+
+        }
+    }
+
+    
 
     /**
      * SpawnEnemy() - 
@@ -105,7 +119,7 @@ public class EnemySystem : MonoBehaviour
             Vector3 position = XLib.System.RandomPoint(5.0f);
             GameObject newEnemy = skeleton.Spawn(player, position);
             newEnemy.GetComponent<EnemyCntrl>().EnemyId = ++enemyId;
-            newEnemy.GetComponent<EnemyCntrl>().OnKillEnemy += KillSelectedEnemy;
+            
             enemyMap.Add(enemyId, newEnemy);
         }
     }

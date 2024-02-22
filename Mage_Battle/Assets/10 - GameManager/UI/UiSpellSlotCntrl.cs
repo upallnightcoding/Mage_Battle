@@ -12,18 +12,6 @@ public class UiSpellSlotCntrl : MonoBehaviour
     [SerializeField] private Image coolDownColor;
     [SerializeField] private GameObject spellFrameSelected;
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
     public void SetSpellSlot(int slot, SpellSO spell)
     {
         SetSprite(spell.spellSprite);

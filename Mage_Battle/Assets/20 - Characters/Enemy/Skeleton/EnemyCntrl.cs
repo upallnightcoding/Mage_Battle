@@ -16,8 +16,6 @@ public class EnemyCntrl : MonoBehaviour
     public int EnemyId { get; set; } = -1;
     public bool IsSelected { get; set; } = false;
 
-    public event Action<int> OnKillEnemy = delegate { };
-
     // Components
     private Animator animator = null;
     private NavMeshAgent navMeshAgent;
@@ -138,12 +136,11 @@ public class EnemyCntrl : MonoBehaviour
     public void KillEnemy()
     {
         stopFSM = true;
-        OnKillEnemy.Invoke(EnemyId);
+        //OnKillEnemy.Invoke(EnemyId);
+        EventManager.Instance.InvokeOnKillEnemy(EnemyId);
     }
 
     #endregion
-
-    
 
     public void CastSpell()
     {
