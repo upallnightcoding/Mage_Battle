@@ -56,11 +56,11 @@ public class HeroCntrl : MonoBehaviour
                 break;
         }
          
-        if (inputCntrl.HasSelectedSpell())
-        {
-            GameManager.Instance.SelectSpell(inputCntrl.SelectSpell);
-            inputCntrl.SetReadyForNextSpell();
-        }
+        //if (inputCntrl.HasSelectedSpell())
+        //{
+            //GameManager.Instance.SelectSpell(inputCntrl.SelectSpell);
+          //  inputCntrl.SetReadyForNextSpell();
+        //}
     }
 
     /**
@@ -96,11 +96,11 @@ public class HeroCntrl : MonoBehaviour
         //transform.rotation = Quaternion.Lerp(transform.rotation, rot, 10.0f * Time.deltaTime);
         //navMeshAgent.destination = enemyTarget.Position();
 
-        if (inputCntrl.HasRequestToCast && enemySystem.IsSelectedEnemy())
+        if (inputCntrl.HasSelectedSpell() && enemySystem.IsSelectedEnemy())
         {
             Vector3 direction = (enemySystem.GetEnemyPosition() - transform.position).normalized;
-            GameManager.Instance.Cast(castPoint.position, direction);
-            inputCntrl.HasRequestToCast = false;
+            GameManager.Instance.Cast(inputCntrl.SelectSpell, castPoint.position, direction);
+            inputCntrl.ReSetSelectedSpell();
         }
 
         UpdateAnimation();

@@ -42,41 +42,31 @@ public class GameManager : MonoBehaviour
     {
         uiCntrl.NewGame();
 
-        for (int i = 0; i < gameData.testSpells.Length; i++)
+        for (int slot = 0; slot < gameData.testSpells.Length; slot++)
         {
-            Set(gameData.testSpells[i]);
+            Set(slot, gameData.testSpells[slot]);
         }
     }
 
     /**
      * Cast() - 
      */
-    public void Cast(Vector3 position, Vector3 direction)
+    public void Cast(int slot, Vector3 position, Vector3 direction)
     {
-        CastInfo castInfo = spellSystem.Cast(position, direction);
+        CastInfo castInfo = spellSystem.Cast(slot, position, direction);
 
-        uiCntrl.DrainSpellBar(castInfo);
-    }
-
-    /**
-     * SelectSpell() - 
-     */
-    public void SelectSpell(int slot)
-    {
-        spellSystem.Select(slot);
+        uiCntrl.DrainSpellBar(slot, castInfo);
     }
 
     /**
      * Set() - 
      */
-    public void Set(SpellSO spell)
+    public void Set(int slot, SpellSO spell)
     {
-        int slot = spellSystem.Add(spell);
+        spellSystem.Add(slot, spell);
 
         uiCntrl.Set(slot, spell);
     }
-
-    
 }
 
 

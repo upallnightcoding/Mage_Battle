@@ -24,3 +24,4 @@ MonoBehaviour:
     type: 3}
   spellFXPreFab: {fileID: 4175442557221119530, guid: be6de3eab5c616a4ba12f0773bf304d7,
     type: 3}
+  expPoints: 10

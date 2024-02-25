@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class UiSystem : MonoBehaviour
 {
@@ -10,9 +11,12 @@ public class UiSystem : MonoBehaviour
     [SerializeField] private UiSpellSlotCntrl shieldSlot;
 
     [SerializeField] private Slider healthBar;
+    [SerializeField] private TMP_Text expPoints;
 
     private float health = 100;
     private float maxHealth = 100;
+
+    private int expPointsValue = 0;
 
     // Start is called before the first frame update
     void Start()
@@ -24,12 +28,14 @@ public class UiSystem : MonoBehaviour
     {
         EventManager.Instance.OnSpellCoolDown += UpdateSpellBar;
         EventManager.Instance.OnSetFullSpellBar += SetFullSpellBar;
+        EventManager.Instance.OnKillEnemy += UpdateExpPoints;
     }
 
     public void OnDisable()
     {
         EventManager.Instance.OnSpellCoolDown -= UpdateSpellBar;
         EventManager.Instance.OnSetFullSpellBar -= SetFullSpellBar;
+        EventManager.Instance.OnKillEnemy -= UpdateExpPoints;
     }
 
     /**
@@ -42,10 +48,16 @@ public class UiSystem : MonoBehaviour
         healthBar.value = 1.0f;
     }
 
-    public void updateHealth(float value)
+    public void UpdateHealth(float value)
     {
         health += value;
         healthBar.value = health / maxHealth;
+    }
+
+    public void UpdateExpPoints(int enemyId, int value)
+    {
+        expPointsValue += value;
+        expPoints.text = expPointsValue.ToString();
     }
 
     /**
@@ -81,9 +93,9 @@ public class UiSystem : MonoBehaviour
         SetFullSpellBar(slot);
     }
 
-    public void DrainSpellBar(CastInfo castInfo)
+    public void DrainSpellBar(int slot, CastInfo castInfo)
     {
-        uiSpellSlots[castInfo.ActiveSpell].SetDisplayBar(castInfo.Drain);
+        uiSpellSlots[slot].SetDisplayBar(castInfo.Drain);
     }
 
     private void SetFullSpellBar(int slot)

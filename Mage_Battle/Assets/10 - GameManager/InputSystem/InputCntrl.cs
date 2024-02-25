@@ -19,7 +19,7 @@ public class InputCntrl : MonoBehaviour
 
     private InputCntrlClickType doubleClick = InputCntrlClickType.NO_CLICK;
 
-    public bool HasRequestToCast { set; get; } = false;
+    //public bool HasRequestToCast { set; get; } = false;
     public int SelectSpell { set; get; } = -1;
     public bool GoOnAttack { set; get; } = false;
 
@@ -34,30 +34,15 @@ public class InputCntrl : MonoBehaviour
     // Mouse Device Functions
     //-----------------------
     public Vector2 GetMousePosition() => Mouse.current.position.ReadValue();
-    //public bool IsLeftMousePressed() => Mouse.current.leftButton.isPressed;
+    public int GetClickCount() => Mouse.current.clickCount.ReadValue();
     public bool IsLeftMousePressed() => Mouse.current.leftButton.wasPressedThisFrame;
     public bool IsLeftMouseReleased() => Mouse.current.leftButton.wasReleasedThisFrame;
-    public bool IsRightMousePressed() => Mouse.current.rightButton.isPressed;
-    public bool IsRightMouseReleased() => Mouse.current.rightButton.wasReleasedThisFrame;
-    public int GetClickCount() => Mouse.current.clickCount.ReadValue();
+    //public bool IsRightMousePressed() => Mouse.current.rightButton.isPressed;
+    //public bool IsRightMouseReleased() => Mouse.current.rightButton.wasReleasedThisFrame;
 
-    /**
-     * HasSelectedSpell() - 
-     */
-    public bool HasSelectedSpell()
-    {
-        return (SelectSpell != -1);
-    }
+    public bool HasSelectedSpell() => SelectSpell != -1;
 
-   
-    /**
-     * SetReadyForNextSpell() - Sets the input system ready to receive the
-     * next spell cast.
-     */
-    public void SetReadyForNextSpell()
-    {
-        SelectSpell = -1;
-    }
+    public void ReSetSelectedSpell() => SelectSpell = -1;
 
     public void OnMove(InputAction.CallbackContext context)
     {
@@ -79,7 +64,7 @@ public class InputCntrl : MonoBehaviour
     {
         if (context.performed)
         {
-            HasRequestToCast = true;
+            //HasRequestToCast = true;
         }
     }
 
@@ -87,7 +72,7 @@ public class InputCntrl : MonoBehaviour
     {
         if (context.performed)
         {
-            HasRequestToCast = true;
+            //HasRequestToCast = true;
         }
     }
 
@@ -137,6 +122,22 @@ public class InputCntrl : MonoBehaviour
         {
             OnDesengageEvent.Invoke();
         }
+    }
+
+    public InputCntrlClickType GetMouseClick()
+    {
+        InputCntrlClickType click = InputCntrlClickType.NO_CLICK;
+
+        if (GetClickCount() != 2)
+        {
+
+        }
+        else
+        {
+            click = GetClick();
+        }
+
+        return (click);
     }
 
     public InputCntrlClickType GetClick()

@@ -68,7 +68,6 @@ public class SpellCasterCntrl
             {
                 GameObject cast = Object.Instantiate(spell.modelPreFab, spawnPoint, Quaternion.identity);
                 cast.transform.forward = forward;
-                //cast.GetComponent<Rigidbody>().AddForce(forward * spell.spellForce, ForceMode.Impulse);
                 GameObject.Destroy(cast, 1.0f);
 
                 lastCastingRateSec = Time.time;
@@ -138,7 +137,7 @@ public class SpellCasterCntrl
 
 public class CastInfo
 {
-    public int ActiveSpell { get; set; }
+    //public int ActiveSpell { get; set; }
     public float Drain { get; set; }
     public bool IsCastsLeft { get; set; }
 }

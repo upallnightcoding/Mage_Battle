@@ -5,7 +5,7 @@ using UnityEngine;
 public class SpellSystem : MonoBehaviour
 {
     private SpellCasterCntrl[] spellCaster = null;
-    private int activeSpell = -1;
+    //private int activeSpell = -1;
     private CastInfo castInfo;
 
     void Awake()
@@ -22,17 +22,15 @@ public class SpellSystem : MonoBehaviour
     /**
      * Cast() - 
      */
-    public CastInfo Cast(Vector3 spawnPoint, Vector3 forward)
+    public CastInfo Cast(int slot, Vector3 spawnPoint, Vector3 forward)
     {
-        if (GetSpellCaster().ReadyToCast)
+        if (spellCaster[slot].ReadyToCast)
         {
-            castInfo.ActiveSpell = activeSpell;
-
-            GetSpellCaster().Cast(castInfo, spawnPoint, forward);
+            spellCaster[slot].Cast(castInfo, spawnPoint, forward);
 
             if (!castInfo.IsCastsLeft)
             {
-                StartCoroutine(GetSpellCaster().CoolDownPeriod());
+                StartCoroutine(spellCaster[slot].CoolDownPeriod());
             }
         }
 
@@ -42,28 +40,12 @@ public class SpellSystem : MonoBehaviour
     /**
      * Add() - 
      */
-    public int Add(SpellSO spell)
+    public void Add(int slot, SpellSO spell)
     {
-        activeSpell += 1;
-
-        GetSpellCaster().Set(spell);
-
-        return (activeSpell);
+        spellCaster[slot].Set(spell);
     }
 
-    /**
-     * Select() - 
-     */
-    public void Select(int slot)
-    {
-        activeSpell = slot;
-    }
-
-    private SpellCasterCntrl GetSpellCaster()
-    {
-        return(spellCaster[activeSpell]);
-    }
-
+   
     /**
      * CoolDownPeriod() - 
      */

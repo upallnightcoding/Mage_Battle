@@ -83,7 +83,7 @@ public class EnemySystem : MonoBehaviour
         }
     }
 
-    private void KillSelectedEnemy(int enemyId)
+    private void KillSelectedEnemy(int enemyId, int expPoints)
     {
         Debug.Log("EnemyId: " + enemyId);
 

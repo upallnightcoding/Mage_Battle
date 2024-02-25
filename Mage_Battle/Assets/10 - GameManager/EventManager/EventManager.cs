@@ -12,7 +12,7 @@ public class EventManager
 
     // Enemy Events
     //--------------------------------------------------
-    public event Action<int> OnKillEnemy = delegate { };
+    public event Action<int, int> OnKillEnemy = delegate { };
 
     public static EventManager Instance
     {
@@ -33,7 +33,7 @@ public class EventManager
 
     public void InvokeOnSetFullSpellBar(int slot) => OnSetFullSpellBar.Invoke(slot);
 
-    public void InvokeOnKillEnemy(int enemyId) => OnKillEnemy(enemyId);
+    public void InvokeOnKillEnemy(int enemyId, int expPoints) => OnKillEnemy(enemyId, expPoints);
 }
 
 

@@ -42,6 +42,9 @@ public abstract class EnemySO : ScriptableObject
     // PreFab PS - Played when a spell is casted
     public GameObject spellFXPreFab;
 
+    // Experience points
+    public int expPoints;
+
     /************************/
     /*** Public Functions ***/
     /************************/

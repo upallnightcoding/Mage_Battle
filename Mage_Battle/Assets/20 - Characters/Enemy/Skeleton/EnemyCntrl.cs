@@ -136,8 +136,7 @@ public class EnemyCntrl : MonoBehaviour
     public void KillEnemy()
     {
         stopFSM = true;
-        //OnKillEnemy.Invoke(EnemyId);
-        EventManager.Instance.InvokeOnKillEnemy(EnemyId);
+        EventManager.Instance.InvokeOnKillEnemy(EnemyId, enemy.expPoints);
     }
 
     #endregion
