@@ -19,6 +19,10 @@ public class HeroCntrl : MonoBehaviour
 
     private bool desengageSw = false;
 
+    private int health = 100;
+
+    private bool isDeadSw = false;
+
     //private Vector3 mousePostion;
 
     private HeroCntrlState currentState = HeroCntrlState.IDLE;
@@ -55,12 +59,24 @@ public class HeroCntrl : MonoBehaviour
                 HeroAttackState(click);
                 break;
         }
-         
-        //if (inputCntrl.HasSelectedSpell())
-        //{
-            //GameManager.Instance.SelectSpell(inputCntrl.SelectSpell);
-          //  inputCntrl.SetReadyForNextSpell();
-        //}
+    }
+
+    public void TakeDamage(int damage)
+    {
+        health -= damage;
+            
+        EventManager.Instance.InvokeOnHeroDamage((float)health / 100.0f);
+
+        if (health <= 0.0f)
+        {
+            isDeadSw = true;
+            EventManager.Instance.InvokeOnHeroDeath();
+        } 
+    }
+
+    public bool IsDead()
+    {
+        return (isDeadSw);
     }
 
     /**

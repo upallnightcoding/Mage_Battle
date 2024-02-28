@@ -13,8 +13,7 @@ public class UiSystem : MonoBehaviour
     [SerializeField] private Slider healthBar;
     [SerializeField] private TMP_Text expPoints;
 
-    private float health = 100;
-    private float maxHealth = 100;
+    [SerializeField] private GameObject yourDeadPanel;
 
     private int expPointsValue = 0;
 
@@ -29,6 +28,8 @@ public class UiSystem : MonoBehaviour
         EventManager.Instance.OnSpellCoolDown += UpdateSpellBar;
         EventManager.Instance.OnSetFullSpellBar += SetFullSpellBar;
         EventManager.Instance.OnKillEnemy += UpdateExpPoints;
+        EventManager.Instance.OnHeroDamage += UpdateHealth;
+        EventManager.Instance.OnHeroDeath += HeroDeath;
     }
 
     public void OnDisable()
@@ -36,6 +37,8 @@ public class UiSystem : MonoBehaviour
         EventManager.Instance.OnSpellCoolDown -= UpdateSpellBar;
         EventManager.Instance.OnSetFullSpellBar -= SetFullSpellBar;
         EventManager.Instance.OnKillEnemy -= UpdateExpPoints;
+        EventManager.Instance.OnHeroDamage -= UpdateHealth;
+        EventManager.Instance.OnHeroDeath -= HeroDeath;
     }
 
     /**
@@ -48,16 +51,20 @@ public class UiSystem : MonoBehaviour
         healthBar.value = 1.0f;
     }
 
-    public void UpdateHealth(float value)
+    private void UpdateHealth(float value)
     {
-        health += value;
-        healthBar.value = health / maxHealth;
+        healthBar.value = value;
     }
 
-    public void UpdateExpPoints(int enemyId, int value)
+    private void UpdateExpPoints(int enemyId, int value)
     {
         expPointsValue += value;
         expPoints.text = expPointsValue.ToString();
+    }
+
+    private void HeroDeath()
+    {
+        yourDeadPanel.SetActive(true);
     }
 
     /**

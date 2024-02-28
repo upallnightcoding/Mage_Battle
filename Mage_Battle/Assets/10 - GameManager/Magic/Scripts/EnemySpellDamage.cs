@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SpellDamage : MonoBehaviour
+public class EnemySpellDamage : MonoBehaviour
 {
     [SerializeField] private SpellSO spell;
 
@@ -11,6 +11,6 @@ public class SpellDamage : MonoBehaviour
         if (other.TryGetComponent<EnemyCntrl>(out EnemyCntrl enemyCntrl))
         {
             enemyCntrl.TakeDamage(spell.damage);
-        }
+        } 
     }
 }
