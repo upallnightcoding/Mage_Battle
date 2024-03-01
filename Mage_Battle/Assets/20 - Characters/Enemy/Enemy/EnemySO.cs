@@ -24,6 +24,7 @@ public abstract class EnemySO : ScriptableObject
     public GameObject enemyPreFab;
 
     [Header("Combat")]
+
     // Size a area an enemy will follow
     public float followArea;   
 

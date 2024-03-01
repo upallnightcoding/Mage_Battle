@@ -114,7 +114,7 @@ public class EnemySystem : MonoBehaviour
      */
     private void SpawnEnemy()
     {
-        for (int i = 0; i < 5; i++)
+        for (int i = 0; i < 10; i++)
         {
             Vector3 position = XLib.System.RandomPoint(5.0f);
             GameObject newEnemy = skeleton.Spawn(player, position);
