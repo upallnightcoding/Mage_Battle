@@ -142,7 +142,6 @@ public class HeroCntrl : MonoBehaviour
      */
     private void ChangeState(HeroCntrlState newState)
     {
-        //if ((newState != HeroCntrlState.NO_STATE) && (newState != currentState))
         if (newState != currentState)
         {
             currentState = newState;
