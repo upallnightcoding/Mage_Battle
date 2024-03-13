@@ -14,8 +14,8 @@ public class InputCntrl : MonoBehaviour
     private SingleClickState currentSingleClickState = SingleClickState.IDLE_STATE;
     private SingleClickState prevCurrentSingleClickState = SingleClickState.IDLE_STATE;
 
-    private Vector2 playerMovement;
-    private Vector2 playerAim;
+    //private Vector2 playerMovement;
+    //private Vector2 playerAim;
 
     //private InputCntrlClickType doubleClick = InputCntrlClickType.NO_CLICK;
 
@@ -26,10 +26,12 @@ public class InputCntrl : MonoBehaviour
     private float clickTimeStamp;
     private bool firstDoubleClick = true;
 
+    //InputCntrlClickType prevClick = InputCntrlClickType.NO_CLICK;
+
     // Player Movement & Aim Functions
     //--------------------------------
-    public Vector2 GetPlayerMovement() => playerMovement;
-    public Vector2 GetPlayerAim() => playerAim;
+    //public Vector2 GetPlayerMovement() => playerMovement;
+    //public Vector2 GetPlayerAim() => playerAim;
 
     // Mouse Device Functions
     //-----------------------
@@ -133,12 +135,6 @@ public class InputCntrl : MonoBehaviour
             currentSingleClickState = SingleClickState.FIRE_STATE;
         }
 
-        if (currentSingleClickState != prevCurrentSingleClickState)
-        {
-            Debug.Log($"Current Click: {currentSingleClickState}");
-            prevCurrentSingleClickState = currentSingleClickState;
-        }
-
         switch (currentSingleClickState)
         {
             case SingleClickState.IDLE_STATE:
@@ -151,7 +147,9 @@ public class InputCntrl : MonoBehaviour
                 break;
             case SingleClickState.FIRE_STATE:
                 click = InputCntrlClickType.FIRE_CLICK;
-                currentSingleClickState = SingleClickState.IDLE_STATE;
+                currentSingleClickState =
+                    (prevCurrentSingleClickState == SingleClickState.DRAGGING_STATE) 
+                    ? SingleClickState.DRAGGING_STATE : SingleClickState.IDLE_STATE;
                 break;
             case SingleClickState.TIME_RUNNING_STATE:
                 break;
@@ -172,6 +170,8 @@ public class InputCntrl : MonoBehaviour
                 click = InputCntrlClickType.END_DRAG_CLICK;
                 break;
         }
+
+        prevCurrentSingleClickState = currentSingleClickState;
 
         return (click);
     }

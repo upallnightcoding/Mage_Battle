@@ -8,6 +8,7 @@ public class PlayerCntrl : MonoBehaviour
     [SerializeField] private InputCntrl inputCntrl;
     [SerializeField] private EnemySystem enemySystem;
     [SerializeField] private float rotationSpeed;
+    [SerializeField] private Transform castPoint;
 
     private NavMeshAgent navMeshAgent;
     private Animator animator;
@@ -25,8 +26,119 @@ public class PlayerCntrl : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        InputCntrlClickType click = inputCntrl.GetClick();
+        ProcessInputCmds(inputCntrl.GetClick());
+    }
 
+    private void ProcessInputCmds(InputCntrlClickType click)
+    {
+        switch (click)
+        {
+            case InputCntrlClickType.SINGLE_CLICK:
+                SelectEnemyOrMove();
+                break;
+            case InputCntrlClickType.FIRE_CLICK:
+                FireState();
+                break;
+            case InputCntrlClickType.DRAGGING_CLICK:
+                MoveToState(click);
+                break;
+            case InputCntrlClickType.DOUBLE_CLICK:
+                DisengageFromEnemy();
+                break;
+        }
+
+        UpdateAnimation();
+    }
+
+    /**
+     * DisengageFromEnemy() - Executes the functions needed to disengage
+     * from the enemy.  This include unselecting the current enemy and
+     * allowing for turning based on current movement direction.
+     */
+    private void DisengageFromEnemy()
+    {
+        animator.SetBool("Combat", false);
+        navMeshAgent.angularSpeed = 1000;
+        enemySystem.UnSelectTarget();
+        MoveTo(GetMousePosition());
+    }
+
+    /**
+     * SelectEnemyOrMove() -
+     */
+    private void SelectEnemyOrMove()
+    {
+        bool isAttack = enemySystem.SelectEnemyTarget(GetMousePosition());
+
+        if (isAttack)
+        {
+            animator.SetBool("Combat", true);
+            navMeshAgent.angularSpeed = 0;
+        } else
+        {
+            MoveTo(GetMousePosition());
+        }
+    }
+
+    /**
+     * FireState() - 
+     */
+    private void FireState()
+    {
+        CastASpell();
+    }
+
+    /**
+     * MoveToState() - 
+     */
+    private PlayerState MoveToState(InputCntrlClickType click)
+    {
+        MoveTo(GetMousePosition());
+
+        return (PlayerState.IDLE);
+    }
+
+    private void CastASpell()
+    {
+        Vector3 direction = gameObject.transform.forward;
+
+        if (enemySystem.IsSelectedEnemy())
+        {
+            direction = (enemySystem.GetEnemyPosition() - transform.position).normalized;
+        }
+
+        GameManager.Instance.Cast(inputCntrl.SelectSpell, castPoint.position, direction);
+        inputCntrl.ReSetSelectedSpell();
+    }
+
+    private void UpdateAnimation()
+    {
+        Vector3 velocity = navMeshAgent.velocity;
+        Vector3 localVelocity = transform.InverseTransformDirection(velocity);
+
+        if (enemySystem.IsSelectedEnemy())
+        {
+            transform.rotation =
+                XLib.System.TurnToTarget(enemySystem.GetEnemyPosition(), transform, rotationSpeed, Time.deltaTime);
+
+            animator.SetFloat("Horizontal", localVelocity.x);
+            animator.SetFloat("Vertical", localVelocity.z);
+        }
+        else
+        {
+            animator.SetFloat("Speed", localVelocity.z);
+        }
+    }
+
+    private void MoveTo(Vector3 postion)
+    {
+        navMeshAgent.destination = postion;
+    }
+
+    //==============================================================================
+
+    private void FMS1(InputCntrlClickType click)
+    {
         if (click != prevClick)
         {
             //Debug.Log($"Click: {click.ToString()}");
@@ -35,14 +147,14 @@ public class PlayerCntrl : MonoBehaviour
 
         if (state != prevState)
         {
-            Debug.Log($"State: {state.ToString()}");
+            Debug.Log($"Player State: {state.ToString()}");
             prevState = state;
         }
 
-        switch(state)
+        switch (state)
         {
             case PlayerState.IDLE:
-                state = IdleState(click);
+                state = xxxIdleState(click);
                 break;
             case PlayerState.MOVE_TO:
                 state = MoveToState(click);
@@ -73,6 +185,10 @@ public class PlayerCntrl : MonoBehaviour
             case InputCntrlClickType.END_DRAG_CLICK:
                 state = PlayerState.IDLE;
                 break;
+            case InputCntrlClickType.FIRE_CLICK:
+                CastASpell();
+                state = PlayerState.DRAG;
+                break;
         }
 
         return (state);
@@ -94,40 +210,26 @@ public class PlayerCntrl : MonoBehaviour
         return (state);
     }
 
-    private PlayerState IdleState(InputCntrlClickType click)
+    private PlayerState xxxIdleState(InputCntrlClickType click)
     {
         switch(click)
         {
             case InputCntrlClickType.SINGLE_CLICK:
-                state = AttackOrMove(PlayerState.MOVE_TO);
+                state = AttackMoveState(PlayerState.MOVE_TO);
                 break;
             case InputCntrlClickType.START_DRAG_CLICK:
                 state = PlayerState.DRAG;
                 break;
+            case InputCntrlClickType.FIRE_CLICK:
+                CastASpell();
+                state = PlayerState.IDLE;
+                break;
         }
 
         return (state);
     }
 
-    private PlayerState AttackOrMove(PlayerState nextMove)
-    {
-        bool isAttack = enemySystem.SelectEnemyTarget(GetMousePosition());
-
-        if (isAttack)
-        {
-            animator.SetBool("Combat", true);
-            navMeshAgent.angularSpeed = 0;
-            state = PlayerState.ATTACK;
-        }
-        else
-        {
-            state = nextMove;
-        }
-
-        return (state);
-    }
-
-    private PlayerState MoveToState(InputCntrlClickType click)
+    private PlayerState xxxMoveToState(InputCntrlClickType click)
     {
         MoveTo(GetMousePosition());
 
@@ -145,7 +247,7 @@ public class PlayerCntrl : MonoBehaviour
                 state = PlayerState.DRAG_ATTACK;
                 break;
             case InputCntrlClickType.SINGLE_CLICK:
-                state = AttackOrMove(PlayerState.ATTACK_MOVE_TO);
+                state = AttackMoveState(PlayerState.ATTACK_MOVE_TO);
                 break;
             case InputCntrlClickType.DOUBLE_CLICK:
                 animator.SetBool("Combat", false);
@@ -154,13 +256,12 @@ public class PlayerCntrl : MonoBehaviour
                 state = PlayerState.MOVE_TO;
                 break;
             case InputCntrlClickType.FIRE_CLICK:
-                Debug.Log($"Fire: {inputCntrl.SelectSpell}");
-                inputCntrl.ReSetSelectedSpell();
+                CastASpell();
                 state = PlayerState.ATTACK;
                 break;
         }
 
-        if (state != PlayerState.MOVE_TO)
+        if (state != PlayerState.MOVE_TO && enemySystem.IsSelectedEnemy())
         {
             transform.rotation =
                 XLib.System.TurnToTarget(enemySystem.GetEnemyPosition(), transform, rotationSpeed, Time.deltaTime);
@@ -174,6 +275,8 @@ public class PlayerCntrl : MonoBehaviour
         return (state);
     }
 
+    
+
     private PlayerState AttackMoveToState(InputCntrlClickType click)
     {
         MoveTo(GetMousePosition());
@@ -184,15 +287,7 @@ public class PlayerCntrl : MonoBehaviour
     /**
      * MoveTo() - 
      */
-    private void MoveTo(Vector3 postion)
-    {
-        navMeshAgent.destination = postion;
-
-        Vector3 velocity = navMeshAgent.velocity;
-        Vector3 localVelocity = transform.InverseTransformDirection(velocity);
-
-        animator.SetFloat("Speed", localVelocity.z);
-    }
+   
 
     private Vector3 GetMousePosition()
     {

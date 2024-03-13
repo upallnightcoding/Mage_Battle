@@ -50,7 +50,7 @@ public class EnemySystem : MonoBehaviour
     {
         bool selected = false;
 
-        RaycastHit[] hits = Physics.SphereCastAll(position, 1.0f, transform.forward, 0.0f, enemyLayerMask);
+        RaycastHit[] hits = Physics.SphereCastAll(position, 1.5f, transform.forward, 0.0f, enemyLayerMask);
         
         // If a target is in range, select the target
         if (hits.Length > 0)
