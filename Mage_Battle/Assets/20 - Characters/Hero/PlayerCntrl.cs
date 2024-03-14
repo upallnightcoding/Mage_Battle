@@ -137,42 +137,7 @@ public class PlayerCntrl : MonoBehaviour
 
     //==============================================================================
 
-    private void FMS1(InputCntrlClickType click)
-    {
-        if (click != prevClick)
-        {
-            //Debug.Log($"Click: {click.ToString()}");
-            prevClick = click;
-        }
-
-        if (state != prevState)
-        {
-            Debug.Log($"Player State: {state.ToString()}");
-            prevState = state;
-        }
-
-        switch (state)
-        {
-            case PlayerState.IDLE:
-                state = xxxIdleState(click);
-                break;
-            case PlayerState.MOVE_TO:
-                state = MoveToState(click);
-                break;
-            case PlayerState.ATTACK:
-                state = AttackState(click);
-                break;
-            case PlayerState.DRAG:
-                state = DragState(click);
-                break;
-            case PlayerState.DRAG_ATTACK:
-                state = DragAttackState(click);
-                break;
-            case PlayerState.ATTACK_MOVE_TO:
-                state = AttackMoveToState(click);
-                break;
-        }
-    }
+  
 
     private PlayerState DragState(InputCntrlClickType click)
     {
@@ -210,25 +175,6 @@ public class PlayerCntrl : MonoBehaviour
         return (state);
     }
 
-    private PlayerState xxxIdleState(InputCntrlClickType click)
-    {
-        switch(click)
-        {
-            case InputCntrlClickType.SINGLE_CLICK:
-                state = AttackMoveState(PlayerState.MOVE_TO);
-                break;
-            case InputCntrlClickType.START_DRAG_CLICK:
-                state = PlayerState.DRAG;
-                break;
-            case InputCntrlClickType.FIRE_CLICK:
-                CastASpell();
-                state = PlayerState.IDLE;
-                break;
-        }
-
-        return (state);
-    }
-
     private PlayerState xxxMoveToState(InputCntrlClickType click)
     {
         MoveTo(GetMousePosition());
@@ -239,41 +185,7 @@ public class PlayerCntrl : MonoBehaviour
     /**
      * AttackState() - 
      */
-    private PlayerState AttackState(InputCntrlClickType click)
-    {
-        switch(click)
-        {
-            case InputCntrlClickType.START_DRAG_CLICK:
-                state = PlayerState.DRAG_ATTACK;
-                break;
-            case InputCntrlClickType.SINGLE_CLICK:
-                state = AttackMoveState(PlayerState.ATTACK_MOVE_TO);
-                break;
-            case InputCntrlClickType.DOUBLE_CLICK:
-                animator.SetBool("Combat", false);
-                navMeshAgent.angularSpeed = 1000;
-                enemySystem.UnSelectTarget();
-                state = PlayerState.MOVE_TO;
-                break;
-            case InputCntrlClickType.FIRE_CLICK:
-                CastASpell();
-                state = PlayerState.ATTACK;
-                break;
-        }
-
-        if (state != PlayerState.MOVE_TO && enemySystem.IsSelectedEnemy())
-        {
-            transform.rotation =
-                XLib.System.TurnToTarget(enemySystem.GetEnemyPosition(), transform, rotationSpeed, Time.deltaTime);
-
-            Vector3 velocity = navMeshAgent.velocity;
-            Vector3 localVelocity = transform.InverseTransformDirection(velocity);
-            animator.SetFloat("Horizontal", localVelocity.x);
-            animator.SetFloat("Vertical", localVelocity.z);
-        }
-
-        return (state);
-    }
+   
 
     
 
