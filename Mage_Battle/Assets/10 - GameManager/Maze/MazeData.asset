@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9d1f1eb497ce68c4e96f3daee4aadbe9, type: 3}
+  m_Name: MazeData
+  m_EditorClassIdentifier: 
+  height: 5
+  width: 5
+  cellSize: 5
+  mazeWallFw: {fileID: 4153194024047703827, guid: 0a787006230ce224ebdacd4698d4596d,
+    type: 3}
+  mazePathFloorFw: {fileID: 7726656697179344338, guid: bae7380c955eb594b87fd798a5d2b8da,
+    type: 3}
+  buildingColumnPreFab: {fileID: 9145760730500472944, guid: 777607b2fc464d14ba6a6f9820165f86,
+    type: 3}
+  buildingFloor01PreFab: {fileID: 5247064455343713228, guid: d05746c3f1588d84d9532631b9cc9365,
+    type: 3}
+  mazeWallsSegmentsPreFab: []
