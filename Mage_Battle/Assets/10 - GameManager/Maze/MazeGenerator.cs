@@ -127,6 +127,11 @@ public class MazeGenerator
             cell.MarkAsVisited();
             mazeStack.Push(cell);
         }
+
+        GetMazeCell(3, 3).MarkAsVisited();
+        GetMazeCell(4, 3).MarkAsVisited();
+        GetMazeCell(4, 4).MarkAsVisited();
+        GetMazeCell(3, 4).MarkAsVisited();
     }
 
     /**

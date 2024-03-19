@@ -16,15 +16,25 @@ public class MazeData : ScriptableObject
     public static readonly uint W = 1;
 
     private readonly string CENTER_ANCHOR = "CenterAnchor";
-    private readonly string NORTH_ANCHOR = "NorthAnchor";
-    private readonly string SOUTH_ANCHOR = "SouthAnchor";
-    private readonly string EAST_ANCHOR = "EastAnchor";
-    private readonly string WEST_ANCHOR = "WestAnchor";
+    private readonly string NORTH_WALL_ANCHOR = "NorthAnchor";
+    private readonly string SOUTH_WALL_ANCHOR = "SouthAnchor";
+    private readonly string EAST_WALL_ANCHOR = "EastAnchor";
+    private readonly string WEST_WALL_ANCHOR = "WestAnchor";
+
+    private readonly string NORTH_TILE_ANCHOR = "TileNorthAnchor";
+    private readonly string SOUTH_TILE_ANCHOR = "TileSouthAnchor";
+    private readonly string EAST_TILE_ANCHOR = "TileEastAnchor";
+    private readonly string WEST_TILE_ANCHOR = "TileWestAnchor";
 
     private readonly string NORTH_EAST_ANCHOR = "NorthEastAnchor";
     private readonly string NORTH_WEST_ANCHOR = "NorthWestAnchor";
     private readonly string SOUTH_EAST_ANCHOR = "SouthEastAnchor";
     private readonly string SOUTH_WEST_ANCHOR = "SouthWestAnchor";
+
+    private readonly string NORTH_EAST_TILE_ANCHOR = "TileNorthEastAnchor";
+    private readonly string NORTH_WEST_TILE_ANCHOR = "TileNorthWestAnchor";
+    private readonly string SOUTH_EAST_TILE_ANCHOR = "TileSouthEastAnchor";
+    private readonly string SOUTH_WEST_TILE_ANCHOR = "TileSouthWestAnchor";
 
     [Header("Maze Data")]
     public int height;
@@ -38,6 +48,8 @@ public class MazeData : ScriptableObject
     [Header("PreFabs")]
     public GameObject buildingColumnPreFab;
     public GameObject buildingFloor01PreFab;
+
+    public GameObject[] tileList;
 
     [Space]
     public GameObject[] mazeWallsSegmentsPreFab;
@@ -66,11 +78,19 @@ public class MazeData : ScriptableObject
 
         GameObject path = framework
             .Blueprint(mazePathFloorFw)
-            .Assemble(buildingFloor01PreFab, CENTER_ANCHOR)
-            .Assemble(northWall, NORTH_ANCHOR)
-            .Assemble(southWall, SOUTH_ANCHOR)
-            .Assemble(eastWall, EAST_ANCHOR)
-            .Assemble(westWall, WEST_ANCHOR)
+            .Assemble(tileList, CENTER_ANCHOR)
+            .Assemble(tileList, NORTH_TILE_ANCHOR)
+            .Assemble(tileList, SOUTH_TILE_ANCHOR)
+            .Assemble(tileList, EAST_TILE_ANCHOR)
+            .Assemble(tileList, WEST_TILE_ANCHOR)
+            .Assemble(tileList, NORTH_EAST_TILE_ANCHOR)
+            .Assemble(tileList, NORTH_WEST_TILE_ANCHOR)
+            .Assemble(tileList, SOUTH_EAST_TILE_ANCHOR)
+            .Assemble(tileList, SOUTH_WEST_TILE_ANCHOR)
+            .Assemble(northWall, NORTH_WALL_ANCHOR)
+            .Assemble(southWall, SOUTH_WALL_ANCHOR)
+            .Assemble(eastWall, EAST_WALL_ANCHOR)
+            .Assemble(westWall, WEST_WALL_ANCHOR)
             //.Assemble(buildingColumnPreFab, NORTH_EAST_ANCHOR, (columns & NE) > 0)
             //.Assemble(buildingColumnPreFab, NORTH_WEST_ANCHOR, (columns & NW) > 0)
             //.Assemble(buildingColumnPreFab, SOUTH_EAST_ANCHOR, (columns & SE) > 0)
@@ -86,7 +106,7 @@ public class MazeData : ScriptableObject
             .Assemble(buildingColumnPreFab, "ColumnAnchor")
             //.Assemble(mazeWallsSegmentsPreFab, "Wall1Anchor")
             //.Assemble(mazeWallsSegmentsPreFab, "Wall2Anchor")
-            .Build(new Vector3(0.0f, 90.0f, 0.0f));
+            .Build(new Vector3(0.0f, 0.0f, 0.0f));
 
         return(wall);
     }
@@ -98,8 +118,8 @@ public class MazeData : ScriptableObject
             .Assemble(buildingColumnPreFab, "ColumnAnchor")
             //.Assemble(mazeWallsSegmentsPreFab, "Wall1Anchor")
             //.Assemble(mazeWallsSegmentsPreFab, "Wall2Anchor")
-            .Build();
+            .Build(new Vector3(0.0f, 90.0f, 0.0f));
 
-        return(null);
+        return(wall);
     }
 }

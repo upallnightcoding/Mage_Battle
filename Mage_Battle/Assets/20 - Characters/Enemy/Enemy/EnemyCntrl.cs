@@ -176,11 +176,11 @@ public class EnemyCntrl : MonoBehaviour
 
     private void OnDrawGizmos()
     {
-        Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(transform.position, followArea);
+        //Gizmos.color = Color.red;
+        //Gizmos.DrawWireSphere(transform.position, followArea);
 
-        Gizmos.color = Color.green;
-        Gizmos.DrawWireSphere(transform.position, attackArea);
+        //Gizmos.color = Color.green;
+        //Gizmos.DrawWireSphere(transform.position, attackArea);
     }
 
     #endregion

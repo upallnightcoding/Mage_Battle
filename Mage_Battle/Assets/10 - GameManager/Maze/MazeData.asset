@@ -12,15 +12,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9d1f1eb497ce68c4e96f3daee4aadbe9, type: 3}
   m_Name: MazeData
   m_EditorClassIdentifier: 
-  height: 5
-  width: 5
-  cellSize: 5
+  height: 8
+  width: 8
+  cellSize: 15
   mazeWallFw: {fileID: 4153194024047703827, guid: 0a787006230ce224ebdacd4698d4596d,
     type: 3}
-  mazePathFloorFw: {fileID: 7726656697179344338, guid: bae7380c955eb594b87fd798a5d2b8da,
+  mazePathFloorFw: {fileID: 7726656697179344338, guid: dd75f6ab0a164d54b973527809623cb7,
     type: 3}
   buildingColumnPreFab: {fileID: 9145760730500472944, guid: 777607b2fc464d14ba6a6f9820165f86,
     type: 3}
   buildingFloor01PreFab: {fileID: 5247064455343713228, guid: d05746c3f1588d84d9532631b9cc9365,
     type: 3}
+  tileList:
+  - {fileID: 8450987972900505263, guid: 2d5ae7e1425c7f349892f17cdb6e3579, type: 3}
+  - {fileID: 483836859089858567, guid: 442551f508c4e3b46b8c70481d05f1d2, type: 3}
+  - {fileID: 1156848430216161326, guid: bde3bfc628fa2624aa071acc250cc75c, type: 3}
+  - {fileID: 7763471746193696427, guid: b49086b09371bb145bcc5e16ed29a52b, type: 3}
   mazeWallsSegmentsPreFab: []
