@@ -26,15 +26,34 @@ public class MazeData : ScriptableObject
     private readonly string EAST_TILE_ANCHOR = "TileEastAnchor";
     private readonly string WEST_TILE_ANCHOR = "TileWestAnchor";
 
+    private readonly string NORTH_TILE_ANCHOR1 = "TileNorthAnchor1";
+    private readonly string SOUTH_TILE_ANCHOR1 = "TileSouthAnchor1";
+    private readonly string EAST_TILE_ANCHOR1 = "TileEastAnchor1";
+    private readonly string WEST_TILE_ANCHOR1 = "TileWestAnchor1";
+
     private readonly string NORTH_EAST_ANCHOR = "NorthEastAnchor";
     private readonly string NORTH_WEST_ANCHOR = "NorthWestAnchor";
     private readonly string SOUTH_EAST_ANCHOR = "SouthEastAnchor";
     private readonly string SOUTH_WEST_ANCHOR = "SouthWestAnchor";
 
     private readonly string NORTH_EAST_TILE_ANCHOR = "TileNorthEastAnchor";
+    private readonly string NORTH_EAST_TILE_ANCHORA = "TileNorthEastAnchorA";
+    private readonly string NORTH_EAST_TILE_ANCHORB = "TileNorthEastAnchorB";
     private readonly string NORTH_WEST_TILE_ANCHOR = "TileNorthWestAnchor";
+    private readonly string NORTH_WEST_TILE_ANCHORA = "TileNorthWestAnchorA";
+    private readonly string NORTH_WEST_TILE_ANCHORB = "TileNorthWestAnchorB";
     private readonly string SOUTH_EAST_TILE_ANCHOR = "TileSouthEastAnchor";
+    private readonly string SOUTH_EAST_TILE_ANCHORA = "TileSouthEastAnchorA";
+    private readonly string SOUTH_EAST_TILE_ANCHORB = "TileSouthEastAnchorB";
+
     private readonly string SOUTH_WEST_TILE_ANCHOR = "TileSouthWestAnchor";
+    private readonly string SOUTH_WEST_TILE_ANCHORA = "TileSouthWestAnchorA";
+    private readonly string SOUTH_WEST_TILE_ANCHORB = "TileSouthWestAnchorB";
+
+    private readonly string NORTH_EAST_TILE_ANCHOR1 = "TileNorthEastAnchor1";
+    private readonly string NORTH_WEST_TILE_ANCHOR1 = "TileNorthWestAnchor1";
+    private readonly string SOUTH_EAST_TILE_ANCHOR1 = "TileSouthEastAnchor1";
+    private readonly string SOUTH_WEST_TILE_ANCHOR1 = "TileSouthWestAnchor1";
 
     [Header("Maze Data")]
     public int height;
@@ -50,6 +69,8 @@ public class MazeData : ScriptableObject
     public GameObject buildingFloor01PreFab;
 
     public GameObject[] tileList;
+
+    public GameObject parent;
 
     [Space]
     public GameObject[] mazeWallsSegmentsPreFab;
@@ -67,7 +88,7 @@ public class MazeData : ScriptableObject
         return(maze);
     }
 
-    public void CreatePath(Framework framework, MazeCell mazeCell, Vector3 position, uint columns, uint walls)
+    public GameObject CreatePath(Framework framework, MazeCell mazeCell, Vector3 position, uint columns, uint walls)
     {
         GameObject northWall = (mazeCell.HasNorthWall() && ((walls & N) > 0)) ? CreateNorthSouthWall(framework) : null;
         GameObject southWall = (mazeCell.HasSouthWall() && ((walls & S) > 0)) ? CreateNorthSouthWall(framework) : null;
@@ -83,10 +104,33 @@ public class MazeData : ScriptableObject
             .Assemble(tileList, SOUTH_TILE_ANCHOR)
             .Assemble(tileList, EAST_TILE_ANCHOR)
             .Assemble(tileList, WEST_TILE_ANCHOR)
+            .Assemble(tileList, NORTH_TILE_ANCHOR1)
+            .Assemble(tileList, SOUTH_TILE_ANCHOR1)
+            .Assemble(tileList, EAST_TILE_ANCHOR1)
+            .Assemble(tileList, WEST_TILE_ANCHOR1)
+
             .Assemble(tileList, NORTH_EAST_TILE_ANCHOR)
             .Assemble(tileList, NORTH_WEST_TILE_ANCHOR)
+
             .Assemble(tileList, SOUTH_EAST_TILE_ANCHOR)
+            .Assemble(tileList, SOUTH_EAST_TILE_ANCHORA)
+            .Assemble(tileList, SOUTH_EAST_TILE_ANCHORB)
+
             .Assemble(tileList, SOUTH_WEST_TILE_ANCHOR)
+            .Assemble(tileList, SOUTH_WEST_TILE_ANCHORA)
+            .Assemble(tileList, SOUTH_WEST_TILE_ANCHORB)
+
+            .Assemble(tileList, NORTH_EAST_TILE_ANCHORA)
+            .Assemble(tileList, NORTH_EAST_TILE_ANCHORB)
+
+            .Assemble(tileList, NORTH_WEST_TILE_ANCHORA)
+            .Assemble(tileList, NORTH_WEST_TILE_ANCHORB)
+
+            .Assemble(tileList, NORTH_EAST_TILE_ANCHOR1)
+            .Assemble(tileList, NORTH_WEST_TILE_ANCHOR1)
+            .Assemble(tileList, SOUTH_EAST_TILE_ANCHOR1)
+            .Assemble(tileList, SOUTH_WEST_TILE_ANCHOR1)
+
             .Assemble(northWall, NORTH_WALL_ANCHOR)
             .Assemble(southWall, SOUTH_WALL_ANCHOR)
             .Assemble(eastWall, EAST_WALL_ANCHOR)
@@ -96,7 +140,10 @@ public class MazeData : ScriptableObject
             //.Assemble(buildingColumnPreFab, SOUTH_EAST_ANCHOR, (columns & SE) > 0)
             //.Assemble(buildingColumnPreFab, SOUTH_WEST_ANCHOR, (columns & SW) > 0)
             .Position(position)
+            .Parent(parent.transform)
             .Build();
+
+        return (path);
     }
 
     private GameObject CreateNorthSouthWall(Framework framework)

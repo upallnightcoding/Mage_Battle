@@ -34,12 +34,18 @@ public class MazeCntrl : MonoBehaviour
     {
         Vector3 position = Vector3.zero;
         float cellSize = mazeData.cellSize;
+        GameObject parent = new GameObject("World");
 
         for (int row = 0; row < maze.Height; row++) 
         {
             for (int col = 0; col < maze.Width; col++)
             {
-                CreateMazePath(maze, col, row, position);
+                GameObject path = CreateMazePath(maze, col, row, position);
+                if (path != null)
+                {
+                    path.transform.SetParent(parent.transform);
+                }
+
                 position.x += cellSize;
             }
 
@@ -48,9 +54,10 @@ public class MazeCntrl : MonoBehaviour
         }
     }
 
-    private void CreateMazePath(MazeGenerator maze, int col, int row, Vector3 position) 
+    private GameObject CreateMazePath(MazeGenerator maze, int col, int row, Vector3 position) 
     {
         MazeCell mazeCell = maze.GetMazeCell(col, row);
+        GameObject path = null;
 
         if ((mazeCell != null) && (mazeCell.IsVisited()))
         {
@@ -58,8 +65,10 @@ public class MazeCntrl : MonoBehaviour
             uint columns = colsAndwalls.Item1;
             uint walls = colsAndwalls.Item2;
 
-            mazeData.CreatePath(framework, mazeCell, position, columns, walls);
+            path = mazeData.CreatePath(framework, mazeCell, position, columns, walls);
         }
+
+        return (path);
     }
 
     private Tuple<uint, uint> ColumnsAndWalls(int col, int row) 
