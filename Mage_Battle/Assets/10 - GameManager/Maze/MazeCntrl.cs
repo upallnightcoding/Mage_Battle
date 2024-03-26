@@ -34,7 +34,8 @@ public class MazeCntrl : MonoBehaviour
     {
         Vector3 position = Vector3.zero;
         float cellSize = mazeData.cellSize;
-        GameObject parent = new GameObject("World");
+        GameObject world = new GameObject("World");
+        //world.AddComponent<navmeshs
 
         for (int row = 0; row < maze.Height; row++) 
         {
@@ -43,7 +44,7 @@ public class MazeCntrl : MonoBehaviour
                 GameObject path = CreateMazePath(maze, col, row, position);
                 if (path != null)
                 {
-                    path.transform.SetParent(parent.transform);
+                    path.transform.SetParent(world.transform);
                 }
 
                 position.x += cellSize;

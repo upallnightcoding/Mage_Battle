@@ -33,9 +33,6 @@ public class Framework
             if (IsAPreFab(addition))
             {
                 newPart = Object.Instantiate(addition, anchor);
-                //newPart.transform.(new Vector3(), Quaternion.identity);
-                //newPart.transform.parent = model.transform;
-                Debug.Log($"Anchor: {anchor}");
             } else {
                 addition.transform.position = anchor.transform.position;
                 addition.transform.parent = anchor;

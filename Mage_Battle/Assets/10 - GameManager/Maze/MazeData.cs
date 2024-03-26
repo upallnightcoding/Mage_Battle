@@ -140,7 +140,7 @@ public class MazeData : ScriptableObject
             //.Assemble(buildingColumnPreFab, SOUTH_EAST_ANCHOR, (columns & SE) > 0)
             //.Assemble(buildingColumnPreFab, SOUTH_WEST_ANCHOR, (columns & SW) > 0)
             .Position(position)
-            .Parent(parent.transform)
+            //.Parent(parent.transform)
             .Build();
 
         return (path);

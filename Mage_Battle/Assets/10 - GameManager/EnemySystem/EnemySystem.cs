@@ -11,8 +11,11 @@ public class EnemySystem : MonoBehaviour
     [SerializeField] private EnemySO skeleton;
 
     private EnemyCntrl selectedEnemyTarget = null;
+
+    // Contains a map of all existing enemies
     private Dictionary<int, GameObject> enemyMap;
 
+    // Enemy index counter
     private int enemyId = 0;
 
     public Vector3 GetEnemyPosition() => selectedEnemyTarget.Position();
@@ -69,7 +72,6 @@ public class EnemySystem : MonoBehaviour
     */
     private void SelectTarget(EnemyCntrl target)
     {
-        Debug.Log("Select Target Routine: " + selectedEnemyTarget);
         if (selectedEnemyTarget != target)
         {
             if (selectedEnemyTarget != null)
@@ -77,9 +79,8 @@ public class EnemySystem : MonoBehaviour
                 selectedEnemyTarget.UnSetAttackMode();
             }
 
-            Debug.Log($"Setup New Selection : {target.EnemyId}");
             selectedEnemyTarget = target;
-            selectedEnemyTarget.SetAttackMode(player.position);
+            selectedEnemyTarget.SetAsEnemyTarget(player.position);
         }
     }
 

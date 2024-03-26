@@ -48,7 +48,12 @@ public class EnemyCntrl : MonoBehaviour
         selectionPreFab.SetActive(false);
     }
 
-    // Update is called once per frame
+    /**
+     * Update() - Game update loop that will continue until the "Stop FSM"
+     * flag has been set.  This can happen when the enemy dies and the
+     * FSM needs to terminate all processing.  This loop feeds the FSM
+     * and continues all FSM state transitions.
+     */
     void Update()
     {
         if (!stopFSM)
@@ -56,8 +61,6 @@ public class EnemyCntrl : MonoBehaviour
             fsm.OnUpdate(Time.deltaTime);
         }
     }
-
-    #region PositionAndMovementFunctions
 
     public bool WithinAttackArea()
        => DistanceFromPlayer() < attackArea;
@@ -91,18 +94,22 @@ public class EnemyCntrl : MonoBehaviour
         return(Player == null ? false : DistanceFromPlayer() < followArea);
     }
 
-    #endregion
-
     /**
-     * SetAttackMode() - 
+     * SetAsEnemyTarget() - Set the current enemy as the spell
+     * target.  The target indicator is turned on, the selection
+     * flag is set and the enemy is moved to a new destination.
      */
-    public void SetAttackMode(Vector3 position)
+    public void SetAsEnemyTarget(Vector3 position)
     {
         selectionPreFab.SetActive(true);
         navMeshAgent.SetDestination(position);
         IsSelected = true;
     }
 
+    /**
+     * UnSetAttackMode() - Unsets the current enemy as the 
+     * spell target.
+     */
     public void UnSetAttackMode()
     {
         selectionPreFab.SetActive(false);
@@ -110,8 +117,11 @@ public class EnemyCntrl : MonoBehaviour
         IsSelected = false;
     }
 
-    #region DamageAndDeathFunctions
-
+    /**
+     * IsDead() - Predicate function that returns if the enemy has
+     * been killed or not.  This function returns true, if the enemy
+     * is dead, otherwise false.
+     */
     public bool IsDead()
     {
         return (isDeadSw);
@@ -138,8 +148,6 @@ public class EnemyCntrl : MonoBehaviour
         stopFSM = true;
         EventManager.Instance.InvokeOnKillEnemy(EnemyId, enemy.expPoints);
     }
-
-    #endregion
 
     public void CastSpell()
     {
