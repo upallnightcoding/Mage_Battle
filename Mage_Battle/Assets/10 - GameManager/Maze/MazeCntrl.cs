@@ -35,13 +35,25 @@ public class MazeCntrl : MonoBehaviour
         Vector3 position = Vector3.zero;
         float cellSize = mazeData.cellSize;
         GameObject world = new GameObject("World");
-        //world.AddComponent<navmeshs
 
         for (int row = 0; row < maze.Height; row++) 
         {
             for (int col = 0; col < maze.Width; col++)
             {
-                GameObject path = CreateMazePath(maze, col, row, position);
+                MazeCell mazeCell = maze.GetMazeCell(col, row);
+                GameObject path = null;
+
+                if ((row == 0) && (col == 0))
+                {
+                    MazePathStart mazePathStart = new MazePathStart(mazeData);
+                    path = mazePathStart.RenderPath(mazeCell, position);
+                } 
+                else
+                {
+                    MazePathBasic mazePathBasic = new MazePathBasic(mazeData);
+                    path = mazePathBasic.RenderPath(mazeCell, position);
+                }
+
                 if (path != null)
                 {
                     path.transform.SetParent(world.transform);
@@ -55,7 +67,7 @@ public class MazeCntrl : MonoBehaviour
         }
     }
 
-    private GameObject CreateMazePath(MazeGenerator maze, int col, int row, Vector3 position) 
+    private GameObject xxxCreateMazePath(MazeGenerator maze, int col, int row, Vector3 position) 
     {
         MazeCell mazeCell = maze.GetMazeCell(col, row);
         GameObject path = null;
@@ -66,7 +78,7 @@ public class MazeCntrl : MonoBehaviour
             uint columns = colsAndwalls.Item1;
             uint walls = colsAndwalls.Item2;
 
-            path = mazeData.CreatePath(framework, mazeCell, position, columns, walls);
+            //path = mazeData.CreatePath(framework, mazeCell, position, columns, walls);
         }
 
         return (path);

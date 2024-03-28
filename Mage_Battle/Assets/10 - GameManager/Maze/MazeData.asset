@@ -14,10 +14,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   height: 8
   width: 8
-  cellSize: 25
-  mazeWallFw: {fileID: 4153194024047703827, guid: 1354d6fb8c43a584ea6639bc07889004,
+  cellSize: 15
+  mazeWallFw: {fileID: 4153194024047703827, guid: 0a787006230ce224ebdacd4698d4596d,
     type: 3}
-  mazePathFloorFw: {fileID: 7726656697179344338, guid: a0f658224e6113c4cadb8ce21d58908c,
+  mazePathFloorFw: {fileID: 7726656697179344338, guid: dd75f6ab0a164d54b973527809623cb7,
     type: 3}
   buildingColumnPreFab: {fileID: 9145760730500472944, guid: 777607b2fc464d14ba6a6f9820165f86,
     type: 3}
@@ -39,4 +39,7 @@ MonoBehaviour:
   - {fileID: 6956938317574264833, guid: 732454fd90865b145a0bbe89efe380a9, type: 3}
   - {fileID: 8309059475399222589, guid: c0f0eb7d1cd38bf4891dddd8d44b0105, type: 3}
   - {fileID: 6809433686238394819, guid: 28201f4ddfc8fb24ca92d39f02390420, type: 3}
+  parent: {fileID: 0}
   mazeWallsSegmentsPreFab: []
+  mazeStartPathPreFab: {fileID: 3854572293781709633, guid: 265452770faa0f44798f49ca3b57dbf4,
+    type: 3}
