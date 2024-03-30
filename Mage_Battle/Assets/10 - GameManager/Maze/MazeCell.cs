@@ -5,7 +5,9 @@ using UnityEngine;
 public class MazeCell 
 {
     // Type of Cell
-    public MazeCellType type    { get; private set; } = MazeCellType.UNVISITED;
+    //public MazeCellType type    { get; private set; } = MazeCellType.UNVISITED;
+    private MazeCellType type = MazeCellType.UNVISITED;
+    public MazePathType PathType { get; set; }  = MazePathType.NONE;
 
     // References to north, south, east and west walls of a cell
     public MazeCell NorthWall   { get; private set; } = null;
@@ -22,7 +24,7 @@ public class MazeCell
     public void MarkAsVisited() => type = MazeCellType.VISITED; 
 
     public bool IsUnVisited()   => (type == MazeCellType.UNVISITED); 
-    public bool IsVisited()     => (type == MazeCellType.VISITED); 
+    public bool IsVisited()     => (type == MazeCellType.VISITED);
 
     public bool IsEqual(MazeCell target) => 
         ((target.Col == Col) && (target.Row == Row));
@@ -87,4 +89,12 @@ public enum MazeCellType
     UNVISITED,
     VISITED,
     ARENA
+}
+
+public enum MazePathType
+{
+    START, 
+    PATH, 
+    END,
+    NONE
 }

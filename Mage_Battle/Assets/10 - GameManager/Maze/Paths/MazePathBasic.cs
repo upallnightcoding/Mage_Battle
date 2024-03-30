@@ -4,23 +4,6 @@ using UnityEngine;
 
 public class MazePathBasic : MazePath
 {
-    private readonly string CENTER_ANCHOR = "CenterAnchor";
-
-    private readonly string NORTH_TILE_ANCHOR = "TileNorthAnchor";
-    private readonly string SOUTH_TILE_ANCHOR = "TileSouthAnchor";
-    private readonly string EAST_TILE_ANCHOR = "TileEastAnchor";
-    private readonly string WEST_TILE_ANCHOR = "TileWestAnchor";
-
-    private readonly string NORTH_WALL_ANCHOR = "NorthAnchor";
-    private readonly string SOUTH_WALL_ANCHOR = "SouthAnchor";
-    private readonly string EAST_WALL_ANCHOR = "EastAnchor";
-    private readonly string WEST_WALL_ANCHOR = "WestAnchor";
-
-    private readonly string NORTH_EAST_TILE_ANCHOR = "TileNorthEastAnchor";
-    private readonly string NORTH_WEST_TILE_ANCHOR = "TileNorthWestAnchor";
-    private readonly string SOUTH_EAST_TILE_ANCHOR = "TileSouthEastAnchor";
-    private readonly string SOUTH_WEST_TILE_ANCHOR = "TileSouthWestAnchor";
-
     private GameObject[] tilePreFab = null;
     private GameObject pathFrmWrk = null;
     private GameObject wallFrmWrk = null;

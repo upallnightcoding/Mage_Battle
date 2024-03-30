@@ -43,3 +43,11 @@ MonoBehaviour:
   mazeWallsSegmentsPreFab: []
   mazeStartPathPreFab: {fileID: 3854572293781709633, guid: 265452770faa0f44798f49ca3b57dbf4,
     type: 3}
+  mazeBlankPathPreFab: {fileID: 7964111818889831510, guid: d9bf5e8cf9064944a9ca62110bfee1ab,
+    type: 3}
+  blankMazeStart: {fileID: 7964111818889831510, guid: 1ab66c62e81ce51409480ee737cfb4de,
+    type: 3}
+  blankMazeEnd: {fileID: 7964111818889831510, guid: 4972f90943c991c46af7518d0ac2f091,
+    type: 3}
+  blankMazePath: {fileID: 7964111818889831510, guid: c5fce6146a966294bb2dbfaea6dc704d,
+    type: 3}

@@ -43,15 +43,28 @@ public class MazeCntrl : MonoBehaviour
                 MazeCell mazeCell = maze.GetMazeCell(col, row);
                 GameObject path = null;
 
-                if ((row == 0) && (col == 0))
+                MazePathBlank mazePathBlank = null;
+
+                Debug.Log($"PathType: {mazeCell.PathType}");
+
+                switch (mazeCell.PathType)
                 {
-                    MazePathStart mazePathStart = new MazePathStart(mazeData);
-                    path = mazePathStart.RenderPath(mazeCell, position);
-                } 
-                else
-                {
-                    MazePathBasic mazePathBasic = new MazePathBasic(mazeData);
-                    path = mazePathBasic.RenderPath(mazeCell, position);
+                    case MazePathType.START:
+                        mazePathBlank = new MazePathBlank(mazeData, mazeData.blankMazeStart);
+                        path = mazePathBlank.RenderPath(mazeCell, position);
+                        break;
+                    case MazePathType.PATH:
+                        mazePathBlank = new MazePathBlank(mazeData, mazeData.blankMazePath);
+                        path = mazePathBlank.RenderPath(mazeCell, position);
+                        break;
+                    case MazePathType.END:
+                        mazePathBlank = new MazePathBlank(mazeData, mazeData.blankMazeEnd);
+                        path = mazePathBlank.RenderPath(mazeCell, position);
+                        break;
+                    default:
+                        MazePathBasic mazePathBasic = new MazePathBasic(mazeData);
+                        path = mazePathBasic.RenderPath(mazeCell, position);
+                        break;
                 }
 
                 if (path != null)

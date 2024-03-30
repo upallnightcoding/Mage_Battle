@@ -14,7 +14,10 @@ public class MazeGenerator
 
     private IDictionary<MazeIndex, MazeCell> maze;
     private Stack<MazeCell> mazeStack;
-    private List<MazeCell> mazeList;
+    private Stack<MazeCell> maxStack;
+    private int maxCellCount = 0;
+    private int cellCount = 0;
+    //private List<MazeCell> mazeList;
 
     public MazeGenerator(int width, int height)
     {
@@ -22,6 +25,7 @@ public class MazeGenerator
         this.Height = height;
 
         mazeStack = new Stack<MazeCell>();
+        maxStack = new Stack<MazeCell>();
         maze = new Dictionary<MazeIndex, MazeCell>();
     }
 
@@ -29,12 +33,16 @@ public class MazeGenerator
     {
         InitMazeGenerator();
 
-        while (!MazeStackEmpty()) 
+        while (WalkMaze(PickAValidNeighbor(mazeStack.Peek())));
+
+        SetMazePath();
+
+        /*while (!MazeStackEmpty()) 
         {
             WalkMaze(PickAValidNeighbor(mazeStack.Peek()));
-        }
+        }*/
 
-        mazeList = new List<MazeCell>(maze.Values);
+        //mazeList = new List<MazeCell>(maze.Values);
     }
 
     public MazeCell GetMazeCell(int col, int row)
@@ -48,20 +56,55 @@ public class MazeGenerator
         return(mazeCell);
     }
 
-    public MazeCell PickRandomCell()
+    private void SetMazePath()
     {
-        return(mazeList[UnityEngine.Random.Range(0, mazeList.Count)]);
+        int count = 0;
+
+        foreach (MazeCell mazeCell in maxStack)
+        {
+            count += 1;
+
+            if (count == 1)
+            {
+                mazeCell.PathType = MazePathType.START;
+            }
+            else if (count == maxStack.Count)
+            {
+                mazeCell.PathType = MazePathType.END;
+            }
+            else
+            {
+                mazeCell.PathType = MazePathType.PATH;
+            }
+        }
     }
 
-    private void WalkMaze(MazeCell neighbor)
+    /*public MazeCell PickRandomCell()
+    {
+        return(mazeList[UnityEngine.Random.Range(0, mazeList.Count)]);
+    }*/
+
+    private bool WalkMaze(MazeCell neighbor)
     {
         if (neighbor != null) 
         {
             neighbor.MarkAsVisited();
+            cellCount += 1;
             mazeStack.Push(neighbor);
+
+            if (mazeStack.Count > maxStack.Count)
+            {
+                maxStack.Clear();
+                foreach (MazeCell mazeCell in mazeStack)
+                {
+                    maxStack.Push(mazeCell);
+                }
+            }
         } else {
             mazeStack.Pop();
         }
+
+        return (cellCount < maxCellCount);
     }
 
     private MazeCell PickAValidNeighbor(MazeCell currentMazeCell)
@@ -109,6 +152,8 @@ public class MazeGenerator
 
     private void BuildMazeDictionary()
     {
+        maxCellCount = Width * Height;
+
         for (int col = 0; col < Width; col++) 
         {
             for (int row = 0; row < Height; row++)
@@ -120,18 +165,19 @@ public class MazeGenerator
 
     private void SetStartingCell()
     {
-        MazeCell cell = GetMazeCell(0, 0);
+        MazeCell cell = GetMazeCell(GetRandom(Width), GetRandom(Height));
 
         if (cell != null) 
         {
             cell.MarkAsVisited();
+            cellCount = 1;
             mazeStack.Push(cell);
         }
 
-        GetMazeCell(3, 3).MarkAsVisited();
-        GetMazeCell(4, 3).MarkAsVisited();
-        GetMazeCell(4, 4).MarkAsVisited();
-        GetMazeCell(3, 4).MarkAsVisited();
+        //GetMazeCell(3, 3).MarkAsVisited();
+        //GetMazeCell(4, 3).MarkAsVisited();
+        //GetMazeCell(4, 4).MarkAsVisited();
+        //GetMazeCell(3, 4).MarkAsVisited();
     }
 
     /**
