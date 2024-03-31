@@ -45,8 +45,6 @@ public class MazeCntrl : MonoBehaviour
 
                 MazePathBlank mazePathBlank = null;
 
-                Debug.Log($"PathType: {mazeCell.PathType}");
-
                 switch (mazeCell.PathType)
                 {
                     case MazePathType.START:

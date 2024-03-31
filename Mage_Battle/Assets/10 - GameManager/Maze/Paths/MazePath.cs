@@ -4,10 +4,10 @@ using UnityEngine;
 
 public abstract class MazePath 
 {
-    protected readonly uint N = MazeData.N;
-    protected readonly uint S = MazeData.S;
-    protected readonly uint E = MazeData.E;
-    protected readonly uint W = MazeData.W;
+    //protected readonly uint N = MazeData.N;
+    //protected readonly uint S = MazeData.S;
+    //protected readonly uint E = MazeData.E;
+    //protected readonly uint W = MazeData.W;
 
     protected readonly string CENTER_ANCHOR = "CenterAnchor";
 
@@ -26,38 +26,38 @@ public abstract class MazePath
     protected readonly string SOUTH_EAST_TILE_ANCHOR = "TileSouthEastAnchor";
     protected readonly string SOUTH_WEST_TILE_ANCHOR = "TileSouthWestAnchor";
 
+    private GameObject wallFrmWrk = null;
+    private GameObject wallPreFab = null;
+
     public abstract GameObject RenderPath(MazeCell mazeCell, Vector3 position);
 
-    protected int CalculateWalls(MazeCell mazeCell)
+    public MazePath(MazeData mazeData)
     {
-        int row = mazeCell.Row;
-        int col = mazeCell.Col;
-
-        uint walls = 0;
-
-        if (row == 0)
-        {
-            if (col == 0)
-            {
-                walls = N + S + E + W;
-            }
-            else
-            {
-                walls = N + S + E;
-            }
-        }
-        else
-        {
-            if (col == 0)
-            {
-                walls = N + E + W;
-            }
-            else
-            {
-                walls = N + E;
-            }
-        }
-
-        return ((int) walls);
+        this.wallFrmWrk = mazeData.mazeWallFw;
+        this.wallPreFab = mazeData.buildingColumnPreFab;
     }
+
+    
+
+    protected GameObject CreateNorthSouthWall(Framework framework)
+    {
+        GameObject wall = framework
+            .Blueprint(wallFrmWrk)
+            .Assemble(wallPreFab, "ColumnAnchor")
+            .Build(new Vector3(0.0f, 0.0f, 0.0f));
+
+        return (wall);
+    }
+
+    protected GameObject CreateEastWestWall(Framework framework)
+    {
+        GameObject wall = framework
+            .Blueprint(wallFrmWrk)
+            .Assemble(wallPreFab, "ColumnAnchor")
+            .Build(new Vector3(0.0f, 90.0f, 0.0f));
+
+        return (wall);
+    }
+
+
 }

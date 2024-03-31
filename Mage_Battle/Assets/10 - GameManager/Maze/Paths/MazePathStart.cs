@@ -4,37 +4,32 @@ using UnityEngine;
 
 public class MazePathStart : MazePath
 {
-    private readonly string NORTH_WALL_ANCHOR = "NorthAnchor";
-    private readonly string SOUTH_WALL_ANCHOR = "SouthAnchor";
-    private readonly string EAST_WALL_ANCHOR = "EastAnchor";
-    private readonly string WEST_WALL_ANCHOR = "WestAnchor";
-
     private MazeData mazeData = null;
 
-    private GameObject wallFrmWrk = null;
-    private GameObject wallPreFab = null;
     private GameObject pathFrmWrk = null;
 
     private Framework framework = null;
+    private GameObject wallFrmWrk = null;
+    private GameObject wallPreFab = null;
 
-    public MazePathStart(MazeData mazeData)
+    public MazePathStart(MazeData mazeData) : base(mazeData)
     {
         this.framework = new Framework();
 
         this.mazeData = mazeData;
+        this.pathFrmWrk = mazeData.mazePathFloorFw;
         this.wallFrmWrk = mazeData.mazeWallFw;
         this.wallPreFab = mazeData.buildingColumnPreFab;
-        this.pathFrmWrk = mazeData.mazePathFloorFw;
     }
 
     public override GameObject RenderPath(MazeCell mazeCell, Vector3 position)
     {
-        int walls = CalculateWalls(mazeCell);
+        //int walls = CalculateWalls(mazeCell);
 
-        GameObject northWall = (mazeCell.HasNorthWall() && ((walls & N) > 0)) ? CreateNorthSouthWall(framework) : null;
-        GameObject southWall = (mazeCell.HasSouthWall() && ((walls & S) > 0)) ? CreateNorthSouthWall(framework) : null;
-        GameObject eastWall = (mazeCell.HasEastWall() && ((walls & E) > 0)) ? CreateEastWestWall(framework) : null;
-        GameObject westWall = (mazeCell.HasWestWall() && ((walls & W) > 0)) ? CreateEastWestWall(framework) : null;
+        GameObject northWall = (mazeCell.HasNorthWall() ) ? CreateNorthSouthWall(framework) : null;
+        GameObject southWall = (mazeCell.HasSouthWall() ) ? CreateNorthSouthWall(framework) : null;
+        GameObject eastWall = (mazeCell.HasEastWall() ) ? CreateEastWestWall(framework) : null;
+        GameObject westWall = (mazeCell.HasWestWall() ) ? CreateEastWestWall(framework) : null;
 
         GameObject floor = Object.Instantiate(mazeData.mazeStartPathPreFab);
 
@@ -50,23 +45,25 @@ public class MazePathStart : MazePath
         return (path);
     }
 
-    private GameObject CreateNorthSouthWall(Framework framework)
-    {
-        GameObject wall = framework
-            .Blueprint(wallFrmWrk)
-            .Assemble(wallPreFab, "ColumnAnchor")
-            .Build(new Vector3(0.0f, 0.0f, 0.0f));
+    //private GameObject CreateNorthSouthWall(Framework framework)
+    //{
+    //    GameObject wall = framework
+    //        .Blueprint(wallFrmWrk)
+    //        .Assemble(wallPreFab, "ColumnAnchor")
+    //        .Build(new Vector3(0.0f, 0.0f, 0.0f));
 
-        return (wall);
-    }
+    //    return (wall);
+    //}
 
-    private GameObject CreateEastWestWall(Framework framework)
-    {
-        GameObject wall = framework
-            .Blueprint(wallFrmWrk)
-            .Assemble(wallPreFab, "ColumnAnchor")
-            .Build(new Vector3(0.0f, 90.0f, 0.0f));
+    //private GameObject CreateEastWestWall(Framework framework)
+    //{
+    //    GameObject wall = framework
+    //        .Blueprint(wallFrmWrk)
+    //        .Assemble(wallPreFab, "ColumnAnchor")
+    //        .Build(new Vector3(0.0f, 90.0f, 0.0f));
 
-        return (wall);
-    }
+    //    return (wall);
+    //}
+
+
 }

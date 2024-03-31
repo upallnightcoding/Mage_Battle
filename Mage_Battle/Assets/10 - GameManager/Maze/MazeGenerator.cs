@@ -36,13 +36,6 @@ public class MazeGenerator
         while (WalkMaze(PickAValidNeighbor(mazeStack.Peek())));
 
         SetMazePath();
-
-        /*while (!MazeStackEmpty()) 
-        {
-            WalkMaze(PickAValidNeighbor(mazeStack.Peek()));
-        }*/
-
-        //mazeList = new List<MazeCell>(maze.Values);
     }
 
     public MazeCell GetMazeCell(int col, int row)
