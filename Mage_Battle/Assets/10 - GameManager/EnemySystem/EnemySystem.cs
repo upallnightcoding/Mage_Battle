@@ -27,7 +27,7 @@ public class EnemySystem : MonoBehaviour
 
         EventManager.Instance.OnKillEnemy += KillSelectedEnemy;
 
-        SpawnEnemy();
+        //SpawnEnemy();
     }
 
     /**

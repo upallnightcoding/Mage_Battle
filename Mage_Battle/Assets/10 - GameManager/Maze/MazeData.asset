@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9d1f1eb497ce68c4e96f3daee4aadbe9, type: 3}
   m_Name: MazeData
   m_EditorClassIdentifier: 
-  height: 8
-  width: 8
+  height: 10
+  width: 10
   cellSize: 15
   mazeWallFw: {fileID: 4153194024047703827, guid: 0a787006230ce224ebdacd4698d4596d,
     type: 3}
@@ -45,9 +45,9 @@ MonoBehaviour:
     type: 3}
   mazeBlankPathPreFab: {fileID: 7964111818889831510, guid: d9bf5e8cf9064944a9ca62110bfee1ab,
     type: 3}
-  blankMazeStart: {fileID: 7964111818889831510, guid: 1ab66c62e81ce51409480ee737cfb4de,
+  mazeEndPathPreFab: {fileID: 3854572293781709633, guid: d6d672c8b31af604191805b4d23bcb84,
     type: 3}
-  blankMazeEnd: {fileID: 7964111818889831510, guid: 4972f90943c991c46af7518d0ac2f091,
+  mazeTilePathPreFab: {fileID: 7964111818889831510, guid: c5fce6146a966294bb2dbfaea6dc704d,
     type: 3}
-  blankMazePath: {fileID: 7964111818889831510, guid: c5fce6146a966294bb2dbfaea6dc704d,
+  FxPathDirection: {fileID: 8853818377500949494, guid: f578af2cc55c2044fa5a8ee675a76846,
     type: 3}

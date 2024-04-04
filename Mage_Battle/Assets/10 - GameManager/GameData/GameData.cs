@@ -25,4 +25,7 @@ public class GameData : ScriptableObject
 
     [Header("Game Constants")]
     public Vector3 yOffSet;
+
+    [Header("Player Attributes")]
+    public GameObject fxPlayerCreation;
 }

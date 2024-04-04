@@ -2183,6 +2183,7 @@ GameObject:
   - component: {fileID: 5387622918622871220}
   - component: {fileID: 8090082182113478528}
   - component: {fileID: 470280852}
+  - component: {fileID: 1925196452}
   m_Layer: 0
   m_Name: Hero
   m_TagString: Untagged
@@ -2493,7 +2494,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6928215365463741886}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1789d50fc8e868445aaa458b332b98ec, type: 3}
   m_Name: 
@@ -2550,6 +2551,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d714d8990c34dd14d843e9613856265a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1925196452
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6928215365463741886}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cdca2e911d90da24ebd18188e5ea365e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  inputCntrl: {fileID: 6926638292731519239}
+  enemySystem: {fileID: 0}
+  rotationSpeed: 10
+  castPoint: {fileID: 1852987666}
 --- !u!1 &6928267039085396182
 GameObject:
   m_ObjectHideFlags: 0

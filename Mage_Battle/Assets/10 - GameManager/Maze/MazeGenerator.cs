@@ -10,13 +10,13 @@ public class MazeGenerator
 
     public IDictionary<MazeIndex, MazeCell> GetMaze() { return(maze); }
 
-    private bool MazeStackEmpty() => (mazeStack.Count == 0);
-
     private IDictionary<MazeIndex, MazeCell> maze;
     private Stack<MazeCell> mazeStack;
     private Stack<MazeCell> maxStack;
     private int maxCellCount = 0;
     private int cellCount = 0;
+    private MazeCell startMazeCell;
+    private MazeCell endMazeCell;
     //private List<MazeCell> mazeList;
 
     public MazeGenerator(int width, int height)
@@ -27,11 +27,15 @@ public class MazeGenerator
         mazeStack = new Stack<MazeCell>();
         maxStack = new Stack<MazeCell>();
         maze = new Dictionary<MazeIndex, MazeCell>();
+
+        Generate();
     }
 
-    public void Generate()
+    private void Generate()
     {
-        InitMazeGenerator();
+        BuildMazeDictionary();
+
+        SetStartingCell();
 
         while (WalkMaze(PickAValidNeighbor(mazeStack.Peek())));
 
@@ -49,25 +53,55 @@ public class MazeGenerator
         return(mazeCell);
     }
 
+    /**
+     * GetStartMazeCell() - Returns the Maze Cell that represents the start
+     * of the maze journey.
+     */
+    public MazeCell GetStartMazeCell()
+    {
+        return (startMazeCell);
+    }
+
+    /**
+     * SetMazePath() - Determines the maze path.
+     */
     private void SetMazePath()
     {
         int count = 0;
+        MazeCell[] cellList = maxStack.ToArray();
 
-        foreach (MazeCell mazeCell in maxStack)
+        for (int i = 0; i < maxStack.Count; i++)
         {
+            MazeCell mazeCell = cellList[i];
             count += 1;
 
             if (count == 1)
             {
                 mazeCell.PathType = MazePathType.START;
+                startMazeCell = mazeCell;
             }
             else if (count == maxStack.Count)
             {
                 mazeCell.PathType = MazePathType.END;
+                endMazeCell = mazeCell;
             }
             else
             {
                 mazeCell.PathType = MazePathType.PATH;
+            }
+
+            if (i != maxStack.Count-1) 
+            {
+                int col = cellList[i + 1].Col - cellList[i].Col;
+                int row = cellList[i + 1].Row - cellList[i].Row;
+
+                if (col == 0)
+                {
+                    mazeCell.MazePathDir = (row == 1) ? MazePathDirection.NORTH : MazePathDirection.SOUTH;
+                } else
+                {
+                    mazeCell.MazePathDir = (col == 1) ? MazePathDirection.EAST : MazePathDirection.WEST;
+                }
             }
         }
     }
@@ -103,10 +137,10 @@ public class MazeGenerator
     private MazeCell PickAValidNeighbor(MazeCell currentMazeCell)
     {
         Tuple<int, int>[] neighbors = {
-            Tuple.Create(0, -1),    // North
-            Tuple.Create(0, 1),     // South
-            Tuple.Create(1, 0),     // East
-            Tuple.Create(-1, 0)     // West
+            Tuple.Create( 0, -1),   // North
+            Tuple.Create( 0,  1),   // South
+            Tuple.Create( 1,  0),    // East
+            Tuple.Create(-1,  0)     // West
         };
 
         List<MazeCell> validNeighborList = new List<MazeCell>();
@@ -136,12 +170,7 @@ public class MazeGenerator
         return(validNeighbor);
     }
 
-    private void InitMazeGenerator()
-    {
-        BuildMazeDictionary();
-
-        SetStartingCell();
-    }
+   
 
     private void BuildMazeDictionary()
     {

@@ -5,9 +5,8 @@ using UnityEngine;
 public class MazeCell 
 {
     // Type of Cell
-    //public MazeCellType type    { get; private set; } = MazeCellType.UNVISITED;
-    private MazeCellType type = MazeCellType.UNVISITED;
     public MazePathType PathType { get; set; }  = MazePathType.NONE;
+    public MazePathDirection MazePathDir { get; set; } = MazePathDirection.NONE;
 
     // References to north, south, east and west walls of a cell
     public MazeCell NorthWall   { get; private set; } = null;
@@ -34,6 +33,8 @@ public class MazeCell
     public bool HasSouthWall()  => SouthWall == null; 
     public bool HasEastWall()   => EastWall == null; 
     public bool HasWestWall()   => WestWall == null; 
+
+    private MazeCellType type = MazeCellType.UNVISITED;
 
     public MazeCell(int col, int row) 
     {
@@ -97,4 +98,13 @@ public enum MazePathType
     PATH, 
     END,
     NONE
+}
+
+public enum MazePathDirection
+{
+    NONE,
+    NORTH,
+    SOUTH,
+    EAST,
+    WEST
 }

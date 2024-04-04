@@ -9,12 +9,13 @@ public class PlayerCntrl : MonoBehaviour
     [SerializeField] private EnemySystem enemySystem;
     [SerializeField] private float rotationSpeed;
     [SerializeField] private Transform castPoint;
+    [SerializeField] private GameData gameData;
 
     private NavMeshAgent navMeshAgent;
     private Animator animator;
     private PlayerState state = PlayerState.IDLE;
-    private PlayerState prevState = PlayerState.ATTACK;
-    private InputCntrlClickType prevClick = InputCntrlClickType.END_DRAG_CLICK;
+    //private PlayerState prevState = PlayerState.ATTACK;
+    //private InputCntrlClickType prevClick = InputCntrlClickType.END_DRAG_CLICK;
 
     // Start is called before the first frame update
     void Start()
@@ -27,6 +28,13 @@ public class PlayerCntrl : MonoBehaviour
     void Update()
     {
         ProcessInputCmds(inputCntrl.GetClick());
+    }
+
+    public void NewGame(Vector3 position)
+    {
+        transform.position = position;
+        transform.gameObject.SetActive(true);
+        Instantiate(gameData.fxPlayerCreation, position, Quaternion.identity);
     }
 
     private void ProcessInputCmds(InputCntrlClickType click)
@@ -139,7 +147,7 @@ public class PlayerCntrl : MonoBehaviour
 
   
 
-    private PlayerState DragState(InputCntrlClickType click)
+    /*private PlayerState DragState(InputCntrlClickType click)
     {
         switch(click)
         {
@@ -157,9 +165,9 @@ public class PlayerCntrl : MonoBehaviour
         }
 
         return (state);
-    }
+    }*/
 
-    private PlayerState DragAttackState(InputCntrlClickType click)
+    /*private PlayerState DragAttackState(InputCntrlClickType click)
     {
         switch (click)
         {
@@ -173,14 +181,14 @@ public class PlayerCntrl : MonoBehaviour
         }
 
         return (state);
-    }
+    }*/
 
-    private PlayerState xxxMoveToState(InputCntrlClickType click)
+    /*private PlayerState xxxMoveToState(InputCntrlClickType click)
     {
         MoveTo(GetMousePosition());
 
         return (PlayerState.IDLE);
-    }
+    }*/
 
     /**
      * AttackState() - 
@@ -189,12 +197,12 @@ public class PlayerCntrl : MonoBehaviour
 
     
 
-    private PlayerState AttackMoveToState(InputCntrlClickType click)
+    /*private PlayerState AttackMoveToState(InputCntrlClickType click)
     {
         MoveTo(GetMousePosition());
 
         return (PlayerState.ATTACK);
-    }
+    }*/
 
     /**
      * MoveTo() - 

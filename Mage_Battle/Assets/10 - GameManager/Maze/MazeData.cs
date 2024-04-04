@@ -38,22 +38,11 @@ public class MazeData : ScriptableObject
     [Header("Path PreFabs")]
     public GameObject mazeStartPathPreFab;
     public GameObject mazeBlankPathPreFab;
+    public GameObject mazeEndPathPreFab;
+    public GameObject mazeTilePathPreFab;
 
-    [Header("Path Color")]
-    public GameObject blankMazeStart;
-    public GameObject blankMazeEnd;
-    public GameObject blankMazePath;
+    [Header("Tile Attributes")]
+    public GameObject FxPathDirection;
 
     private MazeGenerator maze; 
-
-    public MazeGenerator GetMaze() { return(maze); }
-
-    public MazeGenerator GenerateMaze()
-    {
-        maze = new MazeGenerator(width, height);
-
-        maze.Generate();
-
-        return(maze);
-    }
 }

@@ -33,3 +33,5 @@ MonoBehaviour:
   attackArea: 3
   followArea: 5
   yOffSet: {x: 0, y: 0.1, z: 0}
+  fxPlayerCreation: {fileID: 5674810555829724091, guid: a518ca0d4c98cdd429950f09b5366702,
+    type: 3}

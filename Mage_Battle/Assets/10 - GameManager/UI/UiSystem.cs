@@ -13,6 +13,10 @@ public class UiSystem : MonoBehaviour
     [SerializeField] private Slider healthBar;
     [SerializeField] private TMP_Text expPoints;
 
+    [SerializeField] private GameObject mainMenuPanel;
+    [SerializeField] private GameObject healthPanel;
+    [SerializeField] private GameObject spellPanel;
+
     [SerializeField] private GameObject yourDeadPanel;
 
     private int expPointsValue = 0;
@@ -20,25 +24,9 @@ public class UiSystem : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
-    }
-
-    public void OnEnable()
-    {
-        EventManager.Instance.OnSpellCoolDown += UpdateSpellBar;
-        EventManager.Instance.OnSetFullSpellBar += SetFullSpellBar;
-        EventManager.Instance.OnKillEnemy += UpdateExpPoints;
-        EventManager.Instance.OnHeroDamage += UpdateHealth;
-        EventManager.Instance.OnHeroDeath += HeroDeath;
-    }
-
-    public void OnDisable()
-    {
-        EventManager.Instance.OnSpellCoolDown -= UpdateSpellBar;
-        EventManager.Instance.OnSetFullSpellBar -= SetFullSpellBar;
-        EventManager.Instance.OnKillEnemy -= UpdateExpPoints;
-        EventManager.Instance.OnHeroDamage -= UpdateHealth;
-        EventManager.Instance.OnHeroDeath -= HeroDeath;
+        mainMenuPanel.SetActive(true);
+        healthPanel.SetActive(false);
+        spellPanel.SetActive(false);
     }
 
     /**
@@ -49,6 +37,10 @@ public class UiSystem : MonoBehaviour
         InitAllSpellSlots();
 
         healthBar.value = 1.0f;
+
+        mainMenuPanel.SetActive(false);
+        healthPanel.SetActive(true);
+        spellPanel.SetActive(true);
     }
 
     private void UpdateHealth(float value)
@@ -115,6 +107,24 @@ public class UiSystem : MonoBehaviour
     {
         uiSpellSlots[slot].SetDisplayColor(Color.yellow);
         uiSpellSlots[slot].SetDisplayBar(percentage);
+    }
+
+    public void OnEnable()
+    {
+        EventManager.Instance.OnSpellCoolDown += UpdateSpellBar;
+        EventManager.Instance.OnSetFullSpellBar += SetFullSpellBar;
+        EventManager.Instance.OnKillEnemy += UpdateExpPoints;
+        EventManager.Instance.OnHeroDamage += UpdateHealth;
+        EventManager.Instance.OnHeroDeath += HeroDeath;
+    }
+
+    public void OnDisable()
+    {
+        EventManager.Instance.OnSpellCoolDown -= UpdateSpellBar;
+        EventManager.Instance.OnSetFullSpellBar -= SetFullSpellBar;
+        EventManager.Instance.OnKillEnemy -= UpdateExpPoints;
+        EventManager.Instance.OnHeroDamage -= UpdateHealth;
+        EventManager.Instance.OnHeroDeath -= HeroDeath;
     }
 }
 

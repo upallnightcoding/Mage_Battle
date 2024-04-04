@@ -13,7 +13,7 @@ public class MazePathBlank : MazePath
     private Framework framework = null;
     private GameObject tile = null;
 
-    public MazePathBlank(MazeData mazeData, GameObject tile) : base(mazeData)
+    public MazePathBlank(MazeData mazeData, GameObject tile) 
     {
         this.framework = new Framework();
         this.tile = tile;
@@ -28,7 +28,7 @@ public class MazePathBlank : MazePath
     {
         //int walls = CalculateWalls(mazeCell);
 
-        GameObject northWall = (mazeCell.HasNorthWall() ) ? CreateNorthSouthWall(framework) : null;
+        /*GameObject northWall = (mazeCell.HasNorthWall() ) ? CreateNorthSouthWall(framework) : null;
         GameObject southWall = (mazeCell.HasSouthWall() ) ? CreateNorthSouthWall(framework) : null;
         GameObject eastWall = (mazeCell.HasEastWall() ) ? CreateEastWestWall(framework) : null;
         GameObject westWall = (mazeCell.HasWestWall() ) ? CreateEastWestWall(framework) : null;
@@ -48,8 +48,8 @@ public class MazePathBlank : MazePath
            .Assemble(eastWall, EAST_WALL_ANCHOR)
            .Assemble(westWall, WEST_WALL_ANCHOR)
            .Position(position)
-           .Build();
+           .Build();*/
 
-        return (path);
+        return (null);
     }
 }

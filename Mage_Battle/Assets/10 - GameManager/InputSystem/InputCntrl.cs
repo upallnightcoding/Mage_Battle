@@ -14,33 +14,14 @@ public class InputCntrl : MonoBehaviour
     private SingleClickState currentSingleClickState = SingleClickState.IDLE_STATE;
     private SingleClickState prevCurrentSingleClickState = SingleClickState.IDLE_STATE;
 
-    //private Vector2 playerMovement;
-    //private Vector2 playerAim;
-
-    //private InputCntrlClickType doubleClick = InputCntrlClickType.NO_CLICK;
-
-    //public bool HasRequestToCast { set; get; } = false;
     public int SelectSpell { set; get; } = -1;
     public bool GoOnAttack { set; get; } = false;
-
-    private float clickTimeStamp;
-    private bool firstDoubleClick = true;
-
-    //InputCntrlClickType prevClick = InputCntrlClickType.NO_CLICK;
-
-    // Player Movement & Aim Functions
-    //--------------------------------
-    //public Vector2 GetPlayerMovement() => playerMovement;
-    //public Vector2 GetPlayerAim() => playerAim;
 
     // Mouse Device Functions
     //-----------------------
     public Vector2 GetMousePosition() => Mouse.current.position.ReadValue();
-    private int GetClickCount() => Mouse.current.clickCount.ReadValue();
     public bool IsLeftMousePressed() => Mouse.current.leftButton.wasPressedThisFrame;
     public bool IsLeftMouseReleased() => Mouse.current.leftButton.wasReleasedThisFrame;
-    //public bool IsRightMousePressed() => Mouse.current.rightButton.isPressed;
-    //public bool IsRightMouseReleased() => Mouse.current.rightButton.wasReleasedThisFrame;
 
     public bool HasSelectedSpell() => SelectSpell != -1;
 

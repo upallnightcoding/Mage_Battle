@@ -6,6 +6,8 @@ public class GameManager : MonoBehaviour
 {
     [SerializeField] private GameData gameData;
     [SerializeField] private UiSystem uiCntrl;
+    [SerializeField] private MazeCntrl mazeCntrl;
+    [SerializeField] private PlayerCntrl playerCntrl;
 
     public static GameManager Instance = null;
 
@@ -32,15 +34,18 @@ public class GameManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        NewGame();
+        //NewGame();
     }
 
     /**
-     * NewGame() - 
+     * NewGame() - Start all components for a new game.  This includes
+     * the UI, player and enemy system.
      */
     public void NewGame()
     {
         uiCntrl.NewGame();
+        mazeCntrl.NewGame();
+        playerCntrl.NewGame(mazeCntrl.GetStartMazeCellPosition());
 
         for (int slot = 0; slot < gameData.testSpells.Length; slot++)
         {
