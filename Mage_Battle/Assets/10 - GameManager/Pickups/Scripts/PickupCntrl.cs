@@ -2,19 +2,21 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PickupSystem : MonoBehaviour
+public abstract class PickupCntrl : MonoBehaviour
 {
-    [SerializeField] private PickupSO pickupObject;
+    [SerializeField] protected PickupSO pickupSO;
+
+    public abstract void Movement();
 
     // Start is called before the first frame update
     void Start()
     {
-        //pickupObject.Spawn(new Vector3());
+
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+        Movement();
     }
 }

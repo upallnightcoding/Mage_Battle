@@ -9,6 +9,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private MazeCntrl mazeCntrl;
     [SerializeField] private PlayerCntrl playerCntrl;
 
+    // TODO Get rid of the Game Manager singleton
     public static GameManager Instance = null;
 
     private SpellSystem spellSystem;

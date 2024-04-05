@@ -2,16 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class PickupSO : ScriptableObject
+[CreateAssetMenu(fileName = "PickupSO", menuName = "Mage Battle/Pickup")]
+public class PickupSO : ScriptableObject
 {
-    public abstract void Movement();
-    public abstract void Spawn(Vector3 position);
+    [Header("Pickup Xp Attributes")]
 
-    [Header("Attributes")]
+    public float rotationSpeed;
+    public float xp;
 
-    // Value of the pickup
-    public int value;
-
-    // Prefab representation of the pickup object
-    public GameObject pickupPreFab;
 }
