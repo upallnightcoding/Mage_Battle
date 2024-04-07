@@ -12,5 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 443b6bdb345b573479a8af9e4ee402cc, type: 3}
   m_Name: PickupSO
   m_EditorClassIdentifier: 
-  rotationSpeed: 50
+  gemRotationalSpeed: 100
+  fxGemPickup: {fileID: 4083301739585374217, guid: fd94b35d720f90e40830a7af61abf683,
+    type: 3}
   xp: 10

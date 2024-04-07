@@ -7,6 +7,7 @@ public abstract class PickupCntrl : MonoBehaviour
     [SerializeField] protected PickupSO pickupSO;
 
     public abstract void Movement();
+    public abstract void Pickup(Collision collision);
 
     // Start is called before the first frame update
     void Start()
@@ -18,5 +19,10 @@ public abstract class PickupCntrl : MonoBehaviour
     void Update()
     {
         Movement();
+    }
+
+    public void OnCollisionEnter(Collision collision)
+    {
+        Pickup(collision);
     }
 }

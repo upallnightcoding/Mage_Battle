@@ -170,8 +170,6 @@ public class MazeGenerator
         return(validNeighbor);
     }
 
-   
-
     private void BuildMazeDictionary()
     {
         maxCellCount = Width * Height;

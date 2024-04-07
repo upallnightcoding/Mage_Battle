@@ -8,7 +8,7 @@ using UnityEngine.AI;
 public class MazeCntrl : MonoBehaviour
 {
     [SerializeField] private MazeData mazeData;
-    //[SerializeField] private NavMeshSurface surface;
+    [SerializeField] private GameObject pickupGemPreFab;
 
     private GameObject world;
 
@@ -56,6 +56,7 @@ public class MazeCntrl : MonoBehaviour
                     case MazePathType.PATH:
                         path = new MazePath3x3(mazeData).RenderPath(mazeCell, position);
                         path.GetComponentsInChildren<MazePathCntrl>()[0].Initialize(mazeData, mazeCell);
+                        path.GetComponentsInChildren<MazePathCntrl>()[0].CreateGem(pickupGemPreFab);
                         break;
                     case MazePathType.END:
                         path = new MazePathEnd(mazeData).RenderPath(mazeCell, position);

@@ -7,7 +7,9 @@ public class PickupSO : ScriptableObject
 {
     [Header("Pickup Xp Attributes")]
 
-    public float rotationSpeed;
+    public float gemRotationalSpeed;
+    public GameObject fxGemPickup;
+
     public float xp;
 
 }
