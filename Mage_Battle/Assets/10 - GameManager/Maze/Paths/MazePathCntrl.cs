@@ -32,7 +32,7 @@ public class MazePathCntrl : MonoBehaviour
 
         Vector3 p = transform.position;
 
-        /*GameObject fx = Instantiate(mazeData.FxPathDirection, new Vector3(p.x, p.y+0.3f, p.z), Quaternion.identity);
+        GameObject fx = Instantiate(mazeData.FxPathDirection, new Vector3(p.x, p.y+0.3f, p.z), Quaternion.identity);
         fx.transform.localScale = new Vector3(3.0f, 1.0f, 3.0f);
 
         switch(mazeCell.MazePathDir)
@@ -49,6 +49,6 @@ public class MazePathCntrl : MonoBehaviour
             case MazePathDirection.WEST:
                 fx.transform.Rotate(0.0f, 270.0f, 0.0f);
                 break;
-        }*/
+        }
     }
 }

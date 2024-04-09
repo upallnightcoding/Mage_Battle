@@ -5,7 +5,7 @@ using UnityEngine;
 public class MazeCell 
 {
     // Type of Cell
-    public MazePathType PathType { get; set; }  = MazePathType.NONE;
+    public MazePathType PathType { get; set; }  = MazePathType.OFFPATH;
     public MazePathDirection MazePathDir { get; set; } = MazePathDirection.NONE;
 
     // References to north, south, east and west walls of a cell
@@ -20,13 +20,17 @@ public class MazeCell
 
     public Vector3 Position     { get; set; }
 
+    public bool IsRoom() => (PathCount == 1);
+    public int PathCount { get; set; } = 0;
+    public void UpdatePathCount() => PathCount++;
+
     public void MarkAsVisited() => type = MazeCellType.VISITED; 
 
     public bool IsUnVisited()   => (type == MazeCellType.UNVISITED); 
     public bool IsVisited()     => (type == MazeCellType.VISITED);
 
-    public bool IsEqual(MazeCell target) => 
-        ((target.Col == Col) && (target.Row == Row));
+    //public bool IsEqual(MazeCell target) => 
+      //  ((target.Col == Col) && (target.Row == Row));
 
     // Predicate functions that returns true if a call exists
     public bool HasNorthWall()  => NorthWall == null; 
@@ -97,7 +101,7 @@ public enum MazePathType
     START, 
     PATH, 
     END,
-    NONE
+    OFFPATH
 }
 
 public enum MazePathDirection

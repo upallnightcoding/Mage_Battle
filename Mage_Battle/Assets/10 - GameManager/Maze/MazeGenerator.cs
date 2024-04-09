@@ -165,6 +165,8 @@ public class MazeGenerator
         {
             validNeighbor = validNeighborList[GetRandom(nNeighbors)];
             currentMazeCell.CollapseWall(validNeighbor);
+            validNeighbor.UpdatePathCount();
+            currentMazeCell.UpdatePathCount();
         }
 
         return(validNeighbor);

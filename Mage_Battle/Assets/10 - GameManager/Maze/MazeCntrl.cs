@@ -53,16 +53,23 @@ public class MazeCntrl : MonoBehaviour
                     case MazePathType.START:
                         path = new MazePathStart(mazeData).RenderPath(mazeCell, position);
                         break;
+                    case MazePathType.OFFPATH:
+                        if (mazeCell.IsRoom())
+                        {
+                            path = new MazePathRoom(mazeData).RenderPath(mazeCell, position);
+                            path.GetComponentsInChildren<MazePathCntrl>()[0].Initialize(mazeData, mazeCell);
+                        } else
+                        {
+                            path = new MazePath3x3(mazeData).RenderPath(mazeCell, position);
+                        }
+                        break;
                     case MazePathType.PATH:
                         path = new MazePath3x3(mazeData).RenderPath(mazeCell, position);
-                        path.GetComponentsInChildren<MazePathCntrl>()[0].Initialize(mazeData, mazeCell);
                         path.GetComponentsInChildren<MazePathCntrl>()[0].CreateGem(pickupGemPreFab);
+                        path.GetComponentsInChildren<MazePathCntrl>()[0].Initialize(mazeData, mazeCell);
                         break;
                     case MazePathType.END:
                         path = new MazePathEnd(mazeData).RenderPath(mazeCell, position);
-                        break;
-                    default:
-                        path = new MazePath3x3(mazeData).RenderPath(mazeCell, position);
                         break;
                 }
 

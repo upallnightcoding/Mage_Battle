@@ -8,6 +8,7 @@ public class MazePath3x3 : MazePathBuild
     private GameObject wallPreFab = null;
     private GameObject pathFrmWrk = null;
     private GameObject wallFrmWrk = null;
+    private GameObject grass01 = null;
 
     public MazePath3x3(MazeData mazeData) : base(mazeData)
     {
@@ -15,6 +16,7 @@ public class MazePath3x3 : MazePathBuild
         this.tilePreFab = mazeData.tileList;
         this.wallFrmWrk = mazeData.mazeWallFw;
         this.pathFrmWrk = mazeData.mazePathFloorFw;
+        this.grass01 = mazeData.grass01;
     }
 
     protected override GameObject CreateBase()
@@ -22,6 +24,7 @@ public class MazePath3x3 : MazePathBuild
         GameObject baseTile = new Framework()
            .Blueprint(pathFrmWrk)
            .Assemble(tilePreFab, CENTER_ANCHOR)
+           .Decorate(grass01, 7, 7.0f, 7.0f, 90.0f)
            .Assemble(tilePreFab, NORTH_TILE_ANCHOR)
            .Assemble(tilePreFab, SOUTH_TILE_ANCHOR)
            .Assemble(tilePreFab, EAST_TILE_ANCHOR)
@@ -61,7 +64,8 @@ public class MazePath3x3 : MazePathBuild
         GameObject wall = new Framework()
             .Blueprint(wallFrmWrk)
             .Assemble(wallGameObject, COLUMN_ANCHOR)
-            .Build(new Vector3(0.0f, 0.0f, 0.0f));
+            //.Rotate(new Vector3(0.0f, 0.0f, 0.0f))
+            .Build();
 
         return (wall);
     }
@@ -70,12 +74,12 @@ public class MazePath3x3 : MazePathBuild
     {
         GameObject wall = new Framework()
             .Blueprint(wallFrmWrk)
-            .Assemble(wallGameObject, COLUMN_ANCHOR)
-            .Build(new Vector3(0.0f, 90.0f, 0.0f));
+            .Assemble(wallGameObject, COLUMN_ANCHOR, 90.0f)
+            //.Rotate(new Vector3(0.0f, 90.0f, 0.0f))
+            .Build();
 
         return (wall);
     }
-
 
     /*public override GameObject RenderPath(Vector3 position)
     {

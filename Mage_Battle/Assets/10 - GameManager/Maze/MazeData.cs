@@ -40,9 +40,13 @@ public class MazeData : ScriptableObject
     public GameObject mazeBlankPathPreFab;
     public GameObject mazeEndPathPreFab;
     public GameObject mazeTilePathPreFab;
+    public GameObject mazeTileFloor;
 
     [Header("Tile Attributes")]
     public GameObject FxPathDirection;
+
+    [Header("Environment")]
+    public GameObject grass01;
 
     private MazeGenerator maze; 
 }
