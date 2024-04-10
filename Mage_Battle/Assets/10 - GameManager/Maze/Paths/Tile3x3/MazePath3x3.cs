@@ -5,9 +5,9 @@ using UnityEngine;
 public class MazePath3x3 : MazePathBuild
 {
     private GameObject[] tilePreFab = null;
-    private GameObject wallPreFab = null;
+    protected GameObject wallPreFab = null;
     private GameObject pathFrmWrk = null;
-    private GameObject wallFrmWrk = null;
+    protected GameObject wallFrmWrk = null;
     private GameObject grass01 = null;
 
     public MazePath3x3(MazeData mazeData) : base(mazeData)
@@ -59,7 +59,7 @@ public class MazePath3x3 : MazePathBuild
         return (mazeCell.HasWestWall() ? CreateEastWestWall(wallPreFab) : null);
     }
 
-    private GameObject CreateNorthSouthWall(GameObject wallGameObject)
+    protected GameObject CreateNorthSouthWall(GameObject wallGameObject)
     {
         GameObject wall = new Framework()
             .Blueprint(wallFrmWrk)
@@ -70,7 +70,7 @@ public class MazePath3x3 : MazePathBuild
         return (wall);
     }
 
-    private GameObject CreateEastWestWall(GameObject wallGameObject)
+    protected GameObject CreateEastWestWall(GameObject wallGameObject)
     {
         GameObject wall = new Framework()
             .Blueprint(wallFrmWrk)

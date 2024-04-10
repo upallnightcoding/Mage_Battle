@@ -28,6 +28,7 @@ public class MazeData : ScriptableObject
     public GameObject buildingColumnPreFab;
     public GameObject buildingFloor01PreFab;
 
+    [Space]
     public GameObject[] tileList;
 
     public GameObject parent;
@@ -41,6 +42,7 @@ public class MazeData : ScriptableObject
     public GameObject mazeEndPathPreFab;
     public GameObject mazeTilePathPreFab;
     public GameObject mazeTileFloor;
+    public GameObject willTileDoorPreFab;
 
     [Header("Tile Attributes")]
     public GameObject FxPathDirection;
