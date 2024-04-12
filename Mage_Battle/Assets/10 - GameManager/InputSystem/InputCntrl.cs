@@ -8,7 +8,8 @@ public class InputCntrl : MonoBehaviour
 {
     public static event Action OnDesengageEvent;
 
-    [SerializeField] private float singleClickTimer = 0.1f;
+    [SerializeField] private float singleLeftClickTimer = 0.1f;
+    [SerializeField] private float singleRightClickTimer = 0.1f;
     [SerializeField] private float doubleClickTimer = 0.2f;
 
     private SingleClickState currentSingleClickState = SingleClickState.IDLE_STATE;
@@ -22,6 +23,8 @@ public class InputCntrl : MonoBehaviour
     public Vector2 GetMousePosition() => Mouse.current.position.ReadValue();
     public bool IsLeftMousePressed() => Mouse.current.leftButton.wasPressedThisFrame;
     public bool IsLeftMouseReleased() => Mouse.current.leftButton.wasReleasedThisFrame;
+    public bool IsRightMousePressed() => Mouse.current.rightButton.wasPressedThisFrame;
+    public bool IsRightMouseReleased() => Mouse.current.rightButton.wasReleasedThisFrame;
 
     public bool HasSelectedSpell() => SelectSpell != -1;
 
@@ -129,26 +132,45 @@ public class InputCntrl : MonoBehaviour
             case SingleClickState.FIRE_STATE:
                 click = InputCntrlClickType.FIRE_CLICK;
                 currentSingleClickState =
-                    (prevCurrentSingleClickState == SingleClickState.DRAGGING_STATE) 
-                    ? SingleClickState.DRAGGING_STATE : SingleClickState.IDLE_STATE;
+                    (prevCurrentSingleClickState == SingleClickState.DRAGGING_LEFT_STATE) 
+                    ? SingleClickState.DRAGGING_LEFT_STATE : SingleClickState.IDLE_STATE;
                 break;
+
             case SingleClickState.TIME_RUNNING_STATE:
                 break;
-            case SingleClickState.SINGLE_CLICK_STATE:
-                click = InputCntrlClickType.SINGLE_CLICK;
+
+            case SingleClickState.SINGLE_LEFT_CLICK_STATE:
+                click = InputCntrlClickType.SINGLE_LEFT_CLICK;
                 currentSingleClickState = SingleClickState.IDLE_STATE;
                 break;
-            case SingleClickState.START_DRAG_STATE:
-                click = InputCntrlClickType.START_DRAG_CLICK;
-                currentSingleClickState = SingleClickState.DRAGGING_STATE;
+            case SingleClickState.START_LEFT_DRAG_STATE:
+                click = InputCntrlClickType.START_LEFT_DRAG_CLICK;
+                currentSingleClickState = SingleClickState.DRAGGING_LEFT_STATE;
                 break;
-            case SingleClickState.DRAGGING_STATE:
-                currentSingleClickState = DraggingClick();
-                click = InputCntrlClickType.DRAGGING_CLICK;
+            case SingleClickState.DRAGGING_LEFT_STATE:
+                currentSingleClickState = DraggingLeftClick();
+                click = InputCntrlClickType.DRAGGING_LEFT_CLICK;
                 break;
-            case SingleClickState.END_DRAG_STATE:
+            case SingleClickState.END_LEFT_DRAG_STATE:
                 currentSingleClickState = SingleClickState.IDLE_STATE;
-                click = InputCntrlClickType.END_DRAG_CLICK;
+                click = InputCntrlClickType.END_DRAG_LEFT_CLICK;
+                break;
+
+            case SingleClickState.SINGLE_RIGHT_CLICK_STATE:
+                click = InputCntrlClickType.SINGLE_RIGHT_CLICK;
+                currentSingleClickState = SingleClickState.IDLE_STATE;
+                break;
+            case SingleClickState.START_RIGHT_DRAG_STATE:
+                click = InputCntrlClickType.START_RIGHT_DRAG_CLICK;
+                currentSingleClickState = SingleClickState.DRAGGING_RIGHT_STATE;
+                break;
+            case SingleClickState.DRAGGING_RIGHT_STATE:
+                currentSingleClickState = DraggingRightClick();
+                click = InputCntrlClickType.DRAGGING_RIGHT_CLICK;
+                break;
+            case SingleClickState.END_RIGHT_DRAG_STATE:
+                currentSingleClickState = SingleClickState.IDLE_STATE;
+                click = InputCntrlClickType.END_DRAG_RIGHT_CLICK;
                 break;
         }
 
@@ -157,13 +179,25 @@ public class InputCntrl : MonoBehaviour
         return (click);
     }
 
-    private SingleClickState DraggingClick()
+    private SingleClickState DraggingLeftClick()
     {
-        SingleClickState nextState = SingleClickState.DRAGGING_STATE;
+        SingleClickState nextState = SingleClickState.DRAGGING_LEFT_STATE;
 
         if (IsLeftMouseReleased())
         {
-            nextState = SingleClickState.END_DRAG_STATE;
+            nextState = SingleClickState.END_LEFT_DRAG_STATE;
+        }
+
+        return (nextState);
+    }
+
+    private SingleClickState DraggingRightClick()
+    {
+        SingleClickState nextState = SingleClickState.DRAGGING_RIGHT_STATE;
+
+        if (IsRightMouseReleased())
+        {
+            nextState = SingleClickState.END_RIGHT_DRAG_STATE;
         }
 
         return (nextState);
@@ -175,9 +209,15 @@ public class InputCntrl : MonoBehaviour
 
         if (IsLeftMousePressed())
         {
-            StartCoroutine(StartSingleClickTimer());
+            StartCoroutine(StartSingleLeftClickTimer());
             nextState = SingleClickState.TIME_RUNNING_STATE;
-        } 
+        }
+
+        if (IsRightMousePressed())
+        {
+            StartCoroutine(StartSingleRightClickTimer());
+            nextState = SingleClickState.TIME_RUNNING_STATE;
+        }
 
         return (nextState);
     }
@@ -185,12 +225,12 @@ public class InputCntrl : MonoBehaviour
     /**
      * StartSingleClickTimer() -
      */
-    private IEnumerator StartSingleClickTimer()
+    private IEnumerator StartSingleLeftClickTimer()
     {
         float startTime = Time.time;
         bool mouseReleased = false;
 
-        while (((Time.time - startTime) < singleClickTimer) && (!mouseReleased))
+        while (((Time.time - startTime) < singleLeftClickTimer) && (!mouseReleased))
         {
             mouseReleased = IsLeftMouseReleased();
 
@@ -201,7 +241,7 @@ public class InputCntrl : MonoBehaviour
         {
             startTime = Time.time;
             bool mousePressed = false;
-            while (((Time.time - startTime) < singleClickTimer) && (!mousePressed))
+            while (((Time.time - startTime) < singleLeftClickTimer) && (!mousePressed))
             {
                 mousePressed = IsLeftMousePressed();
 
@@ -209,39 +249,80 @@ public class InputCntrl : MonoBehaviour
             }
 
             currentSingleClickState = 
-                (mousePressed) ? SingleClickState.DOUBLE_CLICK_STATE : SingleClickState.SINGLE_CLICK_STATE;
+                (mousePressed) ? SingleClickState.DOUBLE_CLICK_STATE : SingleClickState.SINGLE_LEFT_CLICK_STATE;
         } 
         else
         {
-            currentSingleClickState = SingleClickState.START_DRAG_STATE;
+            currentSingleClickState = SingleClickState.START_LEFT_DRAG_STATE;
         }
-
-        //currentSingleClickState = 
-          //  (mouseReleased) ? SingleClickState.SINGLE_CLICK_STATE : SingleClickState.START_DRAG_STATE;
     }
 
-  
+    private IEnumerator StartSingleRightClickTimer()
+    {
+        float startTime = Time.time;
+        bool mouseReleased = false;
+
+        while (((Time.time - startTime) < singleRightClickTimer) && (!mouseReleased))
+        {
+            mouseReleased = IsRightMouseReleased();
+
+            yield return null;
+        }
+
+        if (mouseReleased)
+        {
+            startTime = Time.time;
+            bool mousePressed = false;
+            while (((Time.time - startTime) < singleRightClickTimer) && (!mousePressed))
+            {
+                mousePressed = IsRightMousePressed();
+
+                yield return null;
+            }
+
+            currentSingleClickState =
+                (mousePressed) ? SingleClickState.DOUBLE_CLICK_STATE : SingleClickState.SINGLE_RIGHT_CLICK_STATE;
+        }
+        else
+        {
+            currentSingleClickState = SingleClickState.START_RIGHT_DRAG_STATE;
+        }
+    }
 }
 
 public enum InputCntrlClickType
 {
     NO_CLICK,
-    SINGLE_CLICK,
+
+    SINGLE_LEFT_CLICK,
+    START_LEFT_DRAG_CLICK,
+    DRAGGING_LEFT_CLICK,
+    END_DRAG_LEFT_CLICK,
+
+    SINGLE_RIGHT_CLICK,
+    START_RIGHT_DRAG_CLICK,
+    DRAGGING_RIGHT_CLICK,
+    END_DRAG_RIGHT_CLICK,
+
     DOUBLE_CLICK,
-    START_DRAG_CLICK,
-    DRAGGING_CLICK,
-    END_DRAG_CLICK,
+
     FIRE_CLICK
 }
 
 public enum SingleClickState
 {
     IDLE_STATE,
-    TIME_RUNNING_STATE,
-    SINGLE_CLICK_STATE,
-    START_DRAG_STATE,
-    DRAGGING_STATE,
-    END_DRAG_STATE,
     DOUBLE_CLICK_STATE,
-    FIRE_STATE
+    FIRE_STATE,
+
+    TIME_RUNNING_STATE,
+    SINGLE_LEFT_CLICK_STATE,
+    START_LEFT_DRAG_STATE,
+    DRAGGING_LEFT_STATE,
+    END_LEFT_DRAG_STATE,
+
+    SINGLE_RIGHT_CLICK_STATE,
+    START_RIGHT_DRAG_STATE,
+    DRAGGING_RIGHT_STATE,
+    END_RIGHT_DRAG_STATE
 }

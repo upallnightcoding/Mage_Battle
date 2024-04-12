@@ -17,6 +17,8 @@ public class PlayerCntrl : MonoBehaviour
     //private PlayerState prevState = PlayerState.ATTACK;
     //private InputCntrlClickType prevClick = InputCntrlClickType.END_DRAG_CLICK;
 
+    private Vector2 startOrbit;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -41,13 +43,13 @@ public class PlayerCntrl : MonoBehaviour
     {
         switch (click)
         {
-            case InputCntrlClickType.SINGLE_CLICK:
+            case InputCntrlClickType.SINGLE_LEFT_CLICK:
                 SelectEnemyOrMove();
                 break;
             case InputCntrlClickType.FIRE_CLICK:
                 FireState();
                 break;
-            case InputCntrlClickType.DRAGGING_CLICK:
+            case InputCntrlClickType.DRAGGING_LEFT_CLICK:
                 MoveToState(click);
                 break;
             case InputCntrlClickType.DOUBLE_CLICK:
@@ -56,6 +58,16 @@ public class PlayerCntrl : MonoBehaviour
         }
 
         UpdateAnimation();
+    }
+
+    private void StartMouseOrbit()
+    {
+        startOrbit = inputCntrl.GetMousePosition();
+    }
+
+    private void DragMouseOrbit()
+    {
+
     }
 
     /**

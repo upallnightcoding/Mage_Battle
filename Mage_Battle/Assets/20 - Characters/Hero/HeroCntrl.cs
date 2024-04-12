@@ -84,7 +84,7 @@ public class HeroCntrl : MonoBehaviour
     */
     private void HeroIdleState(InputCntrlClickType click)
     {
-        if (click == InputCntrlClickType.SINGLE_CLICK)
+        if (click == InputCntrlClickType.SINGLE_LEFT_CLICK)
         {
             ChangeState(HeroCntrlState.MOVE);
         }
@@ -161,14 +161,14 @@ public class HeroCntrl : MonoBehaviour
         {
             case InputCntrlClickType.NO_CLICK:
                 break;
-            case InputCntrlClickType.SINGLE_CLICK:
+            case InputCntrlClickType.SINGLE_LEFT_CLICK:
                 nextState = AttackOrMoveState(mousePostion);
                 break;
-            case InputCntrlClickType.START_DRAG_CLICK:
-            case InputCntrlClickType.DRAGGING_CLICK:
+            case InputCntrlClickType.START_LEFT_DRAG_CLICK:
+            case InputCntrlClickType.DRAGGING_LEFT_CLICK:
                 navMeshAgent.destination = mousePostion;
                 break;
-            case InputCntrlClickType.END_DRAG_CLICK:
+            case InputCntrlClickType.END_DRAG_LEFT_CLICK:
                 break;
         }
 
@@ -193,14 +193,14 @@ public class HeroCntrl : MonoBehaviour
         {
             case InputCntrlClickType.NO_CLICK:
                 break;
-            case InputCntrlClickType.SINGLE_CLICK:
+            case InputCntrlClickType.SINGLE_LEFT_CLICK:
                 nextState = AttackOrMoveState(mousePostion);
                 break;
-            case InputCntrlClickType.START_DRAG_CLICK:
-            case InputCntrlClickType.DRAGGING_CLICK:
+            case InputCntrlClickType.START_LEFT_DRAG_CLICK:
+            case InputCntrlClickType.DRAGGING_LEFT_CLICK:
                 navMeshAgent.destination = mousePostion;
                 break;
-            case InputCntrlClickType.END_DRAG_CLICK:
+            case InputCntrlClickType.END_DRAG_LEFT_CLICK:
                 break;
         }
 
