@@ -8,8 +8,8 @@ public class InputCntrl : MonoBehaviour
 {
     public static event Action OnDesengageEvent;
 
-    [SerializeField] private float singleLeftClickTimer = 0.1f;
-    [SerializeField] private float singleRightClickTimer = 0.1f;
+    [SerializeField] private float singleLeftClickTimer = 0.05f;
+    [SerializeField] private float singleRightClickTimer = 0.05f;
     [SerializeField] private float doubleClickTimer = 0.2f;
 
     private SingleClickState currentSingleClickState = SingleClickState.IDLE_STATE;
@@ -25,6 +25,7 @@ public class InputCntrl : MonoBehaviour
     public bool IsLeftMouseReleased() => Mouse.current.leftButton.wasReleasedThisFrame;
     public bool IsRightMousePressed() => Mouse.current.rightButton.wasPressedThisFrame;
     public bool IsRightMouseReleased() => Mouse.current.rightButton.wasReleasedThisFrame;
+    public Vector2 GetScrollWheel() => Mouse.current.scroll.ReadValue();
 
     public bool HasSelectedSpell() => SelectSpell != -1;
 
@@ -230,9 +231,12 @@ public class InputCntrl : MonoBehaviour
         float startTime = Time.time;
         bool mouseReleased = false;
 
+        Debug.Log($"Mouse Released: {mouseReleased}");
+
         while (((Time.time - startTime) < singleLeftClickTimer) && (!mouseReleased))
         {
             mouseReleased = IsLeftMouseReleased();
+            Debug.Log($"Mouse was Released: {mouseReleased}");
 
             yield return null;
         }

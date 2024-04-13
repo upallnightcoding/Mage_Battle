@@ -50,7 +50,7 @@ MonoBehaviour:
     type: 3}
   mazeTilePathPreFab: {fileID: 7964111818889831510, guid: c5fce6146a966294bb2dbfaea6dc704d,
     type: 3}
-  mazeTileFloor: {fileID: 7045691855595117779, guid: 3ac06375edce4ad4aac54a60ef80fefb,
+  mazeTileFloor: {fileID: 530215922277034775, guid: 643f40af1e05fa14a8e3b791a5232536,
     type: 3}
   willTileDoorPreFab: {fileID: 5971669628928996082, guid: d2d084104c0e99545870d0ce02af896e,
     type: 3}

@@ -17,8 +17,6 @@ public class PlayerCntrl : MonoBehaviour
     //private PlayerState prevState = PlayerState.ATTACK;
     //private InputCntrlClickType prevClick = InputCntrlClickType.END_DRAG_CLICK;
 
-    private Vector2 startOrbit;
-
     // Start is called before the first frame update
     void Start()
     {
@@ -58,16 +56,6 @@ public class PlayerCntrl : MonoBehaviour
         }
 
         UpdateAnimation();
-    }
-
-    private void StartMouseOrbit()
-    {
-        startOrbit = inputCntrl.GetMousePosition();
-    }
-
-    private void DragMouseOrbit()
-    {
-
     }
 
     /**
@@ -155,6 +143,14 @@ public class PlayerCntrl : MonoBehaviour
         navMeshAgent.destination = postion;
     }
 
+    /**
+     * StopMoving() - 
+     */
+    public void StopMoving()
+    {
+        navMeshAgent.destination = transform.position;
+    }
+
     //==============================================================================
 
   
@@ -205,9 +201,9 @@ public class PlayerCntrl : MonoBehaviour
     /**
      * AttackState() - 
      */
-   
 
-    
+
+
 
     /*private PlayerState AttackMoveToState(InputCntrlClickType click)
     {
@@ -219,7 +215,7 @@ public class PlayerCntrl : MonoBehaviour
     /**
      * MoveTo() - 
      */
-   
+
 
     private Vector3 GetMousePosition()
     {

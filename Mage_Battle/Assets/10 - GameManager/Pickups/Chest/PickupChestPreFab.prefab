@@ -94,6 +94,7 @@ GameObject:
   - component: {fileID: 8679261754137551155}
   - component: {fileID: 8650070306964805137}
   - component: {fileID: 8658516404150060801}
+  - component: {fileID: 7186878142627562233}
   m_Layer: 0
   m_Name: SM_Prop_TreasureChest_Lid_01
   m_TagString: Untagged
@@ -166,6 +167,27 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!95 &7186878142627562233
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8680767488920529695}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 1c74cb4d960c3e844ab5fb70ab4039c2, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &8680989621892893151
 GameObject:
   m_ObjectHideFlags: 0
@@ -178,6 +200,8 @@ GameObject:
   - component: {fileID: 8649792648613409327}
   - component: {fileID: 8659388222368367195}
   - component: {fileID: 8691622658605023001}
+  - component: {fileID: 6562186237951590687}
+  - component: {fileID: 4035915541662632223}
   m_Layer: 0
   m_Name: PickupChestPreFab
   m_TagString: Untagged
@@ -194,7 +218,7 @@ Transform:
   m_GameObject: {fileID: 8680989621892893151}
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -0, y: 0, z: 1.283}
-  m_LocalScale: {x: 0.6, y: 0.6, z: 0.6}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 8679287674707960671}
@@ -267,6 +291,32 @@ MeshCollider:
   m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: 43086095953496942, guid: 142f51bfcced80547a22524abae325d3, type: 2}
+--- !u!65 &6562186237951590687
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8680989621892893151}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 4.5428624, y: 1.0140557, z: 2.711412}
+  m_Center: {x: 0.085996784, y: 0.49270788, z: -0.06633495}
+--- !u!114 &4035915541662632223
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8680989621892893151}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2d98c63835179014a844774261b939b1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  animator: {fileID: 7186878142627562233}
 --- !u!1 &8681620984028717165
 GameObject:
   m_ObjectHideFlags: 0
