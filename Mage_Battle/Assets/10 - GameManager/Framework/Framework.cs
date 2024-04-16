@@ -9,9 +9,18 @@ public class Framework
 
     private GameObject activeGo = null;
 
+    private bool isPreFab = true;
+
     public Framework Blueprint(GameObject framework)
     {
         model = Object.Instantiate<GameObject>(framework);
+
+        return (this);
+    }
+
+    public Framework SetIsPreFab(bool value)
+    {
+        isPreFab = value;
 
         return (this);
     }
@@ -23,22 +32,16 @@ public class Framework
         return (Assemble(additionList[selection], anchorName, turn));
     }
 
-    public Framework Assemble(GameObject prefab, string anchorName, float yRotate = 0.0f, bool create = true)
+    public Framework Assemble(GameObject prefab, string anchorName, float yRotate = 0.0f)
     {
-        GameObject go = null;
-        return (Assemble(prefab, anchorName, yRotate, create, out go));
-    }
+        //go = null;
 
-    public Framework Assemble(GameObject prefab, string anchorName, float yRotate, bool create, out GameObject go)
-    {
-        go = null;
-
-        if ((prefab != null) && (create))
+        if (prefab != null)
         {
             Transform anchors = model.transform.Find("Anchors");
             Transform anchor = anchors.Find(anchorName);
 
-            if (IsAPreFab(prefab))
+            if (isPreFab)
             {
                 activeGo = Object.Instantiate(prefab, anchor);
                 activeGo.transform.rotation = Quaternion.Euler(new Vector3(0.0f, yRotate, 0.0f));
@@ -48,10 +51,11 @@ public class Framework
                 prefab.transform.position = anchor.transform.position;
                 prefab.transform.rotation = Quaternion.Euler(new Vector3(0.0f, yRotate, 0.0f));
                 prefab.transform.parent = anchor;
+                
                 activeGo = prefab;
             }
 
-            go = activeGo;
+            //go = activeGo;
         }
 
         return (this);
@@ -112,32 +116,32 @@ public class Framework
         return (model);
     }
 
-    private bool IsAPreFab(GameObject thing)
+    /*private bool IsAPreFab(GameObject thing)
     {
         return (
             PrefabUtility.GetPrefabInstanceStatus(thing) != PrefabInstanceStatus.NotAPrefab
             || PrefabUtility.GetPrefabAssetType(thing) != PrefabAssetType.NotAPrefab
         );
-    }
+    }*/
 
-    public static GameObject PickFromList(GameObject[] fromList)
+    /*public static GameObject PickFromList(GameObject[] fromList)
     {
         int selection = Random.Range(0, fromList.Length);
 
         return (fromList[selection]);
-    }
+    }/
 
-    public static GameObject CreateObject(GameObject preFab, GameObject orientation)
+    /*public static GameObject CreateObject(GameObject preFab, GameObject orientation)
     {
         return (Object.Instantiate(preFab, orientation.transform.position, orientation.transform.rotation));
-    }
+    }*/
 
-    public static GameObject CreateObject(GameObject[] preFab, Vector3 position, float rotation, GameObject parent = null)
+    /*public static GameObject CreateObject(GameObject[] preFab, Vector3 position, float rotation, GameObject parent = null)
     {
         return (CreateObject(PickFromList(preFab), position, rotation, parent));
-    }
+    }*/
 
-    public static GameObject CreateObject(GameObject preFab, Vector3 position, float rotation, GameObject parent = null)
+    /*public static GameObject CreateObject(GameObject preFab, Vector3 position, float rotation, GameObject parent = null)
     {
         GameObject go = null;
 
@@ -156,19 +160,19 @@ public class Framework
         }
 
         return (go);
-    }
+    }*/
 
-    public GameObject Build(Vector3 rotate)
+    /*public GameObject Build(Vector3 rotate)
     {
         model.transform.rotation = Quaternion.Euler(rotate);
 
         return (model);
-    }
+    }*/
 
 
-    public static float Rotate90Degree() => (90.0f * Random.Range(0, 4));
+    //public static float Rotate90Degree() => (90.0f * Random.Range(0, 4));
 
-    public static float Rotate180Degree() => (180.0f * Random.Range(0, 2));
+    //public static float Rotate180Degree() => (180.0f * Random.Range(0, 2));
 
 
 

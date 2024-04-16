@@ -4,8 +4,6 @@ using UnityEngine;
 
 public abstract class PickupCntrl : MonoBehaviour
 {
-    [SerializeField] protected PickupSO pickupSO;
-
     public abstract void Movement();
     public abstract void Pickup(Collision collision);
 

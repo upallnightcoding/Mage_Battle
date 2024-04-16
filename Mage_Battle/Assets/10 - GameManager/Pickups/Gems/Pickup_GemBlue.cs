@@ -2,13 +2,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Pickup_Xp : PickupCntrl
+public class Pickup_GemBlue : PickupCntrl
 {
+    [SerializeField] private float gemRotationalSpeed;
+    [SerializeField] private GameObject fxGemPickup;
+
     private Vector3 gemRotation = new Vector3();
 
     public override void Movement()
     {
-        gemRotation.y = pickupSO.gemRotationalSpeed * Time.deltaTime;
+        gemRotation.y = gemRotationalSpeed * Time.deltaTime;
 
         transform.localRotation = 
             Quaternion.Euler(gemRotation + transform.localRotation.eulerAngles);
@@ -16,9 +19,7 @@ public class Pickup_Xp : PickupCntrl
 
     public override void Pickup(Collision collision)
     {
-        //Debug.Log("Gem Pickup ...");
-        //GetComponent<MeshRenderer>().enabled = false;
-        Instantiate(pickupSO.fxGemPickup, transform.position, Quaternion.identity);
+        Instantiate(fxGemPickup, transform.position, Quaternion.identity);
         Destroy(gameObject);
     }
 }

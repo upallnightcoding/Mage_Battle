@@ -4,6 +4,11 @@ using UnityEngine;
 
 public class MazeCell 
 {
+    private const int N = 1;
+    private const int S = 2;
+    private const int E = 4;
+    private const int W = 8;
+
     // Type of Cell
     public MazePathType PathType { get; set; }  = MazePathType.OFFPATH;
     public MazePathDirection MazePathDir { get; set; } = MazePathDirection.NONE;
@@ -20,6 +25,8 @@ public class MazeCell
 
     public Vector3 Position     { get; set; }
 
+    public int PathValue { get; set; } = 0;
+
     public bool IsRoom() => (PathCount == 1);
     public int PathCount { get; set; } = 0;
     public void UpdatePathCount() => PathCount++;
@@ -32,11 +39,16 @@ public class MazeCell
     //public bool IsEqual(MazeCell target) => 
       //  ((target.Col == Col) && (target.Row == Row));
 
-    // Predicate functions that returns true if a call exists
+    // Predicate functions that returns true if a wall exists
     public bool HasNorthWall()  => NorthWall == null; 
     public bool HasSouthWall()  => SouthWall == null; 
     public bool HasEastWall()   => EastWall == null; 
-    public bool HasWestWall()   => WestWall == null; 
+    public bool HasWestWall()   => WestWall == null;
+
+    public bool HasNorthPath() => NorthWall != null;
+    public bool HasSouthPath() => SouthWall != null;
+    public bool HasEastPath() => EastWall != null;
+    public bool HasWestPath() => WestWall != null;
 
     private MazeCellType type = MazeCellType.UNVISITED;
 

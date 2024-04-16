@@ -16,11 +16,13 @@ public class MazePathEnd : MazePath3x3
 
     protected override GameObject CreateBase()
     {
-        GameObject startTile = new Framework()
+        GameObject endTile = new Framework()
             .Blueprint(pathFrmWrk)
             .Assemble(tile, CENTER_ANCHOR)
             .Build();
 
-        return (startTile);
+        endTile.name = "End Tile";
+
+        return (endTile);
     }
 }

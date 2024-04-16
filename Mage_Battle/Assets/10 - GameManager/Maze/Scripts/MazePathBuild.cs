@@ -17,6 +17,7 @@ public abstract class MazePathBuild : MazePath
     {
         GameObject tile = new Framework()
             .Blueprint(pathFrmWrk)
+            .SetIsPreFab(false)
             .Assemble(CreateBase(), CENTER_ANCHOR)
             .Assemble(CreateNorthWall(mazeCell), NORTH_WALL_ANCHOR)
             .Assemble(CreateSouthWall(mazeCell), SOUTH_WALL_ANCHOR)
