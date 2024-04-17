@@ -64,9 +64,18 @@ public class MazeCntrl : MonoBehaviour
                         }
                         break;
                     case MazePathType.PATH:
-                        path = new MazePath3x3(mazeData).RenderPath(mazeCell, position);
+                     
+                        if ((mazeCell.PathValue == 3) || (mazeCell.PathValue == 12))
+                        {
+                            path = new MazePathWater(mazeCell, mazeData).RenderPath(mazeCell, position);
+                        } else
+                        {
+                            path = new MazePath3x3(mazeData).RenderPath(mazeCell, position);
+                        }
+
                         path.GetComponentsInChildren<MazePathCntrl>()[0].CreateGem(pickupGemPreFab);
                         path.GetComponentsInChildren<MazePathCntrl>()[0].Initialize(mazeData, mazeCell);
+
                         break;
                     case MazePathType.END:
                         path = new MazePathEnd(mazeData).RenderPath(mazeCell, position);

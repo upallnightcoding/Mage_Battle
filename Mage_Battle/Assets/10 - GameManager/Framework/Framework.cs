@@ -25,18 +25,30 @@ public class Framework
         return (this);
     }
 
-    public Framework Assemble(GameObject[] additionList, string anchorName, float turn = 0.0f)
+    public Framework Assemble(GameObject[] additionList, string anchorName, float turn, bool create = true)
     {
         int selection = Random.Range(0, additionList.Length);
 
-        return (Assemble(additionList[selection], anchorName, turn));
+        return (Assemble(additionList[selection], anchorName, turn, create));
     }
 
-    public Framework Assemble(GameObject prefab, string anchorName, float yRotate = 0.0f)
+    public Framework Assemble(GameObject[] additionList, string anchorName, bool create = true)
+    {
+        int selection = Random.Range(0, additionList.Length);
+
+        return (Assemble(additionList[selection], anchorName, create));
+    }
+
+    public Framework Assemble(GameObject prefab, string anchorName, bool create = true)
+    {
+        return (Assemble(prefab, anchorName, 0.0f, create));
+    }
+
+    public Framework Assemble(GameObject prefab, string anchorName, float yRotate, bool create = true)
     {
         //go = null;
 
-        if (prefab != null)
+        if ((prefab != null) && (create))
         {
             Transform anchors = model.transform.Find("Anchors");
             Transform anchor = anchors.Find(anchorName);

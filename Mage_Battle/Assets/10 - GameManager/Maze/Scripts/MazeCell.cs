@@ -4,10 +4,10 @@ using UnityEngine;
 
 public class MazeCell 
 {
-    private const int N = 1;
-    private const int S = 2;
-    private const int E = 4;
-    private const int W = 8;
+    public static readonly int N = 1;
+    public static readonly int S = 2;
+    public static readonly int E = 4;
+    public static readonly int W = 8;
 
     // Type of Cell
     public MazePathType PathType { get; set; }  = MazePathType.OFFPATH;
@@ -20,12 +20,16 @@ public class MazeCell
     public MazeCell WestWall    { get; private set; } = null;
 
     // Cell Column and Row position
-    public int Col              { get; private set; }
-    public int Row              { get; private set; }
+    public int Col { get; private set; }
+    public int Row { get; private set; }
 
     public Vector3 Position     { get; set; }
 
     public int PathValue { get; set; } = 0;
+    private void AddNorthPath() { PathValue += N; }
+    private void AddSouthPath() { PathValue += S; }
+    private void AddWestPath() { PathValue += W; }
+    private void AddEastPath() { PathValue += E; }
 
     public bool IsRoom() => (PathCount == 1);
     public int PathCount { get; set; } = 0;
@@ -35,9 +39,6 @@ public class MazeCell
 
     public bool IsUnVisited()   => (type == MazeCellType.UNVISITED); 
     public bool IsVisited()     => (type == MazeCellType.VISITED);
-
-    //public bool IsEqual(MazeCell target) => 
-      //  ((target.Col == Col) && (target.Row == Row));
 
     // Predicate functions that returns true if a wall exists
     public bool HasNorthWall()  => NorthWall == null; 
@@ -81,9 +82,13 @@ public class MazeCell
             {
                 NorthWall = neighbor;
                 neighbor.SouthWall = this;
+                AddNorthPath();
+                neighbor.AddSouthPath();
             } else {
                 SouthWall = neighbor;
                 neighbor.NorthWall = this;
+                AddSouthPath();
+                neighbor.AddNorthPath();
             }
         }
 
@@ -93,9 +98,13 @@ public class MazeCell
             {
                 EastWall = neighbor;
                 neighbor.WestWall = this;
+                AddEastPath();
+                neighbor.AddWestPath();
             } else {
                 WestWall = neighbor;
                 neighbor.EastWall = this;
+                AddWestPath();
+                neighbor.AddEastPath();
             }
         }
     }

@@ -231,12 +231,9 @@ public class InputCntrl : MonoBehaviour
         float startTime = Time.time;
         bool mouseReleased = false;
 
-        Debug.Log($"Mouse Released: {mouseReleased}");
-
         while (((Time.time - startTime) < singleLeftClickTimer) && (!mouseReleased))
         {
             mouseReleased = IsLeftMouseReleased();
-            Debug.Log($"Mouse was Released: {mouseReleased}");
 
             yield return null;
         }
