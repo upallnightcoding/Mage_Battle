@@ -43,6 +43,7 @@ public class MazeData : ScriptableObject
     public GameObject mazeTilePathPreFab;
     public GameObject mazeTileFloor;
     public GameObject willTileDoorPreFab;
+    public GameObject waterPrefab;
 
     [Header("Tile Attributes")]
     public GameObject FxPathDirection;

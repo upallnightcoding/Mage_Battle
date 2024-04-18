@@ -16,9 +16,12 @@ public class MazePathEnd : MazePath3x3
 
     protected override GameObject CreateBase()
     {
+        float rotate = (mazeCell.PathValue & 12) > 0 ? 90.0f : 0.0f;
+
         GameObject endTile = new Framework()
             .Blueprint(pathFrmWrk)
-            .Assemble(tile, CENTER_ANCHOR)
+            .Assemble(tile, CENTER_ANCHOR, rotate)
+            .Rotate(new Vector3(0.0f, rotate, 0.0f))
             .Build();
 
         endTile.name = "End Tile";

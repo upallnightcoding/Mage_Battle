@@ -10,6 +10,7 @@ public class MazePathWater : MazePathBuild
     protected GameObject wallFrmWrk = null;
     private GameObject grass01 = null;
     private MazeCell mazeCell = null;
+    private GameObject waterPrefab = null;
 
     public MazePathWater(MazeCell mazeCell, MazeData mazeData) : base(mazeData)
     {
@@ -19,6 +20,7 @@ public class MazePathWater : MazePathBuild
         this.pathFrmWrk = mazeData.mazePathFloorFw;
         this.grass01 = mazeData.grass01;
         this.mazeCell = mazeCell;
+        this.waterPrefab = mazeData.waterPrefab;
     }
 
     protected override GameObject CreateBase()
@@ -26,6 +28,7 @@ public class MazePathWater : MazePathBuild
         GameObject baseTile = new Framework()
            .Blueprint(pathFrmWrk)
            .Assemble(tilePreFab, CENTER_ANCHOR)
+           .Assemble(waterPrefab, CENTER_ANCHOR)
            //.Decorate(grass01, 7, 7.0f, 7.0f, 90.0f)
            .Assemble(tilePreFab, NORTH_TILE_ANCHOR, mazeCell.HasNorthPath())
            .Assemble(tilePreFab, SOUTH_TILE_ANCHOR, mazeCell.HasSouthPath())

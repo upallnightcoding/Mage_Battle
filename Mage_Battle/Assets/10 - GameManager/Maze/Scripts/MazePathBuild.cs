@@ -6,6 +6,8 @@ public abstract class MazePathBuild : MazePath
 {
     protected readonly string COLUMN_ANCHOR = "ColumnAnchor";
 
+    protected MazeCell mazeCell = null;
+
     private GameObject pathFrmWrk = null;
 
     public MazePathBuild(MazeData mazeData)
@@ -15,6 +17,8 @@ public abstract class MazePathBuild : MazePath
 
     public override GameObject RenderPath(MazeCell mazeCell, Vector3 position)
     {
+        this.mazeCell = mazeCell;
+
         GameObject tile = new Framework()
             .Blueprint(pathFrmWrk)
             .SetIsPreFab(false)
