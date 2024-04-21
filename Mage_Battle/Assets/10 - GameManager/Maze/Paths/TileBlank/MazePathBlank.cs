@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MazePathBlank : MazePath
+public class MazePathBlank //: MazePath
 {
     private MazeData mazeData = null;
 
@@ -24,7 +24,7 @@ public class MazePathBlank : MazePath
         this.pathFrmWrk = mazeData.mazePathFloorFw;
     }
 
-    public override GameObject RenderPath(MazeCell mazeCell, Vector3 position)
+    public  GameObject RenderPath(MazeCell mazeCell, Vector3 position)
     {
         //int walls = CalculateWalls(mazeCell);
 

@@ -12,7 +12,8 @@ public class MazePathWater : MazePathBuild
     private MazeCell mazeCell = null;
     private GameObject waterPrefab = null;
 
-    public MazePathWater(MazeCell mazeCell, MazeData mazeData) : base(mazeData)
+    public MazePathWater(MazeData mazeData, MazeCell mazeCell, Vector3 position) 
+        : base(mazeData, mazeCell, position)
     {
         this.wallPreFab = mazeData.buildingColumnPreFab;
         this.tilePreFab = mazeData.tileList;
@@ -34,15 +35,20 @@ public class MazePathWater : MazePathBuild
            .Assemble(tilePreFab, SOUTH_TILE_ANCHOR, mazeCell.HasSouthPath())
            .Assemble(tilePreFab, EAST_TILE_ANCHOR, mazeCell.HasEastPath())
            .Assemble(tilePreFab, WEST_TILE_ANCHOR, mazeCell.HasWestPath())
-           //.Assemble(tilePreFab, NORTH_EAST_TILE_ANCHOR)
-           //.Assemble(tilePreFab, NORTH_WEST_TILE_ANCHOR)
-           //.Assemble(tilePreFab, SOUTH_EAST_TILE_ANCHOR)
-           //.Assemble(tilePreFab, SOUTH_WEST_TILE_ANCHOR)
+           //.Assemble(balustradePrefab, NORTH_EAST_TILE_ANCHOR)
+           //.Assemble(balustradePrefab, NORTH_WEST_TILE_ANCHOR)
+           //.Assemble(balustradePrefab, SOUTH_EAST_TILE_ANCHOR)
+           //.Assemble(balustradePrefab, SOUTH_WEST_TILE_ANCHOR)
            //.Position(position)
            .Build();
 
         return (baseTile);
     }
+
+    protected override GameObject CreateNorthPath(MazeCell mazeCell) => null;
+    protected override GameObject CreateSouthPath(MazeCell mazeCell) => null;
+    protected override GameObject CreateEastPath(MazeCell mazeCell) => null;
+    protected override GameObject CreateWestPath(MazeCell mazeCell) => null;
 
     protected override GameObject CreateNorthWall(MazeCell mazeCell)
     {

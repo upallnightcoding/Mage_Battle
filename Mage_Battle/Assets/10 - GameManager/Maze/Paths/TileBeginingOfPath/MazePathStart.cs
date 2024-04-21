@@ -6,18 +6,16 @@ public class MazePathStart : MazePath3x3
 {
     private readonly GameObject tile = null;
 
-    private GameObject pathFrmWrk = null;
-
-    public MazePathStart(MazeData mazeData) : base(mazeData)
+    public MazePathStart(MazeData mazeData, MazeCell mazeCell, Vector3 position) 
+        : base(mazeData, mazeCell, position)
     {
         tile = mazeData.mazeStartPathPreFab;
-        pathFrmWrk = mazeData.mazePathFloorFw;
     }
 
     protected override GameObject CreateBase()
     {
         GameObject startTile = new Framework()
-            .Blueprint(pathFrmWrk)
+            .Blueprint(GetPathFrmWrk())
             .Assemble(tile, CENTER_ANCHOR)
             .Build();
 

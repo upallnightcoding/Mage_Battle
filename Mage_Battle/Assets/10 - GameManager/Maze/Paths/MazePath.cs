@@ -4,5 +4,5 @@ using UnityEngine;
 
 public abstract class MazePath 
 {
-    public abstract GameObject RenderPath(MazeCell mazeCell, Vector3 position);
+    public abstract GameObject RenderPath();
 }

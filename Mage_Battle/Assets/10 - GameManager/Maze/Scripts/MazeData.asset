@@ -56,6 +56,8 @@ MonoBehaviour:
     type: 3}
   waterPrefab: {fileID: 244402312272962779, guid: 5f227633b858bb549a7a42a18dcf1f72,
     type: 3}
+  balustradePrefab: {fileID: 4062293323534790095, guid: 5ac49058859d5b845a72f42f4ddf13bc,
+    type: 3}
   FxPathDirection: {fileID: 8853818377500949494, guid: f578af2cc55c2044fa5a8ee675a76846,
     type: 3}
   grass01: {fileID: 2469784836060406421, guid: 05ee2672c2b880d48b19d6dbaeaeaa0d, type: 3}

@@ -51,34 +51,39 @@ public class MazeCntrl : MonoBehaviour
                 switch (mazeCell.PathType)
                 {
                     case MazePathType.START:
-                        path = new MazePathStart(mazeData).RenderPath(mazeCell, position);
+                        path = new MazePathStart(mazeData, mazeCell, position).RenderPath();
                         break;
                     case MazePathType.OFFPATH:
                         if (mazeCell.IsRoom())
                         {
-                            path = new MazePathRoom(mazeData).RenderPath(mazeCell, position);
+                            path = new MazePathRoom(mazeData, mazeCell, position).RenderPath();
                             path.GetComponentsInChildren<MazePathCntrl>()[0].Initialize(mazeData, mazeCell);
                         } else
                         {
-                            path = new MazePath3x3(mazeData).RenderPath(mazeCell, position);
+                            path = new MazePath3x3(mazeData, mazeCell, position).RenderPath();
                         }
+
+                        //path = new MazePath3x3(mazeData, mazeCell, position).RenderPath();
                         break;
                     case MazePathType.PATH:
                      
-                        if ((mazeCell.PathValue == 3) || (mazeCell.PathValue == 12))
+                        /*if ((mazeCell.PathValue == 3) || (mazeCell.PathValue == 12))
                         {
-                            path = new MazePathWater(mazeCell, mazeData).RenderPath(mazeCell, position);
+                            path = new MazePathWater(mazeData, mazeCell, position).RenderPath();
                         } else
                         {
-                            path = new MazePath3x3(mazeData).RenderPath(mazeCell, position);
-                        }
+                            path = new MazePath3x3(mazeData, mazeCell, position).RenderPath();
+                        }*/
+
+                        path = new MazePath3x3(mazeData, mazeCell, position).RenderPath();
 
                         path.GetComponentsInChildren<MazePathCntrl>()[0].CreateGem(pickupGemPreFab);
                         path.GetComponentsInChildren<MazePathCntrl>()[0].Initialize(mazeData, mazeCell);
 
                         break;
                     case MazePathType.END:
-                        path = new MazePathEnd(mazeData).RenderPath(mazeCell, position);
+                        path = new MazePathEnd(mazeData, mazeCell, position).RenderPath();
+                        //path = new MazePathNextLevel(mazeData).RenderPath(mazeCell, position);
                         break;
                 }
 
