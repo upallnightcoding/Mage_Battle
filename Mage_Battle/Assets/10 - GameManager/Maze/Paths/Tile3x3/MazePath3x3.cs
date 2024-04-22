@@ -46,41 +46,41 @@ public class MazePath3x3 : MazePathBuild
 
     protected override GameObject CreateNorthWall(MazeCell mazeCell)
     {
-        return (CreateNorthSouthWall(wallPreFab));
+        return (CreateNorthSouthWall(wallPreFab, 0.0f));
     }
 
     protected override GameObject CreateSouthWall(MazeCell mazeCell)
     {
-        return (CreateNorthSouthWall(wallPreFab));
+        return (CreateNorthSouthWall(wallPreFab, 180.0f));
     }
 
     protected override GameObject CreateEastWall(MazeCell mazeCell)
     {
-        return (CreateEastWestWall(wallPreFab));
+        return (CreateEastWestWall(wallPreFab, 90.0f));
     }
 
     protected override GameObject CreateWestWall(MazeCell mazeCell)
     {
-        return (CreateEastWestWall(wallPreFab));
+        return (CreateEastWestWall(wallPreFab, 90.0f));
     }
 
-    protected GameObject CreateNorthSouthWall(GameObject wallGameObject)
+    protected GameObject CreateNorthSouthWall(GameObject wallGameObject, float turn)
     {
         GameObject wall = new Framework()
             .Blueprint(wallFrmWrk)
             .SetIsPreFab(true)
-            .Assemble(wallGameObject, COLUMN_ANCHOR)
+            .Assemble(wallGameObject, COLUMN_ANCHOR, turn)
             .Build();
 
         return (wall);
     }
 
-    protected GameObject CreateEastWestWall(GameObject wallGameObject)
+    protected GameObject CreateEastWestWall(GameObject wallGameObject, float turn)
     {
         GameObject wall = new Framework()
             .Blueprint(wallFrmWrk)
             .SetIsPreFab(true)
-            .Assemble(wallGameObject, COLUMN_ANCHOR, 90.0f)
+            .Assemble(wallGameObject, COLUMN_ANCHOR, turn)
             .Build();
 
         return (wall);

@@ -42,8 +42,8 @@ public class MazePathRoom : MazePath3x3
     protected override GameObject CreateEastPath(MazeCell mazeCell) => CreateDoorWay(90.0f);
     protected override GameObject CreateWestPath(MazeCell mazeCell) => CreateDoorWay(90.0f);
 
-    protected override GameObject CreateNorthWall(MazeCell mazeCell) => CreateNorthSouthWall(wallPreFab);
-    protected override GameObject CreateSouthWall(MazeCell mazeCell) => CreateNorthSouthWall(wallPreFab);
-    protected override GameObject CreateEastWall(MazeCell mazeCell) => CreateEastWestWall(wallPreFab);
-    protected override GameObject CreateWestWall(MazeCell mazeCell) => CreateEastWestWall(wallPreFab);
+    protected override GameObject CreateNorthWall(MazeCell mazeCell) => CreateNorthSouthWall(wallPreFab, 0.0f);
+    protected override GameObject CreateSouthWall(MazeCell mazeCell) => CreateNorthSouthWall(wallPreFab, 180.0f);
+    protected override GameObject CreateEastWall(MazeCell mazeCell) => CreateEastWestWall(wallPreFab, 90.0f);
+    protected override GameObject CreateWestWall(MazeCell mazeCell) => CreateEastWestWall(wallPreFab, 90.0f);
 }

@@ -24,21 +24,16 @@ MonoBehaviour:
   buildingFloor01PreFab: {fileID: 5247064455343713228, guid: d05746c3f1588d84d9532631b9cc9365,
     type: 3}
   tileList:
-  - {fileID: 8450987972900505263, guid: 2d5ae7e1425c7f349892f17cdb6e3579, type: 3}
-  - {fileID: 483836859089858567, guid: 442551f508c4e3b46b8c70481d05f1d2, type: 3}
-  - {fileID: 1156848430216161326, guid: bde3bfc628fa2624aa071acc250cc75c, type: 3}
-  - {fileID: 7763471746193696427, guid: b49086b09371bb145bcc5e16ed29a52b, type: 3}
-  - {fileID: 6917103069119323853, guid: 13779cef490e8f943ab6f645f31ff5c9, type: 3}
-  - {fileID: 6632337863469884311, guid: 7e7a8839bfcaa62498544f2d6a03f50c, type: 3}
-  - {fileID: 1385141690817214017, guid: 547515db712dd5d4192914c8835edc46, type: 3}
-  - {fileID: 8995710140129751772, guid: 210954a1dc2b62b488ccb976f9bc0e5a, type: 3}
-  - {fileID: 4585203692742291576, guid: 813b98dc7f94df247b4bf6da67340914, type: 3}
-  - {fileID: 1502768794855315320, guid: af669e09d29edf94ba976aed6478044f, type: 3}
-  - {fileID: 1081099126807679491, guid: 847415f1b04f85b4e8a31c5203b90800, type: 3}
-  - {fileID: 6006657939936550853, guid: fa6176ede3cb88e43b37704eeb1710f8, type: 3}
-  - {fileID: 6956938317574264833, guid: 732454fd90865b145a0bbe89efe380a9, type: 3}
-  - {fileID: 8309059475399222589, guid: c0f0eb7d1cd38bf4891dddd8d44b0105, type: 3}
-  - {fileID: 6809433686238394819, guid: 28201f4ddfc8fb24ca92d39f02390420, type: 3}
+  - {fileID: 62013658743683126, guid: 9ba3e5ea35e73994cafbd562eb93fe5c, type: 3}
+  - {fileID: 4009758659394829183, guid: 8043d0efdcced914b8d41140bec9b9d3, type: 3}
+  - {fileID: 1676543175539588252, guid: f9a65945df758e8498010e18ca96c1f2, type: 3}
+  - {fileID: 9200298705758407027, guid: a36f3db5064c5d64d8cc01782856501e, type: 3}
+  - {fileID: 3553850619215827930, guid: 32fc478a18d29a84ba837052926db064, type: 3}
+  - {fileID: 6986802741163815717, guid: b9d151a25ecd234418020ae1cbbb91f8, type: 3}
+  - {fileID: 2784156297216956950, guid: c16a2128533fbcc499ec75fc41a3f0ba, type: 3}
+  - {fileID: 7351914126883995532, guid: 1785180f87be6404db31da114b003731, type: 3}
+  - {fileID: 6871685926728513635, guid: 91a9b6921dc2b504e881d0dabf4989f2, type: 3}
+  - {fileID: 8589414493349769197, guid: ec894e0e05b0e5241a1bd0dddc29e58e, type: 3}
   - {fileID: 1740812553755822851, guid: 52e6927ebba4d1b49b928b244fa14236, type: 3}
   parent: {fileID: 0}
   mazeWallsSegmentsPreFab: []
@@ -57,6 +52,10 @@ MonoBehaviour:
   waterPrefab: {fileID: 244402312272962779, guid: 5f227633b858bb549a7a42a18dcf1f72,
     type: 3}
   balustradePrefab: {fileID: 4062293323534790095, guid: 5ac49058859d5b845a72f42f4ddf13bc,
+    type: 3}
+  balustradePathPrefab: {fileID: 4062293323534790095, guid: 28a831ba9a07b6b42a57e876c8bfa360,
+    type: 3}
+  balustradeWallPrefab: {fileID: 9099079365995231811, guid: 4565ce66d525b05498bc5588fb002f9a,
     type: 3}
   FxPathDirection: {fileID: 8853818377500949494, guid: f578af2cc55c2044fa5a8ee675a76846,
     type: 3}

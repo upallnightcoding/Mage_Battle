@@ -4,8 +4,6 @@ using UnityEngine;
 
 public abstract class MazePathBuild : MazePath
 {
-    protected readonly string COLUMN_ANCHOR = "ColumnAnchor";
-
     private MazeCell mazeCell = null;
 
     private GameObject pathFrmWrk = null;
@@ -50,7 +48,9 @@ public abstract class MazePathBuild : MazePath
 
     private GameObject RenderSouthPassage(MazeCell mazeCell)
     {
-        return (((mazeCell.Row == 0) ? CreateSouthWall(mazeCell) : (mazeCell.HasSouthWall()) ? CreateSouthWall(mazeCell) : CreateSouthPath(mazeCell)));
+        return ((mazeCell.Row == 0) ? CreateSouthWall(mazeCell) : null);
+        //return (((mazeCell.Row == 0) ? CreateSouthWall(mazeCell) : (mazeCell.HasSouthWall()) ? CreateSouthWall(mazeCell) : CreateSouthPath(mazeCell)));
+
     }
 
     private GameObject RenderEastPassage(MazeCell mazeCell)
@@ -60,12 +60,8 @@ public abstract class MazePathBuild : MazePath
 
     private GameObject RenderWestPassage(MazeCell mazeCell)
     {
-        return (((mazeCell.Col == 0) ? CreateWestWall(mazeCell) : (mazeCell.HasWestWall()) ? CreateWestWall(mazeCell) : CreateWestPath(mazeCell)));
-    }
-
-    private GameObject RenderPassage(bool create, bool hasWall, GameObject wall, GameObject path)
-    {
-        return (create ? (hasWall ? wall : path) : null);
+        return ((mazeCell.Col == 0) ? CreateWestWall(mazeCell) : null);
+        //return (((mazeCell.Col == 0) ? CreateWestWall(mazeCell) : (mazeCell.HasWestWall()) ? CreateWestWall(mazeCell) : CreateWestPath(mazeCell)));
     }
 
     protected abstract GameObject CreateBase();
@@ -80,20 +76,5 @@ public abstract class MazePathBuild : MazePath
     protected abstract GameObject CreateEastPath(MazeCell mazeCell);
     protected abstract GameObject CreateWestPath(MazeCell mazeCell);
 
-    protected readonly string CENTER_ANCHOR = "CenterAnchor";
-
-    protected readonly string NORTH_TILE_ANCHOR = "TileNorthAnchor";
-    protected readonly string SOUTH_TILE_ANCHOR = "TileSouthAnchor";
-    protected readonly string EAST_TILE_ANCHOR = "TileEastAnchor";
-    protected readonly string WEST_TILE_ANCHOR = "TileWestAnchor";
-
-    protected readonly string NORTH_WALL_ANCHOR = "NorthAnchor";
-    protected readonly string SOUTH_WALL_ANCHOR = "SouthAnchor";
-    protected readonly string EAST_WALL_ANCHOR = "EastAnchor";
-    protected readonly string WEST_WALL_ANCHOR = "WestAnchor";
-
-    protected readonly string NORTH_EAST_TILE_ANCHOR = "TileNorthEastAnchor";
-    protected readonly string NORTH_WEST_TILE_ANCHOR = "TileNorthWestAnchor";
-    protected readonly string SOUTH_EAST_TILE_ANCHOR = "TileSouthEastAnchor";
-    protected readonly string SOUTH_WEST_TILE_ANCHOR = "TileSouthWestAnchor";
+   
 }

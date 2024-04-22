@@ -45,6 +45,8 @@ public class MazeData : ScriptableObject
     public GameObject willTileDoorPreFab;
     public GameObject waterPrefab;
     public GameObject balustradePrefab;
+    public GameObject balustradePathPrefab;
+    public GameObject balustradeWallPrefab;
 
     [Header("Tile Attributes")]
     public GameObject FxPathDirection;

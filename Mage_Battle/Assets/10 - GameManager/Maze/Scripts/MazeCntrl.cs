@@ -57,25 +57,31 @@ public class MazeCntrl : MonoBehaviour
                         if (mazeCell.IsRoom())
                         {
                             path = new MazePathRoom(mazeData, mazeCell, position).RenderPath();
-                            path.GetComponentsInChildren<MazePathCntrl>()[0].Initialize(mazeData, mazeCell);
+                            //path.GetComponentsInChildren<MazePathCntrl>()[0].Initialize(mazeData, mazeCell);
                         } else
                         {
                             path = new MazePath3x3(mazeData, mazeCell, position).RenderPath();
                         }
-
-                        //path = new MazePath3x3(mazeData, mazeCell, position).RenderPath();
                         break;
                     case MazePathType.PATH:
-                     
-                        /*if ((mazeCell.PathValue == 3) || (mazeCell.PathValue == 12))
+
+                        if (UnityEngine.Random.Range(0, 5) == 0)
                         {
-                            path = new MazePathWater(mazeData, mazeCell, position).RenderPath();
+                            if ((mazeCell.PathValue == 3) || (mazeCell.PathValue == 12))
+                            {
+                                path = new MazePathWater(mazeData, mazeCell, position).RenderPath();
+                            } else
+                            {
+                                path = new MazePath3x3(mazeData, mazeCell, position).RenderPath();
+                            }
+                        } else if (UnityEngine.Random.Range(0, 5) == 0)
+                        {
+                            path = new MazePathNextLevel(mazeData, mazeCell, position).RenderPath();
+                            //path = new MazePath3x3(mazeData, mazeCell, position).RenderPath();
                         } else
                         {
                             path = new MazePath3x3(mazeData, mazeCell, position).RenderPath();
-                        }*/
-
-                        path = new MazePath3x3(mazeData, mazeCell, position).RenderPath();
+                        }
 
                         path.GetComponentsInChildren<MazePathCntrl>()[0].CreateGem(pickupGemPreFab);
                         path.GetComponentsInChildren<MazePathCntrl>()[0].Initialize(mazeData, mazeCell);
