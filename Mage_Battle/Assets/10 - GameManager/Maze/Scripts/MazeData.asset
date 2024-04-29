@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9d1f1eb497ce68c4e96f3daee4aadbe9, type: 3}
   m_Name: MazeData
   m_EditorClassIdentifier: 
-  height: 12
-  width: 12
+  height: 5
+  width: 5
   cellSize: 15
   randomSeed: 107
   mazeWallFw: {fileID: 4153194024047703827, guid: 0a787006230ce224ebdacd4698d4596d,

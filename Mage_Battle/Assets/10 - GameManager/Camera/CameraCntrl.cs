@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class CameraCntrl : MonoBehaviour
 {
-    [SerializeField] private Transform player;
+    [SerializeField] private PlayerCntrl playerCntrl;
     [SerializeField] private float damping;
     [SerializeField] private InputCntrl inputCntrl;
 
@@ -21,7 +21,9 @@ public class CameraCntrl : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        delta = player.position - transform.position;
+        //delta = player.position - transform.position;
+        CalculateDelta(playerCntrl.transform);
+        GetComponent<Camera>().fieldOfView = 30.0f;  
     }
 
     void Update()
@@ -32,6 +34,23 @@ public class CameraCntrl : MonoBehaviour
     // Update is called once per frame
     void LateUpdate()
     {
+        if (!playerCntrl.IsTeleporting)
+        {
+            UpdateCamera(playerCntrl.transform);
+        } else
+        {
+            UpdateCamera(playerCntrl.GetTeleportPath());
+        }
+
+        Vector2 scroll = inputCntrl.GetScrollWheel();
+        if (scroll != Vector2.zero)
+        {
+            Debug.Log($"Scroll: {scroll}");
+        }
+    }
+
+    private void UpdateCamera(Transform target)
+    {
         if (dragging)
         {
             dragDelta = nextDrag - prevDrag;
@@ -40,12 +59,17 @@ public class CameraCntrl : MonoBehaviour
             delta = turnAngle * delta;
         }
 
-        movePosition = player.position - delta;
+        movePosition = target.position - delta;
 
         transform.position =
             Vector3.SmoothDamp(transform.position, movePosition, ref velocity, damping);
 
-        transform.LookAt(player);
+        transform.LookAt(target);
+    }
+
+    private void CalculateDelta(Transform target)
+    {
+        delta = target.position - transform.position;
     }
 
     private void ProcessInputCmds(InputCntrlClickType click)

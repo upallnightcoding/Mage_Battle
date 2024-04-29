@@ -5,8 +5,10 @@ using UnityEngine.AI;
 
 public class BalustradeWallCntrl : MonoBehaviour
 {
-    [SerializeField] private GameObject topLevelPoint;
-    [SerializeField] private GameObject bottomLevelPoint;
+    [SerializeField] private GameObject topPortalEnter;
+    [SerializeField] private GameObject topPortalExit;
+    [SerializeField] private GameObject bottomPortalExit;
+    [SerializeField] private GameObject bottomPortalEnter;
 
     // Start is called before the first frame update
     void Start()
@@ -20,16 +22,10 @@ public class BalustradeWallCntrl : MonoBehaviour
         {
             if (playerCntrl.gameObject.transform.position.y > 2.5)
             {
-                playerCntrl.Teleport(
-                    topLevelPoint.transform.position,
-                    bottomLevelPoint.transform.position
-                );
+                playerCntrl.Teleport(topPortalEnter, bottomPortalExit);
             } else
             {
-                playerCntrl.Teleport(
-                    bottomLevelPoint.transform.position,
-                    topLevelPoint.transform.position
-                );
+                playerCntrl.Teleport(bottomPortalEnter, topPortalExit);
             }
             
         }

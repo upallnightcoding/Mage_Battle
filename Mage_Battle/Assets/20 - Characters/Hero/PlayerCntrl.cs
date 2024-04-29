@@ -14,9 +14,10 @@ public class PlayerCntrl : MonoBehaviour
     private NavMeshAgent navMeshAgent;
     private Animator animator;
     private bool pauseInputProcessing = false;
-    //private PlayerState state = PlayerState.IDLE;
-    //private PlayerState prevState = PlayerState.ATTACK;
-    //private InputCntrlClickType prevClick = InputCntrlClickType.END_DRAG_CLICK;
+
+    public bool IsTeleporting { get; set; } = false;
+    private Transform teleportPath;
+    private GameObject destination;
 
     // Start is called before the first frame update
     void Start()
@@ -62,46 +63,35 @@ public class PlayerCntrl : MonoBehaviour
         UpdateAnimation();
     }
 
-    public void Teleport(Vector3 origin, Vector3 destination)
+    public void Teleport(GameObject origin, GameObject destination)
     {
-        //EventManager.Instance.InvokeOnCameraSpan(origin, destination);
-
-        StartCoroutine(TeleportPlayer(origin, destination));
+        teleportPath = origin.transform;
+        this.destination = destination;
+        navMeshAgent.enabled = false;
+        gameObject.SetActive(false);
+        IsTeleporting = true;
     }
 
-    private IEnumerator TeleportPlayer(Vector3 origin, Vector3 destination)
+    public Transform GetTeleportPath()
     {
-        Debug.Log("Call TeleportPlayer ...");
-        pauseInputProcessing = true;
-
-        MoveTo(origin);
-
-        //gameObject.SetActive(false);
-
-        navMeshAgent.enabled = false;
-        yield return null;
-
-        Debug.Log("Start moving position");
-        /*while (Vector3.Distance(transform.position, destination) > 0.01) 
+        if (Vector3.Distance(teleportPath.position, destination.transform.position) > 0.01)
         {
-            float step = 30.0f * Time.deltaTime;
-            transform.position = Vector3.MoveTowards(transform.position, destination, step);
-            Debug.Log($"Distance: {Vector3.Distance(transform.position, destination)}");
-            yield return null;
-        }*/
+            teleportPath.position =
+                Vector3.MoveTowards(
+                   teleportPath.position,
+                   destination.transform.position,
+                   10.0f * Time.deltaTime
+                );
+        } else
+        {
+            IsTeleporting = false;
+            gameObject.transform.position = destination.transform.position;
+            gameObject.SetActive(true);
+            navMeshAgent.enabled = true;
+            navMeshAgent.destination = destination.transform.position;
+        }
 
-        //yield return new WaitForSeconds(0.5f);
-        transform.position = destination;
-        yield return null;
-
-        Debug.Log("End moving position");
-        navMeshAgent.enabled = true;
-        pauseInputProcessing = false;
-        //gameObject.SetActive(true);
-        //teleporting = false; 
-        yield return null;
-
-
+        return (teleportPath);
     }
 
     /**
