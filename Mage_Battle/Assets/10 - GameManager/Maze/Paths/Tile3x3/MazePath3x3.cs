@@ -4,39 +4,58 @@ using UnityEngine;
 
 public class MazePath3x3 : MazePathBuild
 {
-    private GameObject[] tilePreFab = null;
+    private GameObject[] tileListPrefab = null;
     protected GameObject wallPreFab = null;
     private GameObject pathFrmWrk = null;
+    private GameObject tileGratePrefab = null;
     protected GameObject wallFrmWrk = null;
-    private GameObject grass01 = null;
 
     public MazePath3x3(MazeData mazeData, MazeCell mazeCell, Vector3 position) 
         : base(mazeData, mazeCell, position)
     {
         this.wallPreFab = mazeData.buildingColumnPreFab;
-        this.tilePreFab = mazeData.tileList;
+        this.tileListPrefab = mazeData.tile3x3ListPrefab;
         this.wallFrmWrk = mazeData.mazeWallFw;
         this.pathFrmWrk = mazeData.mazePathFloorFw;
-        this.grass01 = mazeData.grass01;
+        this.tileGratePrefab = mazeData.tileGratePrefab;
     }
 
     protected override GameObject CreateBase()
     {
         GameObject baseTile = new Framework()
            .Blueprint(pathFrmWrk)
-           .Assemble(tilePreFab, CENTER_ANCHOR)
-           .Decorate(grass01, 7, 7.0f, 7.0f, 90.0f)
-           .Assemble(tilePreFab, NORTH_TILE_ANCHOR)
-           .Assemble(tilePreFab, SOUTH_TILE_ANCHOR)
-           .Assemble(tilePreFab, EAST_TILE_ANCHOR)
-           .Assemble(tilePreFab, WEST_TILE_ANCHOR)
-           .Assemble(tilePreFab, NORTH_EAST_TILE_ANCHOR)
-           .Assemble(tilePreFab, NORTH_WEST_TILE_ANCHOR)
-           .Assemble(tilePreFab, SOUTH_EAST_TILE_ANCHOR)
-           .Assemble(tilePreFab, SOUTH_WEST_TILE_ANCHOR)
+           .Assemble(SelectCenterTile(), CENTER_ANCHOR, RandomRotate())
+           .Assemble(tileListPrefab, NORTH_TILE_ANCHOR, RandomRotate())
+           .Assemble(tileListPrefab, SOUTH_TILE_ANCHOR, RandomRotate())
+           .Assemble(tileListPrefab, EAST_TILE_ANCHOR, RandomRotate())
+           .Assemble(tileListPrefab, WEST_TILE_ANCHOR, RandomRotate())
+           .Assemble(tileListPrefab, NORTH_EAST_TILE_ANCHOR, RandomRotate())
+           .Assemble(tileListPrefab, NORTH_WEST_TILE_ANCHOR, RandomRotate())
+           .Assemble(tileListPrefab, SOUTH_EAST_TILE_ANCHOR, RandomRotate())
+           .Assemble(tileListPrefab, SOUTH_WEST_TILE_ANCHOR, RandomRotate())
            .Build();
 
         return (baseTile);
+    }
+
+    private GameObject SelectCenterTile()
+    {
+        GameObject selection = null;
+
+        if (Random.Range(0, 4) == 0)
+        {
+            selection = tileGratePrefab;
+        } else
+        {
+            selection = tileListPrefab[Random.Range(0, tileListPrefab.Length)];
+        }
+
+        return (selection);
+    }
+
+    private float RandomRotate()
+    {
+        return (90.0f * Random.Range(0, 4));
     }
 
     protected override GameObject CreateNorthPath(MazeCell mazeCell) => null;
@@ -44,25 +63,17 @@ public class MazePath3x3 : MazePathBuild
     protected override GameObject CreateEastPath(MazeCell mazeCell) => null;
     protected override GameObject CreateWestPath(MazeCell mazeCell) => null;
 
-    protected override GameObject CreateNorthWall(MazeCell mazeCell)
-    {
-        return (CreateNorthSouthWall(wallPreFab, 0.0f));
-    }
+    protected override GameObject CreateNorthWall(MazeCell mazeCell) 
+        => CreateNorthSouthWall(wallPreFab, 0.0f);
 
     protected override GameObject CreateSouthWall(MazeCell mazeCell)
-    {
-        return (CreateNorthSouthWall(wallPreFab, 180.0f));
-    }
+        => CreateNorthSouthWall(wallPreFab, 0.0f);
 
     protected override GameObject CreateEastWall(MazeCell mazeCell)
-    {
-        return (CreateEastWestWall(wallPreFab, 90.0f));
-    }
+        => CreateEastWestWall(wallPreFab, 90.0f);
 
     protected override GameObject CreateWestWall(MazeCell mazeCell)
-    {
-        return (CreateEastWestWall(wallPreFab, 90.0f));
-    }
+        => CreateEastWestWall(wallPreFab, 90.0f);
 
     protected GameObject CreateNorthSouthWall(GameObject wallGameObject, float turn)
     {

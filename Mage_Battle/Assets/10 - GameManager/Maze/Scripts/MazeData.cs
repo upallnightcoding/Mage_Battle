@@ -5,20 +5,21 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "MazeData", menuName = "Mage Battle/MazeData")]
 public class MazeData : ScriptableObject
 {
-    public static readonly uint NW = 8;
-    public static readonly uint SW = 4;
-    public static readonly uint SE = 2;
-    public static readonly uint NE = 1;
+    //public static readonly uint NW = 8;
+    //public static readonly uint SW = 4;
+    //public static readonly uint SE = 2;
+    //public static readonly uint NE = 1;
 
-    public static readonly uint N = 8;
-    public static readonly uint S = 4;
-    public static readonly uint E = 2;
-    public static readonly uint W = 1;
+    //public static readonly uint N = 8;
+    //public static readonly uint S = 4;
+    //public static readonly uint E = 2;
+    //public static readonly uint W = 1;
 
     [Header("Maze Data")]
     public int height;
     public int width;
     public int cellSize;
+    public int randomSeed;
 
     [Header("Framework")]
     public GameObject mazeWallFw;
@@ -29,9 +30,9 @@ public class MazeData : ScriptableObject
     public GameObject buildingFloor01PreFab;
 
     [Space]
-    public GameObject[] tileList;
-
-    public GameObject parent;
+    [Header("3x3 Tile Options")]
+    public GameObject[] tile3x3ListPrefab;
+    public GameObject tileGratePrefab;
 
     [Space]
     public GameObject[] mazeWallsSegmentsPreFab;
@@ -44,7 +45,6 @@ public class MazeData : ScriptableObject
     public GameObject mazeTileFloor;
     public GameObject willTileDoorPreFab;
     public GameObject waterPrefab;
-    public GameObject balustradePrefab;
     public GameObject balustradePathPrefab;
     public GameObject balustradeWallPrefab;
 

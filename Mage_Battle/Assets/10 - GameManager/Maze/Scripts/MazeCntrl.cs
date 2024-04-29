@@ -24,6 +24,11 @@ public class MazeCntrl : MonoBehaviour
         world = new GameObject("World");
         world.AddComponent<NavMeshSurface>();
 
+        if (mazeData.randomSeed > 0)
+        {
+            UnityEngine.Random.InitState(mazeData.randomSeed);
+        }
+
         maze = new MazeGenerator(mazeData.width, mazeData.height);
         Display(maze);
 
@@ -76,7 +81,8 @@ public class MazeCntrl : MonoBehaviour
                             }
                         } else if (UnityEngine.Random.Range(0, 5) == 0)
                         {
-                            path = new MazePathNextLevel(mazeData, mazeCell, position).RenderPath();
+                            path = new MazePathLevelUp(mazeData, mazeCell, position).RenderPath();
+                            //path = new MazePathNextLevel(mazeData, mazeCell, position).RenderPath();
                             //path = new MazePath3x3(mazeData, mazeCell, position).RenderPath();
                         } else
                         {

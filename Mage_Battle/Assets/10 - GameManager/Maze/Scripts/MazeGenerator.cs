@@ -106,11 +106,6 @@ public class MazeGenerator
         }
     }
 
-    /*public MazeCell PickRandomCell()
-    {
-        return(mazeList[UnityEngine.Random.Range(0, mazeList.Count)]);
-    }*/
-
     private bool WalkMaze(MazeCell neighbor)
     {
         if (neighbor != null) 
@@ -195,11 +190,6 @@ public class MazeGenerator
             cellCount = 1;
             mazeStack.Push(cell);
         }
-
-        //GetMazeCell(3, 3).MarkAsVisited();
-        //GetMazeCell(4, 3).MarkAsVisited();
-        //GetMazeCell(4, 4).MarkAsVisited();
-        //GetMazeCell(3, 4).MarkAsVisited();
     }
 
     /**

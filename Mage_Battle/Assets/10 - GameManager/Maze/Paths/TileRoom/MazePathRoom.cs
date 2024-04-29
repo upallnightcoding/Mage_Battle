@@ -4,37 +4,47 @@ using UnityEngine;
 
 public class MazePathRoom : MazePath3x3
 {
-    private readonly GameObject tile = null;
-    private readonly GameObject door = null;
+    private readonly GameObject floorPrefab = null;
+    private readonly GameObject doorPrefab = null;
 
     private GameObject pathFrmWrk = null;
 
     public MazePathRoom(MazeData mazeData, MazeCell mazeCell, Vector3 position) 
         : base(mazeData, mazeCell, position)
     {
-        tile = mazeData.mazeTileFloor;
-        door = mazeData.willTileDoorPreFab;
+        floorPrefab = mazeData.mazeTileFloor;
+        doorPrefab = mazeData.willTileDoorPreFab;
         pathFrmWrk = mazeData.mazePathFloorFw;
     }
 
     protected override GameObject CreateBase()
     {
-        GameObject startTile = new Framework()
+        GameObject floor = new Framework()
             .Blueprint(pathFrmWrk)
-            .Assemble(tile, CENTER_ANCHOR)
+            .Assemble(floorPrefab, CENTER_ANCHOR)
             .Build();
 
-        return (startTile);
+        return (floor);
     }
 
     private GameObject CreateDoorWay(float turn)
     {
-        GameObject wall = new Framework()
+        GameObject door = new Framework()
             .Blueprint(wallFrmWrk)
-            .Assemble(door, COLUMN_ANCHOR, turn)
+            .Assemble(doorPrefab, COLUMN_ANCHOR, turn)
             .Build();
 
-        return (wall);
+        return (door);
+    }
+
+    protected override GameObject RenderSouthPassage(MazeCell mazeCell)
+    {
+        return (mazeCell.HasSouthPath() ? CreateSouthPath(mazeCell) : CreateSouthWall(mazeCell));
+    }
+
+    protected override GameObject RenderWestPassage(MazeCell mazeCell)
+    {
+        return (mazeCell.HasWestPath() ? CreateWestPath(mazeCell) : CreateWestWall(mazeCell));
     }
 
     protected override GameObject CreateNorthPath(MazeCell mazeCell) => CreateDoorWay(0.0f);

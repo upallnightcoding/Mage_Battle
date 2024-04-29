@@ -13,7 +13,8 @@ public class PlayerCntrl : MonoBehaviour
 
     private NavMeshAgent navMeshAgent;
     private Animator animator;
-    private PlayerState state = PlayerState.IDLE;
+    private bool pauseInputProcessing = false;
+    //private PlayerState state = PlayerState.IDLE;
     //private PlayerState prevState = PlayerState.ATTACK;
     //private InputCntrlClickType prevClick = InputCntrlClickType.END_DRAG_CLICK;
 
@@ -27,7 +28,10 @@ public class PlayerCntrl : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        ProcessInputCmds(inputCntrl.GetClick());
+        if (!pauseInputProcessing)
+        {
+            ProcessInputCmds(inputCntrl.GetClick());
+        }
     }
 
     public void NewGame(Vector3 position)
@@ -56,6 +60,48 @@ public class PlayerCntrl : MonoBehaviour
         }
 
         UpdateAnimation();
+    }
+
+    public void Teleport(Vector3 origin, Vector3 destination)
+    {
+        //EventManager.Instance.InvokeOnCameraSpan(origin, destination);
+
+        StartCoroutine(TeleportPlayer(origin, destination));
+    }
+
+    private IEnumerator TeleportPlayer(Vector3 origin, Vector3 destination)
+    {
+        Debug.Log("Call TeleportPlayer ...");
+        pauseInputProcessing = true;
+
+        MoveTo(origin);
+
+        //gameObject.SetActive(false);
+
+        navMeshAgent.enabled = false;
+        yield return null;
+
+        Debug.Log("Start moving position");
+        /*while (Vector3.Distance(transform.position, destination) > 0.01) 
+        {
+            float step = 30.0f * Time.deltaTime;
+            transform.position = Vector3.MoveTowards(transform.position, destination, step);
+            Debug.Log($"Distance: {Vector3.Distance(transform.position, destination)}");
+            yield return null;
+        }*/
+
+        //yield return new WaitForSeconds(0.5f);
+        transform.position = destination;
+        yield return null;
+
+        Debug.Log("End moving position");
+        navMeshAgent.enabled = true;
+        pauseInputProcessing = false;
+        //gameObject.SetActive(true);
+        //teleporting = false; 
+        yield return null;
+
+
     }
 
     /**
@@ -99,11 +145,11 @@ public class PlayerCntrl : MonoBehaviour
     /**
      * MoveToState() - 
      */
-    private PlayerState MoveToState(InputCntrlClickType click)
+    private void MoveToState(InputCntrlClickType click)
     {
         MoveTo(GetMousePosition());
 
-        return (PlayerState.IDLE);
+        //return (PlayerState.IDLE);
     }
 
     private void CastASpell()
@@ -123,7 +169,7 @@ public class PlayerCntrl : MonoBehaviour
     {
         Vector3 velocity = navMeshAgent.velocity;
         Vector3 localVelocity = transform.InverseTransformDirection(velocity);
-
+       
         if (enemySystem.IsSelectedEnemy())
         {
             transform.rotation =
@@ -136,12 +182,15 @@ public class PlayerCntrl : MonoBehaviour
         {
             animator.SetFloat("Speed", localVelocity.z);
         }
+        
     }
 
-    private void MoveTo(Vector3 postion)
+    public void MoveTo(Vector3 postion)
     {
         navMeshAgent.destination = postion;
     }
+
+   
 
     /**
      * StopMoving() - 
@@ -152,70 +201,6 @@ public class PlayerCntrl : MonoBehaviour
     }
 
     //==============================================================================
-
-  
-
-    /*private PlayerState DragState(InputCntrlClickType click)
-    {
-        switch(click)
-        {
-            case InputCntrlClickType.DRAGGING_CLICK:
-                MoveTo(GetMousePosition());
-                state = PlayerState.DRAG;
-                break;
-            case InputCntrlClickType.END_DRAG_CLICK:
-                state = PlayerState.IDLE;
-                break;
-            case InputCntrlClickType.FIRE_CLICK:
-                CastASpell();
-                state = PlayerState.DRAG;
-                break;
-        }
-
-        return (state);
-    }*/
-
-    /*private PlayerState DragAttackState(InputCntrlClickType click)
-    {
-        switch (click)
-        {
-            case InputCntrlClickType.DRAGGING_CLICK:
-                MoveTo(GetMousePosition());
-                state = PlayerState.DRAG_ATTACK;
-                break;
-            case InputCntrlClickType.END_DRAG_CLICK:
-                state = PlayerState.ATTACK;
-                break;
-        }
-
-        return (state);
-    }*/
-
-    /*private PlayerState xxxMoveToState(InputCntrlClickType click)
-    {
-        MoveTo(GetMousePosition());
-
-        return (PlayerState.IDLE);
-    }*/
-
-    /**
-     * AttackState() - 
-     */
-
-
-
-
-    /*private PlayerState AttackMoveToState(InputCntrlClickType click)
-    {
-        MoveTo(GetMousePosition());
-
-        return (PlayerState.ATTACK);
-    }*/
-
-    /**
-     * MoveTo() - 
-     */
-
 
     private Vector3 GetMousePosition()
     {
@@ -230,7 +215,7 @@ public class PlayerCntrl : MonoBehaviour
         return (hitPoint);
     }
 
-    public enum PlayerState
+    /*public enum PlayerState
     {
         IDLE,
         MOVE_TO,
@@ -238,5 +223,5 @@ public class PlayerCntrl : MonoBehaviour
         DRAG,
         DRAG_ATTACK,
         ATTACK_MOVE_TO
-    }
+    }*/
 }

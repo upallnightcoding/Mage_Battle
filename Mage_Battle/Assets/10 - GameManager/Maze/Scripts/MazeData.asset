@@ -12,9 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9d1f1eb497ce68c4e96f3daee4aadbe9, type: 3}
   m_Name: MazeData
   m_EditorClassIdentifier: 
-  height: 5
-  width: 5
+  height: 12
+  width: 12
   cellSize: 15
+  randomSeed: 107
   mazeWallFw: {fileID: 4153194024047703827, guid: 0a787006230ce224ebdacd4698d4596d,
     type: 3}
   mazePathFloorFw: {fileID: 7726656697179344338, guid: dd75f6ab0a164d54b973527809623cb7,
@@ -23,7 +24,7 @@ MonoBehaviour:
     type: 3}
   buildingFloor01PreFab: {fileID: 5247064455343713228, guid: d05746c3f1588d84d9532631b9cc9365,
     type: 3}
-  tileList:
+  tile3x3ListPrefab:
   - {fileID: 62013658743683126, guid: 9ba3e5ea35e73994cafbd562eb93fe5c, type: 3}
   - {fileID: 4009758659394829183, guid: 8043d0efdcced914b8d41140bec9b9d3, type: 3}
   - {fileID: 1676543175539588252, guid: f9a65945df758e8498010e18ca96c1f2, type: 3}
@@ -34,8 +35,8 @@ MonoBehaviour:
   - {fileID: 7351914126883995532, guid: 1785180f87be6404db31da114b003731, type: 3}
   - {fileID: 6871685926728513635, guid: 91a9b6921dc2b504e881d0dabf4989f2, type: 3}
   - {fileID: 8589414493349769197, guid: ec894e0e05b0e5241a1bd0dddc29e58e, type: 3}
-  - {fileID: 1740812553755822851, guid: 52e6927ebba4d1b49b928b244fa14236, type: 3}
-  parent: {fileID: 0}
+  tileGratePrefab: {fileID: 8589414493349769197, guid: 67a03039de465bd4c8462795c7ff7374,
+    type: 3}
   mazeWallsSegmentsPreFab: []
   mazeStartPathPreFab: {fileID: 3854572293781709633, guid: 265452770faa0f44798f49ca3b57dbf4,
     type: 3}
@@ -51,11 +52,9 @@ MonoBehaviour:
     type: 3}
   waterPrefab: {fileID: 244402312272962779, guid: 5f227633b858bb549a7a42a18dcf1f72,
     type: 3}
-  balustradePrefab: {fileID: 4062293323534790095, guid: 5ac49058859d5b845a72f42f4ddf13bc,
-    type: 3}
   balustradePathPrefab: {fileID: 4062293323534790095, guid: 28a831ba9a07b6b42a57e876c8bfa360,
     type: 3}
-  balustradeWallPrefab: {fileID: 9099079365995231811, guid: 4565ce66d525b05498bc5588fb002f9a,
+  balustradeWallPrefab: {fileID: 4062293323534790095, guid: 5ac49058859d5b845a72f42f4ddf13bc,
     type: 3}
   FxPathDirection: {fileID: 8853818377500949494, guid: f578af2cc55c2044fa5a8ee675a76846,
     type: 3}

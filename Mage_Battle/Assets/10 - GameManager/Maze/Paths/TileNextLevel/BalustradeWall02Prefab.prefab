@@ -9,6 +9,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3085123397111786867}
+  - component: {fileID: 8534426186502391475}
+  - component: {fileID: 7961048297782994044}
   m_Layer: 0
   m_Name: BalustradeWall02Prefab
   m_TagString: Untagged
@@ -32,6 +34,33 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &8534426186502391475
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9099079365995231811}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1.96, y: 5.7, z: 4.856948}
+  m_Center: {x: 0.018605351, y: -2.15, z: -0.02980721}
+--- !u!114 &7961048297782994044
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9099079365995231811}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f084bd12847b11844a90411395432fef, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  topLevelPoint: {fileID: 0}
+  bottomLevelPoint: {fileID: 0}
 --- !u!1001 &768465500294156355
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -101,25 +130,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0a787006230ce224ebdacd4698d4596d, type: 3}
---- !u!1 &3677532937299846992 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 4153194024047703827, guid: 0a787006230ce224ebdacd4698d4596d,
-    type: 3}
-  m_PrefabInstance: {fileID: 768465500294156355}
-  m_PrefabAsset: {fileID: 0}
---- !u!65 &4693526569336918470
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3677532937299846992}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!4 &5079956900401667803 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5536475008635850392, guid: 0a787006230ce224ebdacd4698d4596d,
@@ -193,6 +203,21 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8946122941685230976, guid: 777607b2fc464d14ba6a6f9820165f86,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8946122941687167226, guid: 777607b2fc464d14ba6a6f9820165f86,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8993434825417486878, guid: 777607b2fc464d14ba6a6f9820165f86,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 9145760730500472944, guid: 777607b2fc464d14ba6a6f9820165f86,
         type: 3}

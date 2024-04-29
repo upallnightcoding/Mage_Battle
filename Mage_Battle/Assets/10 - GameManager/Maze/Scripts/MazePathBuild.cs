@@ -41,27 +41,24 @@ public abstract class MazePathBuild : MazePath
         return (new Vector3());
     }
 
-    private GameObject RenderNorthPassage(MazeCell mazeCell)
+    protected virtual GameObject RenderNorthPassage(MazeCell mazeCell)
     {
         return (mazeCell.HasNorthWall() ? CreateNorthWall(mazeCell) : CreateNorthPath(mazeCell));
     }
 
-    private GameObject RenderSouthPassage(MazeCell mazeCell)
+    protected virtual GameObject RenderSouthPassage(MazeCell mazeCell)
     {
         return ((mazeCell.Row == 0) ? CreateSouthWall(mazeCell) : null);
-        //return (((mazeCell.Row == 0) ? CreateSouthWall(mazeCell) : (mazeCell.HasSouthWall()) ? CreateSouthWall(mazeCell) : CreateSouthPath(mazeCell)));
-
     }
 
-    private GameObject RenderEastPassage(MazeCell mazeCell)
+    protected virtual GameObject RenderEastPassage(MazeCell mazeCell)
     {
         return (mazeCell.HasEastWall() ? CreateEastWall(mazeCell) : CreateEastPath(mazeCell));
     }
 
-    private GameObject RenderWestPassage(MazeCell mazeCell)
+    protected virtual GameObject RenderWestPassage(MazeCell mazeCell)
     {
         return ((mazeCell.Col == 0) ? CreateWestWall(mazeCell) : null);
-        //return (((mazeCell.Col == 0) ? CreateWestWall(mazeCell) : (mazeCell.HasWestWall()) ? CreateWestWall(mazeCell) : CreateWestPath(mazeCell)));
     }
 
     protected abstract GameObject CreateBase();

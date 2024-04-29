@@ -18,6 +18,8 @@ public class InputCntrl : MonoBehaviour
     public int SelectSpell { set; get; } = -1;
     public bool GoOnAttack { set; get; } = false;
 
+    private bool leftMouseButtonBusy = false;
+
     // Mouse Device Functions
     //-----------------------
     public Vector2 GetMousePosition() => Mouse.current.position.ReadValue();
@@ -208,8 +210,10 @@ public class InputCntrl : MonoBehaviour
     {
         SingleClickState nextState = SingleClickState.IDLE_STATE;
 
-        if (IsLeftMousePressed())
+        if (IsLeftMousePressed() && !leftMouseButtonBusy)
         {
+            //Debug.Log($"Left Mouse Pressed ........... {leftMouseButtonBusy}");
+            leftMouseButtonBusy = true;
             StartCoroutine(StartSingleLeftClickTimer());
             nextState = SingleClickState.TIME_RUNNING_STATE;
         }
@@ -231,22 +235,23 @@ public class InputCntrl : MonoBehaviour
         float startTime = Time.time;
         bool mouseReleased = false;
 
-        while (((Time.time - startTime) < singleLeftClickTimer) && (!mouseReleased))
+        //Debug.Log("Begin StartSingleLeftClickTimer ...");
+        while (CheckLeftClickTimer(startTime) && (!mouseReleased))
         {
-            mouseReleased = IsLeftMouseReleased();
-
             yield return null;
+            mouseReleased = IsLeftMouseReleased();
+            //Debug.Log($"Mouse Released: {mouseReleased}");
         }
 
+        //Debug.Log($"Check Mouse Released: {mouseReleased}");
         if (mouseReleased)
         {
             startTime = Time.time;
             bool mousePressed = false;
             while (((Time.time - startTime) < singleLeftClickTimer) && (!mousePressed))
             {
-                mousePressed = IsLeftMousePressed();
-
                 yield return null;
+                mousePressed = IsLeftMousePressed();
             }
 
             currentSingleClickState = 
@@ -256,6 +261,19 @@ public class InputCntrl : MonoBehaviour
         {
             currentSingleClickState = SingleClickState.START_LEFT_DRAG_STATE;
         }
+
+        leftMouseButtonBusy = false;
+        //Debug.Log("StartSingleLeftClickTimer Finished");
+    }
+
+    private bool CheckLeftClickTimer(float startTime)
+    {
+        float timing = Time.time - startTime;
+        bool check = (timing < singleLeftClickTimer);
+
+        //Debug.Log($"Timing, check: {timing}/{check}");
+
+        return (check);
     }
 
     private IEnumerator StartSingleRightClickTimer()

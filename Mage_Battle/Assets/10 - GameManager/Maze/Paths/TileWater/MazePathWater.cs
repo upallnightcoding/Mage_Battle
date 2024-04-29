@@ -16,7 +16,7 @@ public class MazePathWater : MazePathBuild
         : base(mazeData, mazeCell, position)
     {
         this.wallPreFab = mazeData.buildingColumnPreFab;
-        this.tilePreFab = mazeData.tileList;
+        this.tilePreFab = mazeData.tile3x3ListPrefab;
         this.wallFrmWrk = mazeData.mazeWallFw;
         this.pathFrmWrk = mazeData.mazePathFloorFw;
         this.grass01 = mazeData.grass01;
