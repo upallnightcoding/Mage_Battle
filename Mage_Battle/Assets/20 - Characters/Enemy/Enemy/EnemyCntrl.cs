@@ -7,9 +7,7 @@ using System;
 public class EnemyCntrl : MonoBehaviour
 {
     [SerializeField] private GameData gameData;
-    [SerializeField] private EnemySO enemy;
-
-    [SerializeField] private GameObject selectionPreFab;
+    [SerializeField] protected EnemySO enemy;
     [SerializeField] private GameObject orbPreFab;
 
     public Transform Player { get; set; } = null;
@@ -19,14 +17,17 @@ public class EnemyCntrl : MonoBehaviour
     // Components
     private Animator animator = null;
     private NavMeshAgent navMeshAgent;
+    
 
     private float attackArea;
     private float followArea;
 
-    private float health = 100.0f;
-    private float xp = 0.0f;
+    private GameObject enemySelectPrefab;
+    private GameObject spellFxPreFab;
 
-    private bool isDeadSw = false;
+    private float attackForce;
+    private bool isDead = false;
+
     private bool stopFSM = false;
 
     private FiniteStateMachine fsm = null;
@@ -34,18 +35,23 @@ public class EnemyCntrl : MonoBehaviour
     // Start is called before the first frame update
     void Awake()
     {
-        fsm = enemy.Behavior(this);
+        fsm = CreateFsm(this);
+
+        enemySelectPrefab = enemy.enemySelectPrefab;
+        spellFxPreFab = enemy.spellFxPreFab;
 
         followArea = enemy.followArea;
         attackArea = enemy.attackArea;
+        attackForce = enemy.attackForce;
     }
 
     void Start()
     {
         animator = GetComponent<Animator>();
         navMeshAgent = GetComponent<NavMeshAgent>();
+        
 
-        selectionPreFab.SetActive(false);
+        enemySelectPrefab.SetActive(false);
     }
 
     /**
@@ -62,6 +68,36 @@ public class EnemyCntrl : MonoBehaviour
         }
     }
 
+    /************************/
+    /*** Virual Functions ***/
+    /************************/
+
+    public virtual FiniteStateMachine CreateFsm(EnemyCntrl enemyCntrl)
+    {
+        FiniteStateMachine fsm = new();
+
+        fsm.Add(new SkeletonIdleState(enemyCntrl));
+        fsm.Add(new SkeletonChaseState(enemyCntrl));
+        fsm.Add(new SkeletonAttackState(enemyCntrl));
+        fsm.Add(new SkeletonDieState(enemyCntrl));
+
+        return (fsm);
+    }
+
+    public virtual void CastSpell(Vector3 position)
+    {
+        if (spellFxPreFab != null)
+        {
+            GameObject go = Instantiate(spellFxPreFab, position, Quaternion.identity);
+            Vector3 direction = DirectionToPlayer();
+            go.GetComponent<Rigidbody>().AddForce(direction * enemy.attackForce);
+        }
+    }
+
+    /*************************/
+    /*** Utility Functions ***/
+    /*************************/
+
     public bool WithinAttackArea()
        => DistanceFromPlayer() < attackArea;
 
@@ -69,14 +105,16 @@ public class EnemyCntrl : MonoBehaviour
         => Vector3.Distance(Player.transform.position, transform.position);
 
     public Vector3 Position()
-    {
-        return (transform.position);
-    }
+        => transform.position;
 
     public Vector3 DirectionToPlayer()
-    {
-        return ((Player.transform.position - transform.position).normalized);
-    }
+        => (Player.transform.position - transform.position).normalized;
+
+    public bool WithinChaseArea()
+        => Player == null ? false : DistanceFromPlayer() < followArea;
+
+    public bool IsDead()
+        => isDead;
 
     /**
      * MovesTowardPlayer() -
@@ -88,20 +126,13 @@ public class EnemyCntrl : MonoBehaviour
     }
 
     /**
-     */
-    public bool WithinChaseArea()
-    {
-        return(Player == null ? false : DistanceFromPlayer() < followArea);
-    }
-
-    /**
      * SetAsEnemyTarget() - Set the current enemy as the spell
      * target.  The target indicator is turned on, the selection
      * flag is set and the enemy is moved to a new destination.
      */
     public void SetAsEnemyTarget(Vector3 position)
     {
-        selectionPreFab.SetActive(true);
+        enemySelectPrefab.SetActive(true);
         navMeshAgent.SetDestination(position);
         IsSelected = true;
     }
@@ -112,32 +143,9 @@ public class EnemyCntrl : MonoBehaviour
      */
     public void UnSetAttackMode()
     {
-        selectionPreFab.SetActive(false);
+        enemySelectPrefab.SetActive(false);
         navMeshAgent.SetDestination(transform.position);
         IsSelected = false;
-    }
-
-    /**
-     * IsDead() - Predicate function that returns if the enemy has
-     * been killed or not.  This function returns true, if the enemy
-     * is dead, otherwise false.
-     */
-    public bool IsDead()
-    {
-        return (isDeadSw);
-    }
-
-    /**
-     * TakeDamage() - 
-     */
-    public void TakeDamage(float damage)
-    {
-        health -= damage;
-
-        if (health <= 0.0f)
-        {
-            isDeadSw = true;
-        }
     }
 
     /**
@@ -146,12 +154,12 @@ public class EnemyCntrl : MonoBehaviour
     public void KillEnemy()
     {
         stopFSM = true;
-        EventManager.Instance.InvokeOnKillEnemy(EnemyId, enemy.expPoints);
+        EventSystem.Instance.InvokeOnKillEnemy(EnemyId, enemy.xp);
     }
 
-    public void CastSpell()
+    public void AttackPlayer()
     {
-        enemy.CastSpell(this, orbPreFab.transform.position);
+        CastSpell(orbPreFab.transform.position);
     }
 
     /**
@@ -170,26 +178,5 @@ public class EnemyCntrl : MonoBehaviour
         animator.SetBool("Attack", value);
     }
 
-    #region CallBackFunctions
-
-    /*private void OnCollisionEnter(Collision collision)
-    {
-        Debug.Log("On CollisionEnter ...");
-    }
-
-    private void OnTriggerEnter(Collider other)
-    {
-        Debug.Log($"On Trigger: {other.gameObject.name}");
-    }*/
-
-    private void OnDrawGizmos()
-    {
-        //Gizmos.color = Color.red;
-        //Gizmos.DrawWireSphere(transform.position, followArea);
-
-        //Gizmos.color = Color.green;
-        //Gizmos.DrawWireSphere(transform.position, attackArea);
-    }
-
-    #endregion
+    
 }

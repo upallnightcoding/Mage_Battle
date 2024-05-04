@@ -2177,8 +2177,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gameData: {fileID: 11400000, guid: 52739c430695e374faf96c8123a6be3b, type: 2}
-  enemy: {fileID: 11400000, guid: 156fbfa3e89a3154c939630e1f482ced, type: 2}
-  selectionPreFab: {fileID: 7200075238245918281}
+  enemy: {fileID: 11400000, guid: 123354827490d8e499588a1b8fff0740, type: 2}
   orbPreFab: {fileID: 7440425614303951511}
 --- !u!65 &4040448546174471729
 BoxCollider:
@@ -3275,12 +3274,6 @@ PrefabInstance:
 --- !u!4 &7197133169590478629 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7479199193363085926, guid: c8d2df4f3bb7842459b78978b02b1e71,
-    type: 3}
-  m_PrefabInstance: {fileID: 300103411164273987}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &7200075238245918281 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 7476503415215864586, guid: c8d2df4f3bb7842459b78978b02b1e71,
     type: 3}
   m_PrefabInstance: {fileID: 300103411164273987}
   m_PrefabAsset: {fileID: 0}

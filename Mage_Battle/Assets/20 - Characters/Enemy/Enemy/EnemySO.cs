@@ -13,16 +13,9 @@ using UnityEngine;
  * 6. 
  */
 
-public abstract class EnemySO : ScriptableObject
+[CreateAssetMenu(fileName = "Enemy", menuName ="Mage Battle/Enemy")]
+public class EnemySO : ScriptableObject
 {
-    /*************************************/
-    /*** Abstract Function Definitions ***/
-    /*************************************/
-
-    // Spawn Enemy
-    public abstract FiniteStateMachine CreateFsm(EnemyCntrl enemyCntrl);
-    public abstract void CastSpell(EnemyCntrl enemyCntrl, Vector3 release);
-
     /***********************************/
     /*** Public Property Definitions ***/
     /***********************************/
@@ -30,13 +23,20 @@ public abstract class EnemySO : ScriptableObject
     // Enemy Name
     public string enemyName;
 
+    // Experience points
+    public int xp;
+
     // PreFab of the enemy
-    public GameObject enemyPreFab;
+    public GameObject enemyPrefab;
 
     // PreFab PS - Played when enemy is spawned
-    public GameObject spawnFXPreFab;
+    public GameObject spawnFxEnemyPrefab;
 
-    [Header("Combat")]
+    // PreFab PS - Played when a spell is casted
+    public GameObject spellFxPreFab;
+
+    // PreFab PS - Instantiated to show enemy selection
+    public GameObject enemySelectPrefab;
 
     // Size a area an enemy will follow
     public float followArea;   
@@ -47,33 +47,18 @@ public abstract class EnemySO : ScriptableObject
     // Amount of force to apply to a projectile spell
     public float attackForce;
 
-    // PreFab PS - Instantiated to show enemy selection
-    public GameObject selectionPreFab;
-
-    // PreFab PS - Played when a spell is casted
-    public GameObject spellFXPreFab;
-
-    // Experience points
-    public int expPoints;
-
-    /************************/
-    /*** Public Functions ***/
-    /************************/
-
-    public FiniteStateMachine Behavior(EnemyCntrl enemyCntrl)
+    /**
+     * Spawn() - Spawn the prefab enemy.
+     */
+    public virtual GameObject Spawn(Transform player, Vector3 position)
     {
-        return(CreateFsm(enemyCntrl));
-    }
-
-    public GameObject Spawn(Transform player, Vector3 position)
-    {
-        if (spawnFXPreFab != null)
+        if (spawnFxEnemyPrefab != null)
         {
-            GameObject fx = Instantiate(spawnFXPreFab, position, Quaternion.identity);
+            GameObject fx = Instantiate(spawnFxEnemyPrefab, position, Quaternion.identity);
             Destroy(fx, 3.0f);
         }
 
-        GameObject skeleton = Instantiate(enemyPreFab, position, Quaternion.identity);
+        GameObject skeleton = Instantiate(enemyPrefab, position, Quaternion.identity);
         skeleton.GetComponent<EnemyCntrl>().Player = player;
 
         return (skeleton);

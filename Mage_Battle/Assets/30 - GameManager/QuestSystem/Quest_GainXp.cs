@@ -19,6 +19,6 @@ public class Quest_GainXp : Quest
 
     public override bool Requirement(HealthSystem healthSystem)
     {
-        return (healthSystem.Xp > xp);
+        return (healthSystem.IsUpLevel(100));
     }
 }

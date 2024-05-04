@@ -19,11 +19,18 @@ public class PlayerCntrl : MonoBehaviour
     private Transform teleportPath;
     private GameObject destination;
 
+    private HealthSystem healthSystem;
+
+    private bool isDead = false;
+
+   
+
     // Start is called before the first frame update
     void Start()
     {
         animator = GetComponent<Animator>();
         navMeshAgent = GetComponent<NavMeshAgent>();
+        healthSystem = GetComponent<HealthSystem>();
     }
 
     // Update is called once per frame
@@ -205,13 +212,20 @@ public class PlayerCntrl : MonoBehaviour
         return (hitPoint);
     }
 
-    /*public enum PlayerState
+    private void TakeDamage(int points)
     {
-        IDLE,
-        MOVE_TO,
-        ATTACK,
-        DRAG,
-        DRAG_ATTACK,
-        ATTACK_MOVE_TO
-    }*/
+        isDead = healthSystem.IsDead();
+
+        Debug.Log($"Take Damage: {isDead}");
+    }
+
+    private void OnEnable()
+    {
+        EventSystem.Instance.OnTakePlayerDamage += TakeDamage;
+    }
+
+    private void OnDisable()
+    {
+        EventSystem.Instance.OnTakePlayerDamage -= TakeDamage;
+    }
 }

@@ -19,7 +19,7 @@ public class UiSystem : MonoBehaviour
 
     [SerializeField] private GameObject yourDeadPanel;
 
-    private int expPointsValue = 0;
+    [SerializeField] private HealthSystem healthSystem;
 
     // Start is called before the first frame update
     void Start()
@@ -43,16 +43,13 @@ public class UiSystem : MonoBehaviour
         spellPanel.SetActive(true);
     }
 
-    private void UpdateHealth(float value)
-    {
-        healthBar.value = value;
-    }
+  
 
-    private void UpdateExpPoints(int enemyId, int value)
+    /*private void UpdateExpPoints(int enemyId, int value)
     {
         expPointsValue += value;
         expPoints.text = expPointsValue.ToString();
-    }
+    }*/
 
     private void HeroDeath()
     {
@@ -109,22 +106,32 @@ public class UiSystem : MonoBehaviour
         uiSpellSlots[slot].SetDisplayBar(percentage);
     }
 
-    public void OnEnable()
+    private void UpdateUi()
     {
-        EventManager.Instance.OnSpellCoolDown += UpdateSpellBar;
-        EventManager.Instance.OnSetFullSpellBar += SetFullSpellBar;
-        EventManager.Instance.OnKillEnemy += UpdateExpPoints;
-        EventManager.Instance.OnHeroDamage += UpdateHealth;
-        EventManager.Instance.OnHeroDeath += HeroDeath;
+        healthBar.value = healthSystem.Health / 100.0f;
+        Debug.Log($"Update UI ... {healthSystem.Health}");
     }
 
-    public void OnDisable()
+    private void OnEnable()
     {
-        EventManager.Instance.OnSpellCoolDown -= UpdateSpellBar;
-        EventManager.Instance.OnSetFullSpellBar -= SetFullSpellBar;
-        EventManager.Instance.OnKillEnemy -= UpdateExpPoints;
-        EventManager.Instance.OnHeroDamage -= UpdateHealth;
-        EventManager.Instance.OnHeroDeath -= HeroDeath;
+        EventSystem.Instance.OnSpellCoolDown += UpdateSpellBar;
+        EventSystem.Instance.OnSetFullSpellBar += SetFullSpellBar;
+        //EventSystem.Instance.OnKillEnemy += UpdateExpPoints;
+        //EventSystem.Instance.OnHeroDamage += UpdateHealth;
+        EventSystem.Instance.OnHeroDeath += HeroDeath;
+
+        EventSystem.Instance.OnUpdateUi += UpdateUi;
+    }
+
+    private void OnDisable()
+    {
+        EventSystem.Instance.OnSpellCoolDown -= UpdateSpellBar;
+        EventSystem.Instance.OnSetFullSpellBar -= SetFullSpellBar;
+        //EventSystem.Instance.OnKillEnemy -= UpdateExpPoints;
+        //EventSystem.Instance.OnHeroDamage -= UpdateHealth;
+        EventSystem.Instance.OnHeroDeath -= HeroDeath;
+
+        EventSystem.Instance.OnUpdateUi -= UpdateUi;
     }
 }
 

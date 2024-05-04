@@ -18,12 +18,14 @@ public class CameraCntrl : MonoBehaviour
 
     private bool dragging = false;
 
+    private float fov = 60.0f;
+
     // Start is called before the first frame update
     void Start()
     {
         //delta = player.position - transform.position;
         CalculateDelta(playerCntrl.transform);
-        GetComponent<Camera>().fieldOfView = 30.0f;  
+        GetComponent<Camera>().fieldOfView = fov;  
     }
 
     void Update()
@@ -42,10 +44,16 @@ public class CameraCntrl : MonoBehaviour
             UpdateCamera(playerCntrl.GetTeleportPath());
         }
 
-        Vector2 scroll = inputCntrl.GetScrollWheel();
+        UpdateScrolling(inputCntrl.GetScrollWheel());
+    }
+
+    private void UpdateScrolling(Vector2 scroll)
+    {
         if (scroll != Vector2.zero)
         {
-            Debug.Log($"Scroll: {scroll}");
+            fov += (scroll.y > 0.0f) ? -1.0f : 1.0f;
+            fov = Mathf.Clamp(fov, 30.0f, 70.0f);
+            GetComponent<Camera>().fieldOfView = fov;
         }
     }
 

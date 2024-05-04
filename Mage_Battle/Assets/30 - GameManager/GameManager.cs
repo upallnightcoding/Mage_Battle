@@ -52,6 +52,8 @@ public class GameManager : MonoBehaviour
         {
             Set(slot, gameData.testSpells[slot]);
         }
+
+        enemySystem.SpawnEnemy();
     }
 
     /**

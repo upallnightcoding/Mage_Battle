@@ -52,7 +52,7 @@ public class SpellCasterCntrl
     {
         castPerRound = spell.castPerRound;
 
-        EventManager.Instance.InvokeOnSetFullSpellBar(slot);
+        EventSystem.Instance.InvokeOnSetFullSpellBar(slot);
     }
 
     /**
@@ -102,7 +102,7 @@ public class SpellCasterCntrl
 
             percentage = (Time.time - now) / CoolDownTime();
 
-            EventManager.Instance.InvokeOnSpellCoolDown(slot, percentage);
+            EventSystem.Instance.InvokeOnSpellCoolDown(slot, percentage);
         }
 
         ReLoad();
