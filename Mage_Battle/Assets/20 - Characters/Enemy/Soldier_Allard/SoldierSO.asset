@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa3e53ce230e7d34fbc428ae32311115, type: 3}
+  m_Name: SoldierSO
+  m_EditorClassIdentifier: 
+  enemyName: Soldier Allard
+  xp: 20
+  enemyPrefab: {fileID: 6896320652448406740, guid: 39d213ed85df58644bc6ebacda7d4c9f,
+    type: 3}
+  enemyFxSpawnPrefab: {fileID: 7075316522860678964, guid: 6d6eb7d036f4a5741997ab1019b4a3c3,
+    type: 3}
+  spellFxPrefab: {fileID: 0}
+  enemyWeaponAttackForce: 0
+  followArea: 5
+  attackArea: 3

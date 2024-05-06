@@ -6,9 +6,9 @@ using System;
 
 public class EnemyCntrl : MonoBehaviour
 {
-    [SerializeField] private GameData gameData;
-    [SerializeField] protected EnemySO enemy;
-    [SerializeField] private GameObject orbPreFab;
+    [SerializeField] private EnemySO enemy;
+    [SerializeField] private GameObject enemySelector;
+    [SerializeField] private GameObject enemyProjectile;
 
     public Transform Player { get; set; } = null;
     public int EnemyId { get; set; } = -1;
@@ -17,18 +17,17 @@ public class EnemyCntrl : MonoBehaviour
     // Components
     private Animator animator = null;
     private NavMeshAgent navMeshAgent;
-    
 
     private float attackArea;
     private float followArea;
 
-    private GameObject enemySelectPrefab;
-    private GameObject spellFxPreFab;
-
+    private GameObject spellFxPrefab;
+    
     private float attackForce;
     private bool isDead = false;
 
     private bool stopFSM = false;
+    private int health = 100;
 
     private FiniteStateMachine fsm = null;
 
@@ -37,21 +36,18 @@ public class EnemyCntrl : MonoBehaviour
     {
         fsm = CreateFsm(this);
 
-        enemySelectPrefab = enemy.enemySelectPrefab;
-        spellFxPreFab = enemy.spellFxPreFab;
-
+        spellFxPrefab = enemy.spellFxPrefab;
         followArea = enemy.followArea;
         attackArea = enemy.attackArea;
-        attackForce = enemy.attackForce;
+        attackForce = enemy.enemyWeaponAttackForce;
     }
 
     void Start()
     {
         animator = GetComponent<Animator>();
         navMeshAgent = GetComponent<NavMeshAgent>();
-        
 
-        enemySelectPrefab.SetActive(false);
+        enemySelector.SetActive(false);
     }
 
     /**
@@ -86,11 +82,11 @@ public class EnemyCntrl : MonoBehaviour
 
     public virtual void CastSpell(Vector3 position)
     {
-        if (spellFxPreFab != null)
+        if (spellFxPrefab != null)
         {
-            GameObject go = Instantiate(spellFxPreFab, position, Quaternion.identity);
+            GameObject go = Instantiate(spellFxPrefab, position, Quaternion.identity);
             Vector3 direction = DirectionToPlayer();
-            go.GetComponent<Rigidbody>().AddForce(direction * enemy.attackForce);
+            go.GetComponent<Rigidbody>().AddForce(direction * enemy.enemyWeaponAttackForce);
         }
     }
 
@@ -116,6 +112,30 @@ public class EnemyCntrl : MonoBehaviour
     public bool IsDead()
         => isDead;
 
+    public int GetXp() => enemy.xp;
+
+    /**
+     * TakeDamage() - 
+     */
+    public void TakeDamage(int points)
+    {
+        health -= points;
+
+        if(health <= 0.0)
+        {
+            isDead = true;
+        }
+    }
+
+    /**
+     * KillEnemy() - 
+     */
+    public void KillEnemy()
+    {
+        stopFSM = true;
+        EventSystem.Instance.InvokeOnKillEnemy(EnemyId);
+    }
+
     /**
      * MovesTowardPlayer() -
      */
@@ -132,7 +152,7 @@ public class EnemyCntrl : MonoBehaviour
      */
     public void SetAsEnemyTarget(Vector3 position)
     {
-        enemySelectPrefab.SetActive(true);
+        enemySelector.SetActive(true);
         navMeshAgent.SetDestination(position);
         IsSelected = true;
     }
@@ -143,23 +163,20 @@ public class EnemyCntrl : MonoBehaviour
      */
     public void UnSetAttackMode()
     {
-        enemySelectPrefab.SetActive(false);
+        enemySelector.SetActive(false);
         navMeshAgent.SetDestination(transform.position);
         IsSelected = false;
     }
 
     /**
-     * KillEnemy() - 
+     * AttackPlayer() - 
      */
-    public void KillEnemy()
-    {
-        stopFSM = true;
-        EventSystem.Instance.InvokeOnKillEnemy(EnemyId, enemy.xp);
-    }
-
     public void AttackPlayer()
     {
-        CastSpell(orbPreFab.transform.position);
+        if (enemyProjectile != null)
+        {
+            CastSpell(enemyProjectile.transform.position);
+        }
     }
 
     /**
@@ -177,6 +194,4 @@ public class EnemyCntrl : MonoBehaviour
     {
         animator.SetBool("Attack", value);
     }
-
-    
 }

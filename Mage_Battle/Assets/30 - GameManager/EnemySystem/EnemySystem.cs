@@ -24,8 +24,6 @@ public class EnemySystem : MonoBehaviour
     void Start()
     {
         enemyMap = new Dictionary<int, GameObject>();
-
-        EventSystem.Instance.OnKillEnemy += KillSelectedEnemy;
     }
 
     /**
@@ -66,7 +64,11 @@ public class EnemySystem : MonoBehaviour
     }
 
     /**
-    * SelectTarget() - 
+    * SelectTarget() - Sets the "Target" as the selected target.  If the
+    * selected target is already the target then it is skipped.  If the 
+    * already selected target is pointing to something unselected what it 
+    * is already pointing.  Set the selected target as the "Target" and 
+    * face it in the direction of the player.
     */
     private void SelectTarget(EnemyCntrl target)
     {
@@ -82,27 +84,33 @@ public class EnemySystem : MonoBehaviour
         }
     }
 
-    private void KillSelectedEnemy(int enemyId, int expPoints)
+    /**
+     * KillEnemy() - 
+     */
+    private void KillEnemy(int enemyId)
     {
-        Debug.Log("EnemyId: " + enemyId);
-
-        if(enemyMap.TryGetValue(enemyId, out GameObject target))
+        if (enemyMap.TryGetValue(enemyId, out GameObject target))
         {
             enemyMap.Remove(enemyId);
 
-            if (target.GetComponent<EnemyCntrl>().IsSelected)
+            EnemyCntrl enemyCntrl = target.GetComponent<EnemyCntrl>();
+
+            if (enemyCntrl.IsSelected)
             {
                 Vector3 position = target.transform.position;
                 target.gameObject.layer = LayerMask.NameToLayer("Default");
-                Destroy(target);
                 selectedEnemyTarget = null;
-                Debug.Log("Selection New Target");
                 SelectEnemyTarget(position);
-            } else
+            } 
+                
+            Destroy(target);
+
+            if (enemyMap.Count == 0)
             {
-                Destroy(target);
+                UnSelectTarget();
             }
 
+            EventSystem.Instance.InvokeOnAddXp(enemyCntrl.GetXp());
         }
     }
 
@@ -119,5 +127,20 @@ public class EnemySystem : MonoBehaviour
             
             enemyMap.Add(enemyId, newEnemy);
         }
+    }
+
+    private void OnKillEnemy(int enemyId)
+    {
+        KillEnemy(enemyId);
+    }
+
+    private void OnEnable()
+    {
+        EventSystem.Instance.OnKillEnemy += OnKillEnemy;
+    }
+
+    private void OnDisable()
+    {
+        EventSystem.Instance.OnKillEnemy -= OnKillEnemy;
     }
 }

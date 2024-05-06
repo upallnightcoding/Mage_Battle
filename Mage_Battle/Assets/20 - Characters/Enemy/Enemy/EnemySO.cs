@@ -20,47 +20,52 @@ public class EnemySO : ScriptableObject
     /*** Public Property Definitions ***/
     /***********************************/
 
-    // Enemy Name
+    [Tooltip("Enemy display name.")]
     public string enemyName;
 
-    // Experience points
+    [Tooltip("Enemy experiance points")]
     public int xp;
 
-    // PreFab of the enemy
+    [Tooltip("Enemy prefab.")]
     public GameObject enemyPrefab;
 
-    // PreFab PS - Played when enemy is spawned
-    public GameObject spawnFxEnemyPrefab;
+    [Tooltip("Partical system created when an emeny is spawned.")]
+    public GameObject enemyFxSpawnPrefab;
 
     // PreFab PS - Played when a spell is casted
-    public GameObject spellFxPreFab;
+    public GameObject spellFxPrefab;
 
-    // PreFab PS - Instantiated to show enemy selection
-    public GameObject enemySelectPrefab;
+    //-------------------------------
+    [Header("Enemy Weapon Material")]
+    //-------------------------------
 
-    // Size a area an enemy will follow
+    [Tooltip("The amount of force used to propel the weapon.")]
+    public float enemyWeaponAttackForce;
+
+    //------------------------------------
+    [Header("Attack & Follow Parameters")]
+    //------------------------------------
+
+    [Tooltip("Area around the enemy that will trigger following.")]
     public float followArea;   
-
-    // Size of area an enemy will attack
+    
+    [Tooltip("Area around the enemy that will trigger an attack.")]
     public float attackArea;
-
-    // Amount of force to apply to a projectile spell
-    public float attackForce;
 
     /**
      * Spawn() - Spawn the prefab enemy.
      */
     public virtual GameObject Spawn(Transform player, Vector3 position)
     {
-        if (spawnFxEnemyPrefab != null)
+        if (enemyFxSpawnPrefab != null)
         {
-            GameObject fx = Instantiate(spawnFxEnemyPrefab, position, Quaternion.identity);
+            GameObject fx = Instantiate(enemyFxSpawnPrefab, position, Quaternion.identity);
             Destroy(fx, 3.0f);
         }
 
-        GameObject skeleton = Instantiate(enemyPrefab, position, Quaternion.identity);
-        skeleton.GetComponent<EnemyCntrl>().Player = player;
+        GameObject enemy = Instantiate(enemyPrefab, position, Quaternion.identity);
+        enemy.GetComponent<EnemyCntrl>().Player = player;
 
-        return (skeleton);
+        return (enemy);
     }
 }

@@ -16,12 +16,14 @@ MonoBehaviour:
   xp: 10
   enemyPrefab: {fileID: 8842534174307672126, guid: d3a1cad8a7fc9d64190e67648823d0b3,
     type: 3}
-  spawnFxEnemyPrefab: {fileID: 7075316522860678964, guid: 47dfeb4d23750874ba4c3925c3b6e629,
+  enemyFxSpawnPrefab: {fileID: 7075316522860678964, guid: 47dfeb4d23750874ba4c3925c3b6e629,
     type: 3}
-  spellFxPreFab: {fileID: 4175442557221119530, guid: be6de3eab5c616a4ba12f0773bf304d7,
+  spellFxPrefab: {fileID: 4175442557221119530, guid: be6de3eab5c616a4ba12f0773bf304d7,
     type: 3}
   enemySelectPrefab: {fileID: 7476503415215864586, guid: c8d2df4f3bb7842459b78978b02b1e71,
     type: 3}
+  enemyProjectilePrefab: {fileID: 4175442557221119530, guid: be6de3eab5c616a4ba12f0773bf304d7,
+    type: 3}
+  enemyWeaponAttackForce: 100
   followArea: 5
   attackArea: 3
-  attackForce: 100

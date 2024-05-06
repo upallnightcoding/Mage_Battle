@@ -8,7 +8,7 @@ public class PlayerSpellDamage : MonoBehaviour
     {
         if (other.TryGetComponent<HealthSystem>(out HealthSystem healthSystem))
         {
-            EventSystem.Instance.InvokeOnTakePlayerDamage(10);
+            EventSystem.Instance.InvokeOnTakePlayerDamage(40);
         }
     }
 }

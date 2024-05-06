@@ -22,11 +22,11 @@ public class SpellSystem : MonoBehaviour
     /**
      * Cast() - 
      */
-    public CastInfo Cast(int slot, Vector3 spawnPoint, Vector3 forward)
+    public CastInfo Cast(int slot, Vector3 spawnPoint, Vector3 direction)
     {
         if (spellCaster[slot].ReadyToCast)
         {
-            spellCaster[slot].Cast(castInfo, spawnPoint, forward);
+            spellCaster[slot].Cast(castInfo, spawnPoint, direction);
 
             if (!castInfo.IsCastsLeft)
             {

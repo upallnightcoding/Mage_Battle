@@ -64,7 +64,7 @@ public class SpellCasterCntrl
         {
             castInfo.IsCastsLeft = true;
 
-            if (CheckTime(lastCastingRateSec, castPerSec))
+            if (TimeCheckBetweenCasts(lastCastingRateSec, castPerSec))
             {
                 GameObject cast = Object.Instantiate(spell.modelPreFab, spawnPoint, Quaternion.identity);
                 cast.transform.forward = forward;
@@ -121,7 +121,7 @@ public class SpellCasterCntrl
     /**
      * CheckTime() - 
      */
-    private bool CheckTime(float lastTimeCheck, float delta)
+    private bool TimeCheckBetweenCasts(float lastTimeCheck, float delta)
     {
         return ((Time.time - lastTimeCheck) >= delta);
     }

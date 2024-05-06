@@ -16,26 +16,28 @@ public class SpellSO : ScriptableObject
     public int castPerRound;
 
     // The amount of force produced by the spell forward
-    public float spellForce;
+    //public float spellForce;
+
+    
 
     // Wait time for the next round to begin
     public float coolDownTimeSec;
 
     // Total damage after hitting enemy
-    public float damage;
+    //public int damage;
 
     [Header("Render Attributes")]
     // Spell Sprite
     public Sprite spellSprite;
 
-    public GameObject fx;
+    //public GameObject fx;
 
     public GameObject modelPreFab;
 
-    public TrailSO trail = null;
+    //public TrailSO trail = null;
 
-    protected bool CheckTime(float lastTimeCheck, float delta)
-    {
-        return ((Time.time - lastTimeCheck) >= delta);
-    }
+    //protected bool CheckTime(float lastTimeCheck, float delta)
+    //{
+      //  return ((Time.time - lastTimeCheck) >= delta);
+    //}
 }

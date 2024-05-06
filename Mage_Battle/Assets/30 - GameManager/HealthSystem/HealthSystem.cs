@@ -11,7 +11,14 @@ public class HealthSystem : MonoBehaviour
     {
         Health -= points;
 
+        Health = (int) Mathf.Clamp((float)Health, 0.0f, 100.0f);
+
         EventSystem.Instance.InvokeOnUpdateUi();
+
+        if (IsDead())
+        {
+            EventSystem.Instance.InvokeOnPlayerDeath();
+        }
     }
 
     public void AddXp(int points)
@@ -21,17 +28,19 @@ public class HealthSystem : MonoBehaviour
         EventSystem.Instance.InvokeOnUpdateUi();
     }
 
-    public bool IsDead() => (Health <= 0.0f);
+    public bool IsDead() => (Health <= 0);
 
     public bool IsUpLevel(int level) => (Xp >= level);
 
     private void OnEnable()
     {
         EventSystem.Instance.OnTakePlayerDamage += TakePlayerDamage;
+        EventSystem.Instance.OnAddXp += AddXp;
     }
 
     private void OnDisable()
     {
         EventSystem.Instance.OnTakePlayerDamage -= TakePlayerDamage;
+        EventSystem.Instance.OnAddXp -= AddXp;
     }
 }

@@ -51,7 +51,7 @@ public class UiSystem : MonoBehaviour
         expPoints.text = expPointsValue.ToString();
     }*/
 
-    private void HeroDeath()
+    private void OnPlayerDeath()
     {
         yourDeadPanel.SetActive(true);
     }
@@ -106,10 +106,10 @@ public class UiSystem : MonoBehaviour
         uiSpellSlots[slot].SetDisplayBar(percentage);
     }
 
-    private void UpdateUi()
+    private void OnUpdateUi()
     {
         healthBar.value = healthSystem.Health / 100.0f;
-        Debug.Log($"Update UI ... {healthSystem.Health}");
+        expPoints.text = healthSystem.Xp.ToString();
     }
 
     private void OnEnable()
@@ -118,9 +118,9 @@ public class UiSystem : MonoBehaviour
         EventSystem.Instance.OnSetFullSpellBar += SetFullSpellBar;
         //EventSystem.Instance.OnKillEnemy += UpdateExpPoints;
         //EventSystem.Instance.OnHeroDamage += UpdateHealth;
-        EventSystem.Instance.OnHeroDeath += HeroDeath;
 
-        EventSystem.Instance.OnUpdateUi += UpdateUi;
+        EventSystem.Instance.OnPlayerDeath += OnPlayerDeath;
+        EventSystem.Instance.OnUpdateUi += OnUpdateUi;
     }
 
     private void OnDisable()
@@ -129,9 +129,9 @@ public class UiSystem : MonoBehaviour
         EventSystem.Instance.OnSetFullSpellBar -= SetFullSpellBar;
         //EventSystem.Instance.OnKillEnemy -= UpdateExpPoints;
         //EventSystem.Instance.OnHeroDamage -= UpdateHealth;
-        EventSystem.Instance.OnHeroDeath -= HeroDeath;
 
-        EventSystem.Instance.OnUpdateUi -= UpdateUi;
+        EventSystem.Instance.OnPlayerDeath -= OnPlayerDeath;
+        EventSystem.Instance.OnUpdateUi -= OnUpdateUi;
     }
 }
 

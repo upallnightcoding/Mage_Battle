@@ -10,8 +10,7 @@ public class EnemySpellDamage : MonoBehaviour
     {
         if (other.TryGetComponent<EnemyCntrl>(out EnemyCntrl enemyCntrl))
         {
-            //enemyCntrl.TakeDamage(spell.damage);
-            Debug.Log("EnemySpellDamage");
+            enemyCntrl.TakeDamage(40);
         } 
     }
 }

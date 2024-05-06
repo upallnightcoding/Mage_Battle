@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: -1299481447959818855}
   - component: {fileID: -7956756692573781020}
   m_Layer: 1
-  m_Name: FX_Orb_1_Prefab
+  m_Name: Fx_Orb_1_Prefab
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -50,7 +50,7 @@ ParticleSystem:
   ringBufferMode: 0
   ringBufferLoopRange: {x: 0, y: 1}
   emitterVelocityMode: 0
-  looping: 0
+  looping: 1
   prewarm: 0
   playOnAwake: 1
   useUnscaledTime: 0

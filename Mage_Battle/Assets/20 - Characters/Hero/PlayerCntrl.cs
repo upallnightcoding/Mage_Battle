@@ -23,8 +23,6 @@ public class PlayerCntrl : MonoBehaviour
 
     private bool isDead = false;
 
-   
-
     // Start is called before the first frame update
     void Start()
     {
@@ -79,6 +77,9 @@ public class PlayerCntrl : MonoBehaviour
         IsTeleporting = true;
     }
 
+    /**
+     * GetTeleportPath() - 
+     */
     public Transform GetTeleportPath()
     {
         if (Vector3.Distance(teleportPath.position, destination.transform.position) > 0.01)
@@ -187,8 +188,6 @@ public class PlayerCntrl : MonoBehaviour
         navMeshAgent.destination = postion;
     }
 
-   
-
     /**
      * StopMoving() - 
      */
@@ -212,7 +211,7 @@ public class PlayerCntrl : MonoBehaviour
         return (hitPoint);
     }
 
-    private void TakeDamage(int points)
+    /*private void TakeDamage(int points)
     {
         isDead = healthSystem.IsDead();
 
@@ -227,5 +226,5 @@ public class PlayerCntrl : MonoBehaviour
     private void OnDisable()
     {
         EventSystem.Instance.OnTakePlayerDamage -= TakeDamage;
-    }
+    }*/
 }

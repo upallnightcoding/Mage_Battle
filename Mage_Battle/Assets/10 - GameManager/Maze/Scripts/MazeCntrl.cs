@@ -9,6 +9,8 @@ public class MazeCntrl : MonoBehaviour
 {
     [SerializeField] private MazeData mazeData;
     [SerializeField] private GameObject pickupGemPreFab;
+    [SerializeField] private Transform map;
+    [SerializeField] private GameObject tileMapPrefab;
 
     private GameObject world;
 
@@ -30,7 +32,10 @@ public class MazeCntrl : MonoBehaviour
         }
 
         maze = new MazeGenerator(mazeData.width, mazeData.height);
+
         Display(maze);
+
+        //DisplayMap();
 
         world.GetComponent<NavMeshSurface>().BuildNavMesh();
     }
@@ -38,6 +43,18 @@ public class MazeCntrl : MonoBehaviour
     public Vector3 GetStartMazeCellPosition()
     {
         return (maze.GetStartMazeCell().Position);
+    }
+
+    private void DisplayMap()
+    {
+        for (int row = 0; row < maze.Height; row++)
+        {
+            for (int col = 0; col < maze.Width; col++)
+            {
+                GameObject tile = Instantiate(tileMapPrefab, map);
+                tile.transform.localPosition = new Vector3(col, 0.0f, row);
+            }
+        }
     }
 
     private void Display(MazeGenerator maze)
@@ -82,8 +99,6 @@ public class MazeCntrl : MonoBehaviour
                         } else if (UnityEngine.Random.Range(0, 5) == 0)
                         {
                             path = new MazePathLevelUp(mazeData, mazeCell, position).RenderPath();
-                            //path = new MazePathNextLevel(mazeData, mazeCell, position).RenderPath();
-                            //path = new MazePath3x3(mazeData, mazeCell, position).RenderPath();
                         } else
                         {
                             path = new MazePath3x3(mazeData, mazeCell, position).RenderPath();

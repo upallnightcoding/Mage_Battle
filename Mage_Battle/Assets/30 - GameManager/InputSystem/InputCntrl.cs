@@ -6,7 +6,7 @@ using System;
 
 public class InputCntrl : MonoBehaviour
 {
-    public static event Action OnDesengageEvent;
+    //public static event Action OnDesengageEvent;
 
     [SerializeField] private float singleLeftClickTimer = 0.05f;
     [SerializeField] private float singleRightClickTimer = 0.05f;
@@ -33,37 +33,37 @@ public class InputCntrl : MonoBehaviour
 
     public void ReSetSelectedSpell() => SelectSpell = -1;
 
-    public void OnMove(InputAction.CallbackContext context)
-    {
+    //public void OnMove(InputAction.CallbackContext context)
+    //{
         /*if (context.performed)
         {
             playerMovement = context.ReadValue<Vector2>();
         }*/
-    }
+    //}
 
-    public void OnLook(InputAction.CallbackContext context)
-    {
+    //public void OnLook(InputAction.CallbackContext context)
+   // {
         /*if (context.performed)
         {
             playerAim = context.ReadValue<Vector2>();
         }*/
-    }
+    //}
 
-    public void OnFire(InputAction.CallbackContext context)
+    /*public void OnFire(InputAction.CallbackContext context)
     {
         if (context.performed)
         {
             //HasRequestToCast = true;
         }
-    }
+    }*/
 
-    public void OnCast(InputAction.CallbackContext context)
+    /*public void OnCast(InputAction.CallbackContext context)
     {
         if (context.performed)
         {
             //HasRequestToCast = true;
         }
-    }
+    }*/
 
     public void OnCast1(InputAction.CallbackContext context)
     {
@@ -105,13 +105,13 @@ public class InputCntrl : MonoBehaviour
         }
     }
 
-    public void OnDesengage(InputAction.CallbackContext context)
+    /*public void OnDesengage(InputAction.CallbackContext context)
     {
         if (context.performed)
         {
             OnDesengageEvent.Invoke();
         }
-    }
+    }*/
 
     public InputCntrlClickType GetClick()
     {
