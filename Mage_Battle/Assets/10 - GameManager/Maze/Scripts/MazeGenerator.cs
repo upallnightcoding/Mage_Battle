@@ -17,6 +17,8 @@ public class MazeGenerator
     private int cellCount = 0;
     private MazeCell startMazeCell;
     private MazeCell endMazeCell;
+    private int col = 2, row = 2;
+    private int nCol = 3, nRow = 3;
     //private List<MazeCell> mazeList;
 
     public MazeGenerator(int width, int height)
@@ -35,6 +37,14 @@ public class MazeGenerator
     {
         BuildMazeDictionary();
 
+        for (int c = col; c <= col+nCol-1; c++)
+        {
+            for (int r = row; r <= row+nRow-1; r++)
+            {
+                SetMazeCellBlocked(c, r);
+            }
+        }
+
         SetStartingCell();
 
         while (WalkMaze(PickAValidNeighbor(mazeStack.Peek())));
@@ -42,6 +52,9 @@ public class MazeGenerator
         SetMazePath();
     }
 
+    /**
+     * GetMazeCell() - 
+     */
     public MazeCell GetMazeCell(int col, int row)
     {
         MazeCell mazeCell = null;
@@ -51,6 +64,21 @@ public class MazeGenerator
         } 
 
         return(mazeCell);
+    }
+
+    /**
+     * SetMazeCellBlocked() - 
+     */
+    public void SetMazeCellBlocked(int col, int row)
+    {
+        MazeCell mazeCell = null;
+
+        if (maze.TryGetValue(new MazeIndex(col, row), out mazeCell))
+        {
+            mazeCell.SetAsBlocked();
+            mazeCell.PathType = MazePathType.BLOCKED;
+            maxCellCount--;
+        }
     }
 
     /**
@@ -180,15 +208,26 @@ public class MazeGenerator
         }
     }
 
+    /**
+     * SetStartingCell() - 
+     */
     private void SetStartingCell()
     {
-        MazeCell cell = GetMazeCell(GetRandom(Width), GetRandom(Height));
+        MazeCell cell = null;
 
-        if (cell != null) 
+        while (cell == null)
         {
-            cell.MarkAsVisited();
-            cellCount = 1;
-            mazeStack.Push(cell);
+            cell = GetMazeCell(GetRandom(Width), GetRandom(Height));
+
+            if (!cell.IsBlocked())
+            {
+                cell.MarkAsVisited();
+                cellCount = 1;
+                mazeStack.Push(cell);
+            } else
+            {
+                cell = null;
+            }
         }
     }
 

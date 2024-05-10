@@ -47,11 +47,14 @@ public class CameraCntrl : MonoBehaviour
         UpdateScrolling(inputCntrl.GetScrollWheel());
     }
 
+    /**
+     * UpdateScrolling() - 
+     */
     private void UpdateScrolling(Vector2 scroll)
     {
         if (scroll != Vector2.zero)
         {
-            fov += (scroll.y > 0.0f) ? -1.0f : 1.0f;
+            fov += (scroll.y > 0.0f) ? -2.0f : 2.0f;
             fov = Mathf.Clamp(fov, 30.0f, 70.0f);
             GetComponent<Camera>().fieldOfView = fov;
         }

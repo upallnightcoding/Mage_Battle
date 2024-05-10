@@ -10,9 +10,11 @@ public class EnemyCntrl : MonoBehaviour
     [SerializeField] private GameObject enemySelector;
     [SerializeField] private GameObject enemyProjectile;
 
-    public Transform Player { get; set; } = null;
-    public int EnemyId { get; set; } = -1;
-    public bool IsSelected { get; set; } = false;
+    // These fields are serialized for the test bed
+    //---------------------------------------------
+    [field:SerializeField] public Transform Player { get; set; } = null;
+    [field:SerializeField] public int EnemyId { get; set; } = -1;
+    [field:SerializeField] public bool IsSelected { get; set; } = false;
 
     // Components
     private Animator animator = null;
@@ -142,7 +144,7 @@ public class EnemyCntrl : MonoBehaviour
     public void MovesTowardPlayer()
     {
         navMeshAgent.SetDestination(Player.position);
-        animator.SetFloat("Speed", 1.0f);
+        animator.SetFloat("Speed", enemy.chaseSpeed);
     }
 
     /**

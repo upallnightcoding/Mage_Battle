@@ -46,6 +46,9 @@ public class EnemySO : ScriptableObject
     [Header("Attack & Follow Parameters")]
     //------------------------------------
 
+    [Tooltip("Sets the chase speed of the enemy.")]
+    public float chaseSpeed;
+
     [Tooltip("Area around the enemy that will trigger following.")]
     public float followArea;   
     

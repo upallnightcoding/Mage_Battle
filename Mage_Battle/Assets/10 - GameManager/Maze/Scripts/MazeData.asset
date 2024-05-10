@@ -12,10 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9d1f1eb497ce68c4e96f3daee4aadbe9, type: 3}
   m_Name: MazeData
   m_EditorClassIdentifier: 
-  height: 5
-  width: 5
+  height: 6
+  width: 6
   cellSize: 15
-  randomSeed: 107
+  randomSeed: 108
   mazeWallFw: {fileID: 4153194024047703827, guid: 0a787006230ce224ebdacd4698d4596d,
     type: 3}
   mazePathFloorFw: {fileID: 7726656697179344338, guid: dd75f6ab0a164d54b973527809623cb7,
@@ -39,6 +39,8 @@ MonoBehaviour:
     type: 3}
   mazeWallsSegmentsPreFab: []
   mazeStartPathPreFab: {fileID: 3854572293781709633, guid: 265452770faa0f44798f49ca3b57dbf4,
+    type: 3}
+  mazeArenaPathPrefab: {fileID: 3854572293781709633, guid: e595a2c8bce39c64a9ebd97b50a9e554,
     type: 3}
   mazeBlankPathPreFab: {fileID: 7964111818889831510, guid: d9bf5e8cf9064944a9ca62110bfee1ab,
     type: 3}

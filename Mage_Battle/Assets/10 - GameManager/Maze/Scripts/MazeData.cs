@@ -39,6 +39,7 @@ public class MazeData : ScriptableObject
 
     [Header("Path PreFabs")]
     public GameObject mazeStartPathPreFab;
+    public GameObject mazeArenaPathPrefab;
     public GameObject mazeBlankPathPreFab;
     public GameObject mazeEndPathPreFab;
     public GameObject mazeTilePathPreFab;

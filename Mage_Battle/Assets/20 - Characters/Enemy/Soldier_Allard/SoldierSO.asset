@@ -20,5 +20,6 @@ MonoBehaviour:
     type: 3}
   spellFxPrefab: {fileID: 0}
   enemyWeaponAttackForce: 0
+  chaseSpeed: 0.4
   followArea: 5
   attackArea: 3

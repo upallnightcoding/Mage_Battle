@@ -36,9 +36,10 @@ public class MazeCell
     public void UpdatePathCount() => PathCount++;
 
     public void MarkAsVisited() => type = MazeCellType.VISITED; 
-
-    public bool IsUnVisited()   => (type == MazeCellType.UNVISITED); 
-    public bool IsVisited()     => (type == MazeCellType.VISITED);
+    public bool IsUnVisited()   => (type == MazeCellType.UNVISITED);
+    public void SetAsBlocked()  => type = MazeCellType.BLOCKED;
+    public bool IsBlocked()     => (type == MazeCellType.BLOCKED);
+    //public bool IsVisited()     => (type == MazeCellType.VISITED);
 
     // Predicate functions that returns true if a wall exists
     public bool HasNorthWall()  => NorthWall == null; 
@@ -57,6 +58,11 @@ public class MazeCell
     {
         this.Col = col;
         this.Row = row;
+    }
+
+    public void PrintIt()
+    {
+        Debug.Log($"Col/Row: [{Col},{Row}] - {type.ToString()}");
     }
 
     public List<MazeCell> ListFreeNeighbor()
@@ -114,7 +120,7 @@ public enum MazeCellType
 {
     UNVISITED,
     VISITED,
-    ARENA
+    BLOCKED
 }
 
 public enum MazePathType
@@ -122,7 +128,8 @@ public enum MazePathType
     START, 
     PATH, 
     END,
-    OFFPATH
+    OFFPATH,
+    BLOCKED
 }
 
 public enum MazePathDirection

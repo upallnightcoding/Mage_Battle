@@ -72,6 +72,9 @@ public class MazeCntrl : MonoBehaviour
 
                 switch (mazeCell.PathType)
                 {
+                    case MazePathType.BLOCKED:
+                        path = new MazePathArena(mazeData, mazeCell, position, 2, 2, 3, 3).RenderPath();
+                        break;
                     case MazePathType.START:
                         path = new MazePathStart(mazeData, mazeCell, position).RenderPath();
                         break;
@@ -79,7 +82,6 @@ public class MazeCntrl : MonoBehaviour
                         if (mazeCell.IsRoom())
                         {
                             path = new MazePathRoom(mazeData, mazeCell, position).RenderPath();
-                            //path.GetComponentsInChildren<MazePathCntrl>()[0].Initialize(mazeData, mazeCell);
                         } else
                         {
                             path = new MazePath3x3(mazeData, mazeCell, position).RenderPath();
@@ -110,7 +112,6 @@ public class MazeCntrl : MonoBehaviour
                         break;
                     case MazePathType.END:
                         path = new MazePathEnd(mazeData, mazeCell, position).RenderPath();
-                        //path = new MazePathNextLevel(mazeData).RenderPath(mazeCell, position);
                         break;
                 }
 
